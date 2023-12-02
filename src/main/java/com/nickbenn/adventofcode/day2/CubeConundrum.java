@@ -12,8 +12,7 @@ import java.util.stream.Stream;
 public class CubeConundrum {
 
   private static final Pattern LINE_PATTERN = Pattern.compile("^Game\\s+(\\d+):\\s+(.*?)\\s*$");
-  private static final Pattern DRAW_SPLITTER = Pattern.compile(";\\s*");
-  private static final Pattern SAMPLE_SPLITTER = Pattern.compile(",\\s*");
+  private static final Pattern SAMPLE_SPLITTER = Pattern.compile("[,;]\\s*");
   private static final Pattern SAMPLE_PATTERN = Pattern.compile("(\\d+)\\s*(red|green|blue)");
   static final Map<String, Integer> CEILINGS = Map.of(
       "red", 12,
@@ -80,19 +79,16 @@ public class CubeConundrum {
       }
       int id = Integer.parseInt(lineMatcher.group(1));
       Game game = new Game(id);
-      DRAW_SPLITTER
+      SAMPLE_SPLITTER
           .splitAsStream(lineMatcher.group(2))
-          .forEach((draw) -> SAMPLE_SPLITTER
-              .splitAsStream(draw)
-              .forEach((sample) -> {
-                Matcher samplePatcher = SAMPLE_PATTERN.matcher(sample);
-                if (!samplePatcher.matches()) {
-                  throw new IllegalArgumentException();
-                }
-                int count = Integer.parseInt(samplePatcher.group(1));
-                game.update(samplePatcher.group(2), count);
-              })
-          );
+          .forEach((sample) -> {
+            Matcher samplePatcher = SAMPLE_PATTERN.matcher(sample);
+            if (!samplePatcher.matches()) {
+              throw new IllegalArgumentException();
+            }
+            int count = Integer.parseInt(samplePatcher.group(1));
+            game.update(samplePatcher.group(2), count);
+          });
       return game;
     }
 
