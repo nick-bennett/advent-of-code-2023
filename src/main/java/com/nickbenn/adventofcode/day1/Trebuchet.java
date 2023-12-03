@@ -70,7 +70,7 @@ public class Trebuchet {
                   sum += 10 * digit;
                 }
                 lastDigit = digit;
-                startPosition = trueDigit ? matcher.end() : startPosition + 1;
+                startPosition++;
               }
               return sum + lastDigit;
           })
