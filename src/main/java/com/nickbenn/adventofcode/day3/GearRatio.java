@@ -56,8 +56,7 @@ public class GearRatio {
           Location start = new Location(location.row() - 1, startColumn);
           Location end = new Location(location.row() + 1, endColumn);
           return symbols
-              .tailSet(start)
-              .headSet(end)
+              .subSet(start,end)
               .stream()
               .anyMatch((loc) -> loc.column() >= startColumn && loc.column() < endColumn);
         })
@@ -74,8 +73,7 @@ public class GearRatio {
           Location start = new Location(location.row() - 1, 0);
           Location end = new Location(location.row() + 1, column + 1);
           return numbers
-              .tailMap(start, true)
-              .headMap(end, true)
+              .subMap(start, true, end, true)
               .entrySet()
               .stream()
               .filter((entry) -> entry.getKey().column() <= column + 1
