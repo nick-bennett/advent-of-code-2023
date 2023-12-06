@@ -5,15 +5,14 @@ import com.nickbenn.adventofcode.util.Defaults;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.NavigableMap;
 import java.util.TreeMap;
 import java.util.function.Predicate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import java.util.stream.LongStream;
 import java.util.stream.Stream;
 
 public class SeedFertilizer {
@@ -39,9 +38,7 @@ public class SeedFertilizer {
   private final List<? extends NavigableMap<Long, Mapping>> maps = IntStream.range(0, 7)
       .mapToObj((ignored) -> new TreeMap<Long, Mapping>())
       .toList();
-  private final List<RangedMap> rangedMaps = Stream.generate(() -> (RangedMap) null)
-      .limit(7)
-      .collect(Collectors.toList());
+  private final NavigableMap<Long, Mapping> mergedMap;
 
   public SeedFertilizer() throws IOException {
     this(Defaults.INPUT_FILE);
@@ -53,60 +50,24 @@ public class SeedFertilizer {
         .setContext(getClass())
         .build()
         .paragraphs()) {
-      blocks.forEach((block) -> {
-        Matcher matcher = BLOCK_EXTRACTOR.matcher(block);
-        if (!matcher.matches()) {
-          throw new IllegalArgumentException();
-        }
-        int firstMatch = firstMatchingGroup(matcher);
-        String data = matcher.group(9);
-        if (firstMatch == 1) {
-          SEED_SPLITTER
-              .splitAsStream(data)
-              .map(String::strip)
-              .filter(Predicate.not(String::isEmpty))
-              .map(Long::valueOf)
-              .forEach(seeds::add);
-          SEED_PAIR_EXTRACTOR
-              .matcher(data)
-              .results()
-              .map((result) -> {
-                long start = Long.parseLong(result.group(1));
-                long length = Long.parseLong(result.group(2));
-                return new SourceRange(start, length);
-              })
-              .forEach(sourceRanges::add);
-        } else {
-          int position = firstMatch - PATTERN_OFFSET;
-          LINE_SPLITTER
-              .splitAsStream(matcher.group(9))
-              .map(String::strip)
-              .map(Mapping::parse)
-              .forEach((mapping) ->
-                  maps.get(position).put(mapping.sourceStart(), mapping));
-          normalize(maps.get(position));
-        }
-      });
+      blocks.forEach(this::processBlock);
+      mergedMap = getMergedMap();
     }
   }
 
   public static void main(String[] args) throws IOException {
     SeedFertilizer seedFertilizer = new SeedFertilizer();
     System.out.println(seedFertilizer.getLowestLocation());
-//    System.out.println(seedFertilizer.getLowestInterpolatedLocation());
+    System.out.println(seedFertilizer.getLowestInterpolatedLocation());
   }
 
   public long getLowestLocation() {
     return seeds
         .stream()
-        .map((seed) -> {
-          Long prev = seed;
-          for (NavigableMap<Long, Mapping> map : maps) {
-            prev = translate(prev, map);
-          }
-          return prev;
+        .mapToLong((seed) -> {
+          Mapping mapping = mergedMap.floorEntry(seed).getValue();
+          return mapping.destinationStart() + seed - mapping.sourceStart();
         })
-        .mapToLong(Long::longValue)
         .min()
         .orElse(Long.MAX_VALUE);
   }
@@ -117,20 +78,59 @@ public class SeedFertilizer {
         .peek(System.out::println)
         .flatMap((range) -> {
           long start = range.start();
-          long end = start + range.length;
-          return LongStream.range(start, end)
-              .boxed();
+          long length = range.length();
+          Mapping base = new Mapping(start, start, length);
+          return segments(base, mergedMap);
         })
-        .map((seed) -> {
-          Long prev = seed;
-          for (RangedMap map : rangedMaps) {
-            prev = map.translate(prev);
-          }
-          return prev;
-        })
-        .mapToLong(Long::longValue)
+        .mapToLong(Mapping::destinationStart)
         .min()
         .orElse(Long.MAX_VALUE);
+  }
+
+  private void processBlock(String block) {
+    Matcher matcher = BLOCK_EXTRACTOR.matcher(block);
+    if (!matcher.matches()) {
+      throw new IllegalArgumentException();
+    }
+    int firstMatch = firstMatchingGroup(matcher);
+    String data = matcher.group(9);
+    if (firstMatch == 1) {
+      SEED_SPLITTER
+          .splitAsStream(data)
+          .map(String::strip)
+          .filter(Predicate.not(String::isEmpty))
+          .map(Long::valueOf)
+          .forEach(seeds::add);
+      SEED_PAIR_EXTRACTOR
+          .matcher(data)
+          .results()
+          .map((result) -> {
+            long start = Long.parseLong(result.group(1));
+            long length = Long.parseLong(result.group(2));
+            return new SourceRange(start, length);
+          })
+          .forEach(sourceRanges::add);
+    } else {
+      int position = firstMatch - PATTERN_OFFSET;
+      LINE_SPLITTER
+          .splitAsStream(matcher.group(9))
+          .map(String::strip)
+          .map(Mapping::parse)
+          .forEach((mapping) ->
+              maps.get(position).put(mapping.sourceStart(), mapping));
+      normalize(maps.get(position));
+    }
+  }
+
+  private NavigableMap<Long, Mapping> getMergedMap() {
+    final NavigableMap<Long, Mapping> mergedMaps;
+    NavigableMap<Long, Mapping> merged =
+        new TreeMap<>(Map.of(0L, new Mapping(0, 0, Long.MAX_VALUE)));
+    for (var map : maps) {
+      merged = merge(merged, map);
+    }
+    mergedMaps = merged;
+    return mergedMaps;
   }
 
   private int firstMatchingGroup(Matcher matcher) {
@@ -145,25 +145,6 @@ public class SeedFertilizer {
       }
     }
     return groupNumber;
-  }
-
-  private static Long translate(Long source, NavigableMap<Long, Mapping> map) {
-    return map
-        .headMap(source, true)
-        .entrySet()
-        .stream()
-        .dropWhile((entry) -> entry.getKey() + entry.getValue().length() <= source)
-        .map(Entry::getValue)
-        .findFirst()
-        .map((mapping) -> source - mapping.sourceStart() + mapping.destinationStart())
-        .orElse(source);
-  }
-
-  private static SourceRange getActiveRange(NavigableMap<Long, Mapping> map) {
-    Long min = map.firstKey();
-    Mapping lastMapping = map.lastEntry().getValue();
-    Long max = lastMapping.sourceStart() + lastMapping.length();
-    return new SourceRange(min, max - min);
   }
 
   private static void normalize(NavigableMap<Long, Mapping> map) {
@@ -190,19 +171,50 @@ public class SeedFertilizer {
   private static NavigableMap<Long, Mapping> merge(NavigableMap<Long, Mapping> input,
       NavigableMap<Long, Mapping> output) {
     NavigableMap<Long, Mapping> merged = new TreeMap<>();
-    Entry<Long, Mapping> inputEntry = input.firstEntry();
-    long inputSourceStart = inputEntry.getKey();
-    Mapping inputMapping = inputEntry.getValue();
-    long inputDestinationStart = inputMapping.destinationStart();
-    long inputLength = inputMapping.length();
-
+    input
+        .values()
+        .stream()
+        .flatMap((mapping) -> segments(mapping, output))
+        .forEach((mapping) -> merged.put(mapping.sourceStart(), mapping));
     return merged;
+  }
+
+  private static Stream<Mapping> segments(Mapping base, NavigableMap<Long, Mapping> map) {
+    long destinationStart = base.destinationStart();
+    long destinationEnd = base.destinationEnd();
+    long delta = base.delta();
+    return map
+        .headMap(destinationEnd, false)
+        .entrySet()
+        .stream()
+        .dropWhile((entry) -> entry.getKey() + entry.getValue().length() <= destinationStart)
+        .map((entry) -> {
+          Mapping layer = entry.getValue();
+          long layerDelta = layer.delta();
+          long newDestinationStart = Math.max(destinationStart, layer.sourceStart()) + layerDelta;
+          long newDestinationEnd = Math.min(destinationEnd, layer.sourceEnd()) + layerDelta;
+          long newLength = newDestinationEnd - newDestinationStart;
+          long newSourceStart = newDestinationStart - delta - layerDelta;
+          return new Mapping(newDestinationStart, newSourceStart, newLength);
+        });
   }
 
   private record Mapping(long destinationStart, long sourceStart, long length) {
 
     private static final Pattern MAPPING_EXTRACTOR =
         Pattern.compile("\\s*(\\d+)\\s+(\\d+)\\s+(\\d+)\\s*");
+
+    public long delta() {
+      return destinationStart - sourceStart;
+    }
+
+    public long sourceEnd() {
+      return sourceStart + length;
+    }
+
+    public long destinationEnd() {
+      return destinationStart + length;
+    }
 
     public static Mapping parse(String input) {
       Matcher matcher = MAPPING_EXTRACTOR.matcher(input);
@@ -225,28 +237,6 @@ public class SeedFertilizer {
         throw new IllegalArgumentException();
       }
       return new SourceRange(Long.parseLong(matcher.group(1)), Long.parseLong(matcher.group(2)));
-    }
-
-  }
-
-  private record RangedMap(SourceRange range, NavigableMap<Long, Mapping> map) {
-
-    public RangedMap(NavigableMap<Long, Mapping> map) {
-      this(getActiveRange(map), map);
-    }
-
-    public Long translate(Long source) {
-      return (source >= range.start() && source < range.start() + range.length())
-          ? map
-              .headMap(source, true)
-              .entrySet()
-              .stream()
-              .dropWhile((entry) -> entry.getKey() + entry.getValue().length() <= source)
-              .map(Entry::getValue)
-              .findFirst()
-              .map((mapping) -> source - mapping.sourceStart() + mapping.destinationStart())
-              .orElse(source)
-          : source;
     }
 
   }
