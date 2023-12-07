@@ -65,7 +65,7 @@ public class GearRatio {
     return gears
         .stream()
         .map((location) -> {
-          int column = location.column();;
+          int column = location.column();
           Location start = new Location(location.row() - 1, 0);
           Location end = new Location(location.row() + 1, column + 1);
           return numbers

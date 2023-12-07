@@ -17,6 +17,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
+@SuppressWarnings("unused")
 public class DataSource {
 
   private static final Pattern PARAGRAPH_SPLITTER = Pattern.compile("\\r?\\n\\s*?\\r?\\n");
@@ -33,8 +34,11 @@ public class DataSource {
     trimmed = builder.trimmed;
     stripped = builder.stripped;
     context = builder.context;
+    //noinspection EmptyTryBlock
     try (InputStream input = getInputStream()) {
-
+      // Do nothing.
+    } catch (NullPointerException e) {
+      throw new IOException(e);
     }
   }
 
@@ -195,15 +199,8 @@ public class DataSource {
 
   }
 
-  private static class Chunker implements Iterator<Stream<String>> {
-
-    private final int chunkSize;
-    private final Iterator<String> source;
-
-    public Chunker(Iterator<String> source, int chunkSize) {
-      this.source = source;
-      this.chunkSize = chunkSize;
-    }
+  private record Chunker(Iterator<String> source, int chunkSize)
+      implements Iterator<Stream<String>> {
 
     @Override
     public boolean hasNext() {

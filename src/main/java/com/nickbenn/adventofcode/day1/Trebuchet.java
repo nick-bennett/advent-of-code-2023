@@ -4,9 +4,7 @@ import com.nickbenn.adventofcode.util.DataSource;
 import com.nickbenn.adventofcode.util.Defaults;
 import java.io.IOException;
 import java.util.Map;
-import java.util.regex.MatchResult;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Trebuchet {

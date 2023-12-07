@@ -102,7 +102,7 @@ public class CubeConundrum {
           .values()
           .stream()
           .mapToLong(Integer::longValue)
-          .reduce(1L, (a, b) -> (long) a * b);
+          .reduce(1L, (a, b) -> a * b);
     }
 
     public int getId() {

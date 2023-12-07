@@ -21,12 +21,10 @@ import java.util.stream.StreamSupport;
 
 public class SeedFertilizer {
 
-  private static final Pattern BLOCK_EXTRACTOR = Pattern.compile("(?:(seeds)|[^:]*?):\\s+(.*)$",
-      Pattern.DOTALL);
+  private static final Pattern BLOCK_EXTRACTOR =
+      Pattern.compile("(?:(seeds)|[^:]*?):\\s+(.*)$", Pattern.DOTALL);
   private static final Pattern LINE_SPLITTER = Pattern.compile("\\n");
   private static final Pattern SEED_SPLITTER = Pattern.compile("\\s+");
-  private static final Pattern SEED_PAIR_EXTRACTOR = Pattern.compile("(\\d+)\\s+(\\d+)");
-  private static final int PATTERN_OFFSET = 2;
   private static final long MIN_START = 0;
   private static final long MIN_END = Long.MAX_VALUE;
 

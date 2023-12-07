@@ -1,6 +1,5 @@
 package com.nickbenn.adventofcode.day6;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
