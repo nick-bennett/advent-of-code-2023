@@ -66,22 +66,14 @@ public class CamelCard {
   private static class Hand implements Comparable<Hand> {
 
     private static final char JACK = 'J';
-    private static final Map<Character, Integer> CARD_VALUES = Map.ofEntries(
-        Map.entry('2', 0),
-        Map.entry('3', 1),
-        Map.entry('4', 2),
-        Map.entry('5', 3),
-        Map.entry('6', 4),
-        Map.entry('7', 5),
-        Map.entry('8', 6),
-        Map.entry('9', 7),
-        Map.entry('T', 8),
-        Map.entry('J', 9),
-        Map.entry('Q', 10),
-        Map.entry('K', 11),
-        Map.entry('A', 12)
+    private static final Map<Character, Integer> FACE_CARD_VALUES = Map.ofEntries(
+        Map.entry('T', 10),
+        Map.entry('J', 11),
+        Map.entry('Q', 12),
+        Map.entry('K', 13),
+        Map.entry('A', 14)
     );
-    
+
     private final String cards;
     private final IntUnaryOperator cardEvaluator;
     private final List<Integer> counts;
@@ -93,8 +85,9 @@ public class CamelCard {
       counts = compileGroupCounts(frequencies, jackIsWild);
     }
 
+    @SuppressWarnings("NullableProblems")
     @Override
-    public int compareTo(@SuppressWarnings("NullableProblems") Hand other) {
+    public int compareTo(Hand other) {
       int comparison = compareGroups(other);
       if (comparison == 0) {
         comparison = compareCards(other);
@@ -123,11 +116,6 @@ public class CamelCard {
       return comparison;
     }
 
-    @Override
-    public String toString() {
-      return String.format("%1$s[%2$s : %3$s]", getClass().getSimpleName(), cards, counts);
-    }
-
     private static Map<Integer, Long> computeFrequencies(String labels) {
       return labels
           .chars()
@@ -154,13 +142,15 @@ public class CamelCard {
       }
       return counts;
     }
-    
+
     private int cardValue(char card, boolean jackIsWild) {
       return (!jackIsWild || card != JACK)
-          ? CARD_VALUES.get(card)
-          : Integer.MIN_VALUE;
+          ? (Character.isDigit(card)
+              ? Character.getNumericValue(card)
+              : FACE_CARD_VALUES.get(card))
+          : 0;
     }
-    
+
   }
 
 }
