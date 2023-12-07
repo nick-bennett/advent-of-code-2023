@@ -1,8 +1,7 @@
 package com.nickbenn.adventofcode.day3;
 
 import com.nickbenn.adventofcode.util.DataSource;
-import com.nickbenn.adventofcode.util.Defaults;
-import com.nickbenn.adventofcode.util.Location;
+import com.nickbenn.adventofcode.util.MatrixLocation;
 import java.io.IOException;
 import java.util.Map.Entry;
 import java.util.NavigableMap;
@@ -18,12 +17,12 @@ public class GearRatio {
 
   private static final Pattern EXTRACTOR = Pattern.compile("(\\*)|([^\\d.*])|(\\d+)");
 
-  private final NavigableMap<Location, String> numbers;
-  private final NavigableSet<Location> gears;
-  private final NavigableSet<Location> symbols;
+  private final NavigableMap<MatrixLocation, String> numbers;
+  private final NavigableSet<MatrixLocation> gears;
+  private final NavigableSet<MatrixLocation> symbols;
 
   public GearRatio() throws IOException {
-    this(Defaults.INPUT_FILE);
+    this(DataSource.DEFAULT_INPUT_FILE);
   }
 
   public GearRatio(String inputFile) throws IOException {
@@ -46,11 +45,11 @@ public class GearRatio {
         .entrySet()
         .stream()
         .filter((entry) -> {
-          Location location = entry.getKey();
+          MatrixLocation location = entry.getKey();
           int startColumn = location.column() - 1;
           int endColumn = location.column() + entry.getValue().length() + 1;
-          Location start = new Location(location.row() - 1, startColumn);
-          Location end = new Location(location.row() + 1, endColumn);
+          MatrixLocation start = new MatrixLocation(location.row() - 1, startColumn);
+          MatrixLocation end = new MatrixLocation(location.row() + 1, endColumn);
           return symbols
               .subSet(start,end)
               .stream()
@@ -66,8 +65,8 @@ public class GearRatio {
         .stream()
         .map((location) -> {
           int column = location.column();
-          Location start = new Location(location.row() - 1, 0);
-          Location end = new Location(location.row() + 1, column + 1);
+          MatrixLocation start = new MatrixLocation(location.row() - 1, 0);
+          MatrixLocation end = new MatrixLocation(location.row() + 1, column + 1);
           return numbers
               .subMap(start, true, end, true)
               .entrySet()
@@ -94,7 +93,7 @@ public class GearRatio {
       matcher
           .results()
           .forEach((result) -> {
-            Location location = new Location(row, result.start());
+            MatrixLocation location = new MatrixLocation(row, result.start());
             String numberWord = result.group(3);
             if (numberWord != null) {
               numbers.put(location, numberWord);

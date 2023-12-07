@@ -1,7 +1,6 @@
 package com.nickbenn.adventofcode.day1;
 
 import com.nickbenn.adventofcode.util.DataSource;
-import com.nickbenn.adventofcode.util.Defaults;
 import java.io.IOException;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -28,7 +27,7 @@ public class Trebuchet {
   private final DataSource dataSource;
 
   public Trebuchet() throws IOException {
-    this(Defaults.INPUT_FILE);
+    this(DataSource.DEFAULT_INPUT_FILE);
   }
 
   public Trebuchet(String inputFile) throws IOException {

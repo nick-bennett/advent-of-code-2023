@@ -1,7 +1,6 @@
 package com.nickbenn.adventofcode.day2;
 
 import com.nickbenn.adventofcode.util.DataSource;
-import com.nickbenn.adventofcode.util.Defaults;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -23,7 +22,7 @@ public class CubeConundrum {
   private final DataSource dataSource;
 
   public CubeConundrum() throws IOException {
-    this(Defaults.INPUT_FILE);
+    this(DataSource.DEFAULT_INPUT_FILE);
   }
 
   public CubeConundrum(String inputFile) throws IOException {

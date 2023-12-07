@@ -1,7 +1,6 @@
 package com.nickbenn.adventofcode.day4;
 
 import com.nickbenn.adventofcode.util.DataSource;
-import com.nickbenn.adventofcode.util.Defaults;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
@@ -17,7 +16,7 @@ public class ScratchCard {
   private final List<DailyNumbers> numbers;
 
   public ScratchCard() throws IOException {
-    this(Defaults.INPUT_FILE);
+    this(DataSource.DEFAULT_INPUT_FILE);
   }
 
   public ScratchCard(String inputFile) throws IOException {

@@ -28,6 +28,6 @@ temperature-to-humidity map:
 0 69 1
 1 0 69
 
-humidity-to-location map:
+humidity-to-matrixLocation map:
 60 56 37
 56 93 4

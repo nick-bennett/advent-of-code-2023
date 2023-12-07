@@ -5,9 +5,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.Spliterator;
 import java.util.Spliterators;
@@ -20,8 +17,11 @@ import java.util.stream.StreamSupport;
 @SuppressWarnings("unused")
 public class DataSource {
 
+  public static final String DEFAULT_INPUT_FILE = "input.txt";
+  public static final boolean DEFAULT_TRIMMED = true;
+  public static final boolean DEFAULT_STRIPPED = true;
   private static final Pattern PARAGRAPH_SPLITTER = Pattern.compile("\\r?\\n\\s*?\\r?\\n");
-  public static final String CANT_READ_FILE_FORMAT =
+  private static final String CANT_READ_FILE_FORMAT =
       "Unable to find file \"%1$s\" (relative to %2$s), or file cannot be opened for reading";
 
   private final String inputFile;
@@ -112,7 +112,7 @@ public class DataSource {
     Iterator<String> iterator = lines().iterator();
     return StreamSupport.stream(
         Spliterators.spliteratorUnknownSize(
-            new Chunker(iterator, chunkSize),
+            new Chunker<>(iterator, chunkSize),
             Spliterator.ORDERED | Spliterator.NONNULL | Spliterator.IMMUTABLE
         ),
         false
@@ -151,10 +151,10 @@ public class DataSource {
 
   public static class Builder {
 
-    private String inputFile = Defaults.INPUT_FILE;
+    private String inputFile = DEFAULT_INPUT_FILE;
     private Class<?> context;
-    private boolean trimmed = Defaults.TRIMMED;
-    private boolean stripped = Defaults.STRIPPED;
+    private boolean trimmed = DEFAULT_TRIMMED;
+    private boolean stripped = DEFAULT_STRIPPED;
 
     public Builder() {
       this(null);
@@ -195,28 +195,6 @@ public class DataSource {
 
     public DataSource build() throws IOException {
       return new DataSource(this);
-    }
-
-  }
-
-  private record Chunker(Iterator<String> source, int chunkSize)
-      implements Iterator<Stream<String>> {
-
-    @Override
-    public boolean hasNext() {
-      return source.hasNext();
-    }
-
-    @Override
-    public Stream<String> next() {
-      if (!hasNext()) {
-        throw new NoSuchElementException();
-      }
-      List<String> pending = new LinkedList<>();
-      for (int i = 0; i < chunkSize && source.hasNext(); i++) {
-        pending.add(source.next());
-      }
-      return pending.stream();
     }
 
   }

@@ -1,9 +1,9 @@
 package com.nickbenn.adventofcode.day5;
 
+import com.nickbenn.adventofcode.util.Chunker;
 import com.nickbenn.adventofcode.util.DataSource;
-import com.nickbenn.adventofcode.util.Defaults;
+import com.nickbenn.adventofcode.util.IntRange;
 import java.io.IOException;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -11,6 +11,7 @@ import java.util.Map.Entry;
 import java.util.NavigableMap;
 import java.util.Objects;
 import java.util.Spliterator;
+import java.util.Spliterators;
 import java.util.TreeMap;
 import java.util.function.Predicate;
 import java.util.regex.Matcher;
@@ -29,11 +30,11 @@ public class SeedFertilizer {
   private static final long MIN_END = Long.MAX_VALUE;
 
   private final List<Long> seeds = new LinkedList<>();
-  private final List<Range> seedRanges = new LinkedList<>();
+  private final List<IntRange> seedRanges = new LinkedList<>();
   private final NavigableMap<Long, Mapping> mergedMap;
 
   public SeedFertilizer() throws IOException {
-    this(Defaults.INPUT_FILE);
+    this(DataSource.DEFAULT_INPUT_FILE);
   }
 
   public SeedFertilizer(String inputFile) throws IOException {
@@ -101,26 +102,11 @@ public class SeedFertilizer {
         .collect(Collectors.toList());
   }
 
-  private List<Range> getRanges(List<Long> seeds) {
-    Iterable<Range> pairIterator = () -> new Iterator<>() {
-
-      private final Iterator<Long> seedIterator = seeds.iterator();
-      private Long first;
-
-      @Override
-      public boolean hasNext() {
-        return seedIterator.hasNext()
-            && (first != null || (first = seedIterator.next()) != null && seedIterator.hasNext());
-      }
-
-      @Override
-      public Range next() {
-        Range pair = new Range(first, seedIterator.next());
-        first = null;
-        return pair;
-      }
-    };
-    return StreamSupport.stream(pairIterator::spliterator, Spliterator.ORDERED, false)
+  private List<IntRange> getRanges(List<Long> seeds) {
+    return StreamSupport.stream(Spliterators.spliteratorUnknownSize(
+        new Chunker<>(seeds.iterator(), 2), Spliterator.ORDERED), false)
+        .map((Stream<Long> stream) -> stream.mapToLong(Long::longValue).toArray())
+        .map((pair) -> new IntRange(pair[0], pair[1]))
         .collect(Collectors.toList());
   }
 
@@ -212,9 +198,6 @@ public class SeedFertilizer {
           Long.parseLong(matcher.group(3)));
     }
 
-  }
-
-  private record Range(long start, long length) {
   }
 
 }

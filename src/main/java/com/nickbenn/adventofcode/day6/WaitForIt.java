@@ -36,8 +36,8 @@ public class WaitForIt {
     long discriminantSquared = time * time - 4 * distanceRecord;
     if (discriminantSquared >= 0) {
       double discriminant = Math.sqrt(discriminantSquared);
-      long lowerRoot = (long) Math.floor((time - discriminant) / 2d) + 1;
-      long upperRoot = (long) Math.ceil((time + discriminant) / 2d) - 1;
+      long lowerRoot = (long) Math.floor((time - discriminant) / 2.0) + 1;
+      long upperRoot = (long) Math.ceil((time + discriminant) / 2.0) - 1;
       count = upperRoot - lowerRoot + 1;
     } else {
       count = 0;
