@@ -1,17 +1,13 @@
 package com.nickbenn.adventofcode.util;
 
-import java.io.FileNotFoundException;
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Objects;
 import java.util.Scanner;
 import java.util.Spliterator;
 import java.util.Spliterators;
@@ -23,38 +19,57 @@ import java.util.stream.StreamSupport;
 
 public class DataSource {
 
-  private static final String BAD_INPUT_FILE_FORMAT = "File not found, or is inaccessible: %s";
   private static final Pattern PARAGRAPH_SPLITTER = Pattern.compile("\\r?\\n\\s*?\\r?\\n");
+  public static final String CANT_READ_FILE_FORMAT =
+      "Unable to find file \"%1$s\" (relative to %2$s), or file cannot be opened for reading";
 
+  private final String inputFile;
   private final boolean trimmed;
   private final boolean stripped;
-  private final Path path;
+  private final Class<?> context;
 
-  private DataSource(Builder builder) throws FileNotFoundException {
-    try {
-      trimmed = builder.trimmed;
-      stripped = builder.stripped;
-      URL url = (builder.context != null)
-          ? builder.context.getResource(builder.inputFile)
-          : getClass().getResource(builder.inputFile);
-      path = Paths.get(Objects.requireNonNull(url).toURI());
-    } catch (NullPointerException e) {
-      throw new FileNotFoundException(String.format(BAD_INPUT_FILE_FORMAT, builder.inputFile));
-    } catch (URISyntaxException e) { // Should never happen with Class.getResource(String).toURI().
-      throw new RuntimeException(e);
+  private DataSource(Builder builder) throws IOException {
+    inputFile = builder.inputFile;
+    trimmed = builder.trimmed;
+    stripped = builder.stripped;
+    context = builder.context;
+    try (InputStream input = getInputStream()) {
+
     }
   }
 
   public static Stream<String> simpleLines(String inputFile, Class<?> context) throws IOException {
-    return new DataSource.Builder()
-        .setInputFile(inputFile)
-        .setContext(context)
+    Builder builder = new Builder(context);
+    if (inputFile != null) {
+      builder.setInputFile(inputFile);
+    }
+    return builder
         .build()
         .lines();
   }
 
+  public static Stream<String> simpleLines(String inputFile, Object context) throws IOException {
+    return simpleLines(inputFile, context.getClass());
+  }
+
+  public static Stream<String> simpleLines(String inputFile) throws IOException {
+    return simpleLines(inputFile, null);
+  }
+
+  public static Stream<String> simpleLines(Class<?> context) throws IOException {
+    return simpleLines(null, context);
+  }
+
+  public static Stream<String> simpleLines(Object context) throws IOException {
+    return simpleLines(null, context.getClass());
+  }
+
+  public static Stream<String> simpleLines() throws IOException {
+    return simpleLines(null, null);
+  }
+
   public Stream<String> lines() throws IOException {
-    Stream<String> lines = Files.lines(path);
+    Stream<String> lines = new BufferedReader(new InputStreamReader(getInputStream())).lines();
     if (trimmed) {
       lines = lines.map(String::trim);
     }
@@ -65,7 +80,7 @@ public class DataSource {
   }
 
   public Stream<String> blocks(Pattern splitter) throws IOException {
-    Scanner scanner = new Scanner(path);
+    Scanner scanner = new Scanner(getInputStream());
     scanner.useDelimiter(splitter);
     Stream<String> blocks = scanner.tokens();
     if (trimmed) {
@@ -119,6 +134,17 @@ public class DataSource {
         );
   }
 
+  private InputStream getInputStream() throws IOException {
+    InputStream input = (context != null)
+        ? context.getResourceAsStream(inputFile)
+        : getClass().getClassLoader().getResourceAsStream(inputFile);
+    if (input == null) {
+      throw new IOException(String.format(CANT_READ_FILE_FORMAT, inputFile,
+          (context != null) ? context.getPackageName() : "classpath"));
+    }
+    return input;
+  }
+
   public static class Builder {
 
     private String inputFile = Defaults.INPUT_FILE;
@@ -127,6 +153,15 @@ public class DataSource {
     private boolean stripped = Defaults.STRIPPED;
 
     public Builder() {
+      this(null);
+    }
+
+    public Builder(Class<?> context) {
+      this.context = context;
+    }
+
+    public Builder(Object context) {
+      this.context = context.getClass();
     }
 
     public Builder setInputFile(String inputFile) {
@@ -136,6 +171,11 @@ public class DataSource {
 
     public Builder setContext(Class<?> context) {
       this.context = context;
+      return this;
+    }
+
+    public Builder setContext(Object context) {
+      this.context = context.getClass();
       return this;
     }
 
@@ -149,7 +189,7 @@ public class DataSource {
       return this;
     }
 
-    public DataSource build() throws FileNotFoundException {
+    public DataSource build() throws IOException {
       return new DataSource(this);
     }
 

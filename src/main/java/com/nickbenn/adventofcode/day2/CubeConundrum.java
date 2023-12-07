@@ -20,14 +20,16 @@ public class CubeConundrum {
       "blue", 14
   );
 
-  private final String inputFile;
+  private final DataSource dataSource;
 
-  public CubeConundrum() {
+  public CubeConundrum() throws IOException {
     this(Defaults.INPUT_FILE);
   }
 
-  public CubeConundrum(String inputFile) {
-    this.inputFile = inputFile;
+  public CubeConundrum(String inputFile) throws IOException {
+    dataSource = new DataSource.Builder(this)
+        .setInputFile(inputFile)
+        .build();
   }
 
   public static void main(String[] args) throws IOException {
@@ -36,7 +38,7 @@ public class CubeConundrum {
   }
 
   public int sumFeasibleGames(Map<String, Integer> ceilings) throws IOException {
-    try (Stream<String> lines = getLines()) {
+    try (Stream<String> lines = dataSource.lines()) {
       return lines
           .map(Game::parse)
           .filter((game) -> game.isFeasible(ceilings))
@@ -46,20 +48,12 @@ public class CubeConundrum {
   }
 
   public long sumPower() throws IOException {
-    try (Stream<String> lines = getLines()) {
+    try (Stream<String> lines = dataSource.lines()) {
       return lines
           .map(Game::parse)
           .mapToLong(Game::getPower)
           .sum();
     }
-  }
-
-  private Stream<String> getLines() throws IOException {
-    return new DataSource.Builder()
-        .setInputFile(inputFile)
-        .setContext(getClass())
-        .build()
-        .lines();
   }
 
   private static class Game {

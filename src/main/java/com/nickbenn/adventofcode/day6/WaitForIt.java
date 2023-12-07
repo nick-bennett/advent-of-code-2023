@@ -7,6 +7,10 @@ import java.util.stream.Collectors;
 
 public class WaitForIt {
 
+  private static final long[][] separateRaces =
+      new long[][]{{46, 358}, {68, 1054}, {98, 1807}, {66, 1080}};
+  private static final long[][] joinedRaces = new long[][]{{46689866, 358105418071080L}};
+
   private final List<long[]> parameterPairs;
 
   public WaitForIt(long[][] parameterPairs) {
@@ -15,9 +19,9 @@ public class WaitForIt {
 
   public static void main(String[] args) {
     WaitForIt waitForIt;
-    waitForIt = new WaitForIt(new long[][]{{46, 358}, {68, 1054}, {98, 1807}, {66, 1080}});
+    waitForIt = new WaitForIt(separateRaces);
     System.out.println(waitForIt.countWinningCombinations());
-    waitForIt = new WaitForIt(new long[][]{{46689866, 358105418071080L}});
+    waitForIt = new WaitForIt(joinedRaces);
     System.out.println(waitForIt.countWinningCombinations());
   }
 

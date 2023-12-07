@@ -27,11 +27,7 @@ public class GearRatio {
   }
 
   public GearRatio(String inputFile) throws IOException {
-    try (Stream<String> lines = new DataSource.Builder()
-        .setInputFile(inputFile)
-        .setContext(getClass())
-        .build()
-        .lines()) {
+    try (Stream<String> lines = DataSource.simpleLines(inputFile, this)) {
       numbers = new TreeMap<>();
       gears = new TreeSet<>();
       symbols = new TreeSet<>();

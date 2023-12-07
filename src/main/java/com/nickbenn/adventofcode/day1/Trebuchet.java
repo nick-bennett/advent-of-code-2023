@@ -27,14 +27,16 @@ public class Trebuchet {
       "nine", 9
   );
 
-  private final String inputFile;
+  private final DataSource dataSource;
 
-  public Trebuchet() {
+  public Trebuchet() throws IOException {
     this(Defaults.INPUT_FILE);
   }
 
-  public Trebuchet(String inputFile) {
-    this.inputFile = inputFile;
+  public Trebuchet(String inputFile) throws IOException {
+    dataSource = new DataSource.Builder(this)
+        .setInputFile(inputFile)
+        .build();
   }
 
   public static void main(String[] args) throws IOException {
@@ -43,7 +45,7 @@ public class Trebuchet {
   }
 
   public int sumDigits() throws IOException {
-    try (Stream<String> lines = getLines()) {
+    try (Stream<String> lines = dataSource.lines()) {
       return lines
           .map((line) -> line.replaceAll(NON_DIGITS_PATTERN, ""))
           .map((line) -> line.charAt(0) + line.substring(line.length() - 1))
@@ -53,7 +55,7 @@ public class Trebuchet {
   }
 
   public int sumDigitWords() throws IOException {
-    try (Stream<String> lines = getLines()) {
+    try (Stream<String> lines = dataSource.lines()) {
       return lines
           .map(DIGITS_AND_WORDS_PATTERN::matcher)
           .mapToInt((matcher) -> {
@@ -76,14 +78,6 @@ public class Trebuchet {
           })
           .sum();
     }
-  }
-
-  private Stream<String> getLines() throws IOException {
-    return new DataSource.Builder()
-        .setInputFile(inputFile)
-        .setContext(getClass())
-        .build()
-        .lines();
   }
 
 }

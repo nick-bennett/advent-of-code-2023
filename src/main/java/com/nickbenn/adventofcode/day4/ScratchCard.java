@@ -25,11 +25,7 @@ public class ScratchCard {
   }
 
   public ScratchCard(String inputFile) throws IOException {
-    try (Stream<String> lines = new DataSource.Builder()
-        .setInputFile(inputFile)
-        .setContext(getClass())
-        .build()
-        .lines()) {
+    try (Stream<String> lines = DataSource.simpleLines(inputFile, this)) {
       numbers = lines
           .map(DailyNumbers::parse)
           .collect(Collectors.toList());
