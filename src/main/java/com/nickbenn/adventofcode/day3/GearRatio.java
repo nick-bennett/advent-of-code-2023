@@ -18,11 +18,13 @@ package com.nickbenn.adventofcode.day3;
 import com.nickbenn.adventofcode.util.DataSource;
 import com.nickbenn.adventofcode.util.MatrixLocation;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map.Entry;
 import java.util.NavigableMap;
 import java.util.NavigableSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import java.util.regex.MatchResult;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -59,17 +61,7 @@ public class GearRatio {
     return numbers
         .entrySet()
         .stream()
-        .filter((entry) -> {
-          MatrixLocation location = entry.getKey();
-          int startColumn = location.column() - 1;
-          int endColumn = location.column() + entry.getValue().length() + 1;
-          MatrixLocation start = new MatrixLocation(location.row() - 1, startColumn);
-          MatrixLocation end = new MatrixLocation(location.row() + 1, endColumn);
-          return symbols
-              .subSet(start,end)
-              .stream()
-              .anyMatch((loc) -> loc.column() >= startColumn && loc.column() < endColumn);
-        })
+        .filter(this::isSymbolAdjacent)
         .map(Entry::getValue)
         .mapToInt(Integer::parseInt)
         .sum();
@@ -78,19 +70,7 @@ public class GearRatio {
   public int sumGearRatios() {
     return gears
         .stream()
-        .map((location) -> {
-          int column = location.column();
-          MatrixLocation start = new MatrixLocation(location.row() - 1, 0);
-          MatrixLocation end = new MatrixLocation(location.row() + 1, column + 1);
-          return numbers
-              .subMap(start, true, end, true)
-              .entrySet()
-              .stream()
-              .filter((entry) -> entry.getKey().column() <= column + 1
-                  && entry.getKey().column() + entry.getValue().length() >= column)
-              .map(Entry::getValue)
-              .collect(Collectors.toList());
-        })
+        .map(this::isNumberAdjacent)
         .filter((nums) -> nums.size() == 2)
         .mapToInt((nums) -> nums
             .stream()
@@ -107,19 +87,47 @@ public class GearRatio {
       Matcher matcher = EXTRACTOR.matcher(line);
       matcher
           .results()
-          .forEach((result) -> {
-            MatrixLocation location = new MatrixLocation(row, result.start());
-            String numberWord = result.group(3);
-            if (numberWord != null) {
-              numbers.put(location, numberWord);
-            } else {
-              symbols.add(location);
-              if (result.group(1) != null) {
-                gears.add(location);
-              }
-            }
-          });
+          .forEach((result) -> processMatch(result, row));
     });
+  }
+
+  private void processMatch(MatchResult result, int row) {
+    MatrixLocation location = new MatrixLocation(row, result.start());
+    String numberWord = result.group(3);
+    if (numberWord != null) {
+      numbers.put(location, numberWord);
+    } else {
+      symbols.add(location);
+      if (result.group(1) != null) {
+        gears.add(location);
+      }
+    }
+  }
+
+  private boolean isSymbolAdjacent(Entry<MatrixLocation, String> entry) {
+    MatrixLocation location = entry.getKey();
+    int startColumn = location.column() - 1;
+    int endColumn = location.column() + entry.getValue().length() + 1;
+    MatrixLocation start = new MatrixLocation(location.row() - 1, startColumn);
+    MatrixLocation end = new MatrixLocation(location.row() + 1, endColumn);
+    return symbols
+        .subSet(start, end)
+        .stream()
+        .anyMatch((loc) -> loc.column() >= startColumn && loc.column() < endColumn);
+  }
+
+  private List<String> isNumberAdjacent(MatrixLocation location) {
+    int column = location.column();
+    MatrixLocation start = new MatrixLocation(location.row() - 1, 0);
+    MatrixLocation end = new MatrixLocation(location.row() + 1, column + 1);
+    return numbers
+        .subMap(start, true, end, true)
+        .entrySet()
+        .stream()
+        .filter((entry) -> entry.getKey().column() <= column + 1
+            && entry.getKey().column() + entry.getValue().length() >= column)
+        .map(Entry::getValue)
+        .collect(Collectors.toList());
   }
 
 }

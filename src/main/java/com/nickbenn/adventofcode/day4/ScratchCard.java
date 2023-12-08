@@ -51,10 +51,8 @@ public class ScratchCard {
   public int getTotalValue() {
     return numbers
         .stream()
-        .mapToInt((card) -> {
-          int matches = card.getMatches();
-          return (matches > 0) ? (1 << (matches - 1)): 0;
-        })
+        .mapToInt(DailyNumbers::getMatches)
+        .map((matches) -> (matches > 0) ? (1 << (matches - 1)): 0)
         .sum();
   }
 

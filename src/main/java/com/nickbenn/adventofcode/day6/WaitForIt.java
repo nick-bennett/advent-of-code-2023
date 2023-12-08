@@ -32,11 +32,8 @@ public class WaitForIt {
   }
 
   public static void main(String[] args) {
-    WaitForIt waitForIt;
-    waitForIt = new WaitForIt(separateRaces);
-    System.out.println(waitForIt.countWinningCombinations());
-    waitForIt = new WaitForIt(joinedRaces);
-    System.out.println(waitForIt.countWinningCombinations());
+    System.out.println(new WaitForIt(separateRaces).countWinningCombinations());
+    System.out.println(new WaitForIt(joinedRaces).countWinningCombinations());
   }
 
   public long countWinningCombinations() {

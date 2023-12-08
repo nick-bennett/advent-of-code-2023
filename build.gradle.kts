@@ -28,6 +28,12 @@ dependencies {
     testRuntimeOnly(libs.junit.engine)
 }
 
+tasks.javadoc {
+    with(options as StandardJavadocDocletOptions) {
+        links("https://docs.oracle.com/en/java/javase/${libs.versions.java.get()}/docs/api/")
+    }
+}
+
 tasks.test {
     useJUnitPlatform()
 }

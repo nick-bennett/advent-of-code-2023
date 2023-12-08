@@ -91,7 +91,7 @@ public class SeedFertilizer {
           return mapping.destinationStart() + seed - mapping.sourceStart();
         })
         .min()
-        .orElse(Long.MAX_VALUE);
+        .orElse(MIN_END);
   }
 
   public long getLowestInterpolatedLocation() {
@@ -105,7 +105,7 @@ public class SeedFertilizer {
         })
         .mapToLong(Mapping::destinationStart)
         .min()
-        .orElse(Long.MAX_VALUE);
+        .orElse(MIN_END);
   }
 
   private List<Long> getSeeds(String data) {
