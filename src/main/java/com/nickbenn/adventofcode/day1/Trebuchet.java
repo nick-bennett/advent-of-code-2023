@@ -25,8 +25,10 @@ import java.util.stream.Stream;
 public class Trebuchet {
 
   private static final String NON_DIGITS_PATTERN = "\\D";
-  private static final Pattern DIGITS_AND_WORDS_PATTERN =
-      Pattern.compile("(\\d)|zero|one|two|three|four|five|six|seven|eight|nine");
+  private static final Pattern FIRST_DIGIT_OR_WORD_EXTRACTOR =
+      Pattern.compile("^.*?((\\d)|zero|one|two|three|four|five|six|seven|eight|nine).*$");
+  private static final Pattern LAST_DIGIT_OR_WORD_EXTRACTOR =
+      Pattern.compile("^.*((\\d)|zero|one|two|three|four|five|six|seven|eight|nine).*$");
   private static final Map<String, Integer> DIGIT_WORDS = Map.of(
       "zero", 0,
       "one", 1,
@@ -70,29 +72,25 @@ public class Trebuchet {
   public int sumDigitWords() throws IOException {
     try (Stream<String> lines = dataSource.lines()) {
       return lines
-          .map(DIGITS_AND_WORDS_PATTERN::matcher)
-          .mapToInt(Trebuchet::getCalibrationValue)
+          .mapToInt(this::getCalibrationValue)
           .sum();
     }
   }
 
-  private static int getCalibrationValue(Matcher matcher) {
-    int sum = 0;
-    int lastDigit = -1;
-    int startPosition = 0;
-    while (matcher.find(startPosition)) {
-      String match = matcher.group();
-      boolean trueDigit = (matcher.group(1) != null);
-      int digit = trueDigit
-          ? Character.getNumericValue(match.charAt(0))
-          : DIGIT_WORDS.get(match);
-      if (lastDigit < 0) {
-        sum += 10 * digit;
-      }
-      lastDigit = digit;
-      startPosition++;
+  private int getCalibrationValue(String line) {
+    Matcher firstMatcher = FIRST_DIGIT_OR_WORD_EXTRACTOR.matcher(line);
+    Matcher lastMatcher = LAST_DIGIT_OR_WORD_EXTRACTOR.matcher(line);
+    if (!firstMatcher.matches() || !lastMatcher.matches()) {
+      throw new IllegalArgumentException();
     }
-    return sum + lastDigit;
+    return 10 * value(firstMatcher) + value(lastMatcher);
+  }
+
+  private int value(Matcher matcher) {
+    String digitCapture = matcher.group(2);
+    return (digitCapture != null)
+        ? Character.getNumericValue(digitCapture.charAt(0))
+        : DIGIT_WORDS.get(matcher.group(1));
   }
 
 }
