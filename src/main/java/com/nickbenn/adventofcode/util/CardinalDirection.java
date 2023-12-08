@@ -13,26 +13,29 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package com.nickbenn.adventofcode.day8;
+package com.nickbenn.adventofcode.util;
 
-import com.nickbenn.adventofcode.util.DataSource;
-import java.io.IOException;
-import java.util.stream.Stream;
+public enum CardinalDirection {
 
-public class Day8 {
+  NORTH(-1, 0),
+  EAST(0, 1),
+  SOUTH(1, 0),
+  WEST(0, -1);
 
-  public Day8() throws IOException {
-    this(DataSource.DEFAULT_INPUT_FILE);
+  private final int rowIncrement;
+  private final int columnIncrement;
+
+  CardinalDirection(int rowIncrement, int columnIncrement) {
+    this.rowIncrement = rowIncrement;
+    this.columnIncrement = columnIncrement;
   }
 
-  public Day8(String inputFile) throws IOException {
-    try (Stream<String> lines = DataSource.simpleLines(inputFile, this)) {
-
-    }
+  public int rowIncrement() {
+    return rowIncrement;
   }
 
-  public static void main(String[] args) throws IOException {
-    System.out.println(/* TODO Create an instance and invoke part 1 method.*/ );
+  public int columnIncrement() {
+    return columnIncrement;
   }
 
 }
