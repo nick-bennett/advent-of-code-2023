@@ -80,7 +80,7 @@ public class HauntedWasteland {
         .filter((entry) -> entry.getKey().endsWith(ORIGIN_INDICATOR))
         .mapToLong((entry) ->
             countSteps(entry.getValue(), (node) -> node.getName().endsWith(DESTINATION_INDICATOR)))
-        .reduce(1, this::lcm);
+        .reduce(moves.length(), this::lcm);
   }
 
   private long countSteps(Node from, Predicate<Node> destinationCheck) {

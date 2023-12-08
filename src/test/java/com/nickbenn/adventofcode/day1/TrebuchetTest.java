@@ -24,12 +24,12 @@ class TrebuchetTest {
 
   @Test
   void sumDigits() throws IOException {
-    assertEquals(142, new Trebuchet("countSteps-1.txt").sumDigits());
+    assertEquals(142, new Trebuchet("input1.txt").sumDigits());
   }
 
   @Test
   void sumDigitWords() throws IOException {
-    assertEquals(281, new Trebuchet("countSteps-2.txt").sumDigitWords());
+    assertEquals(281, new Trebuchet("input2.txt").sumDigitWords());
   }
 
 }
