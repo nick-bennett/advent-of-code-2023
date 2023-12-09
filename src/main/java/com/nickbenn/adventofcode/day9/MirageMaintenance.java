@@ -68,9 +68,7 @@ public class MirageMaintenance {
       }
     }
     int recursiveResult = constantDifferences ? differences[0] : extrapolate(differences, forward);
-    return forward
-        ? input[input.length - 1] + recursiveResult
-        : input[0] - recursiveResult;
+    return forward ? (input[input.length - 1] + recursiveResult) : (input[0] - recursiveResult);
   }
 
 }
