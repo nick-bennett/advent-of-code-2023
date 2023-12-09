@@ -60,15 +60,17 @@ public class MirageMaintenance {
 
   private int extrapolate(int[] input, boolean forward) {
     int[] differences = new int[input.length - 1];
-
-    boolean allZero = true;
+    boolean constantDifferences = true;
     for (int i = 0; i < input.length - 1; i++) {
-      if ((differences[i] = input[i + 1] - input[i]) != 0) {
-        allZero = false;
+      differences[i] = input[i + 1] - input[i];
+      if (i > 0 && differences[i] != differences[i - 1]) {
+        constantDifferences = false;
       }
     }
-    return input[forward ? input.length - 1 : 0]
-        + (allZero ? 0 : extrapolate(differences, forward) * (forward ? 1 : -1));
+    int recursiveResult = constantDifferences ? differences[0] : extrapolate(differences, forward);
+    return forward
+        ? input[input.length - 1] + recursiveResult
+        : input[0] - recursiveResult;
   }
 
 }
