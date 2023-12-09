@@ -84,7 +84,8 @@ public class DataSource {
   }
 
   public static Stream<String> simpleLines() throws IOException {
-    return simpleLines(null, null);
+    //noinspection RedundantCast
+    return simpleLines(null, (Class<?>) null);
   }
 
   public Stream<String> lines() throws IOException {
@@ -180,7 +181,7 @@ public class DataSource {
     }
 
     public Builder(Object context) {
-      this.context = context.getClass();
+      this(context.getClass());
     }
 
     public Builder setInputFile(String inputFile) {
