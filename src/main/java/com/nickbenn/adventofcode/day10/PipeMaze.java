@@ -24,7 +24,7 @@ import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -55,7 +55,7 @@ public class PipeMaze {
   private static final Set<CardinalDirection> SOUTH_WEST_DIRECTIONS =
       Collections.unmodifiableSet(EnumSet.of(CardinalDirection.WEST, CardinalDirection.SOUTH));
 
-  private static final Map<Character, Set<CardinalDirection>> MAZE_DIRECTIONS = Map.of(
+  private static final Map<Character, Set<CardinalDirection>> SYMBOL_DIRECTIONS = Map.of(
       START_SYMBOL, NO_DIRECTIONS,
       NORTH_EAST_SYMBOL, NORTH_EAST_DIRECTIONS,
       NORTH_SOUTH_SYMBOL, NORTH_SOUTH_DIRECTIONS,
@@ -65,14 +65,8 @@ public class PipeMaze {
       SOUTH_WEST_SYMBOL, SOUTH_WEST_DIRECTIONS,
       GROUND_SYMBOL, NO_DIRECTIONS
   );
-  private static final Map<Set<CardinalDirection>, Character> DIRECTION_CHARS = MAZE_DIRECTIONS
-      .entrySet()
-      .stream()
-      .filter((entry) -> !entry.getKey().equals(START_SYMBOL))
-      .collect(Collectors.toUnmodifiableMap(Entry::getValue, Entry::getKey));
 
   private final List<List<Set<CardinalDirection>>> maze;
-  private final MatrixLocation startLocation;
   private final int loopLength;
 
   public PipeMaze() throws IOException {
@@ -84,14 +78,13 @@ public class PipeMaze {
       char[][] maze = lines
           .map(String::toCharArray)
           .toArray(char[][]::new);
-      String ground = String.valueOf(GROUND_SYMBOL);
       List<List<Set<CardinalDirection>>> scrubbed = Arrays.stream(maze)
           .map((row) -> Stream.generate(() -> NO_DIRECTIONS)
               .limit(row.length)
               .collect(Collectors.toList())
           )
           .collect(Collectors.toList());
-      startLocation = findStart(maze);
+      MatrixLocation startLocation = findStart(maze);
       loopLength = traceLoop(maze, startLocation, scrubbed);
       this.maze = scrubbed;
     }
@@ -109,47 +102,23 @@ public class PipeMaze {
   public int areaEnclosedInLoop() {
     return maze
         .stream()
-        .mapToInt((row) -> {
-          CrossingState state = CrossingState.OUTSIDE;
-          int count = 0;
-          for (Set<CardinalDirection> directions : row) {
-            if ((state = state.next(directions)) == CrossingState.INSIDE) {
-              count++;
-            }
-          }
-          return count;
-        })
+        .mapToInt(this::countInside)
         .sum();
   }
 
   private int traceLoop(
       char[][] dirty, MatrixLocation start, List<List<Set<CardinalDirection>>> scrubbed) {
-    Set<CardinalDirection> directions = Arrays.stream(CardinalDirection.values())
-        .filter((dir) -> {
-          int newRow = start.row() + dir.rowIncrement();
-          int newColumn = start.column() + dir.columnIncrement();
-          return newRow >= 0
-              && newRow < dirty.length
-              && newColumn >= 0
-              && newColumn < dirty[newRow].length
-              && MAZE_DIRECTIONS
-              .get(dirty[start.row() + dir.rowIncrement()][start.column() + dir.columnIncrement()])
-              .contains(dir.opposite());
-        })
-        .collect(Collectors.toSet());
-    CardinalDirection direction = directions
-        .iterator()
-        .next();
+    CardinalDirection direction = startDirection(dirty, start,
+        scrubbed);
     MatrixLocation next = start.move(direction);
     int steps = 1;
     do {
       scrubbed.get(next.row())
-          .set(next.column(), MAZE_DIRECTIONS.get(dirty[next.row()][next.column()]));
+          .set(next.column(), SYMBOL_DIRECTIONS.get(dirty[next.row()][next.column()]));
       direction = nextDirection(dirty, next, direction);
       next = next.move(direction);
       steps++;
     } while (!next.equals(start));
-    scrubbed.get(start.row()).set(start.column(), directions);
     return steps;
   }
 
@@ -167,10 +136,29 @@ public class PipeMaze {
     return result;
   }
 
+  private CardinalDirection startDirection(
+      char[][] dirty, MatrixLocation start, List<List<Set<CardinalDirection>>> scrubbed) {
+    Set<CardinalDirection> directions = Arrays.stream(CardinalDirection.values())
+        .filter((dir) -> {
+          int newRow = start.row() + dir.rowIncrement();
+          int newColumn = start.column() + dir.columnIncrement();
+          return newRow >= 0 && newRow < dirty.length
+              && newColumn >= 0 && newColumn < dirty[newRow].length
+              && SYMBOL_DIRECTIONS
+              .get(dirty[start.row() + dir.rowIncrement()][start.column() + dir.columnIncrement()])
+              .contains(dir.opposite());
+        })
+        .collect(Collectors.toSet());
+    scrubbed.get(start.row()).set(start.column(), directions);
+    return directions
+        .iterator()
+        .next();
+  }
+
   private CardinalDirection nextDirection(
       char[][] maze, MatrixLocation from, CardinalDirection arrivingFrom) {
     char plumbing = maze[from.row()][from.column()];
-    return MAZE_DIRECTIONS
+    return SYMBOL_DIRECTIONS
         .get(plumbing)
         .stream()
         .filter((dir) -> dir != arrivingFrom.opposite())
@@ -178,113 +166,67 @@ public class PipeMaze {
         .orElseThrow();
   }
 
-  private enum CrossingState {
-    INSIDE {
-      @Override
-      public CrossingState next(Set<CardinalDirection> directions) {
-        CrossingState next;
-        if (directions.equals(NORTH_EAST_DIRECTIONS)) {
-          next = WALL_INSIDE_SOUTH;
-        } else if (directions.equals(NORTH_SOUTH_DIRECTIONS)) {
-          next = WALL_INSIDE_WEST;
-        } else if (directions.equals(EAST_SOUTH_DIRECTIONS)) {
-          next = WALL_INSIDE_NORTH;
-        } else if (directions.equals(NO_DIRECTIONS)) {
-          next = this;
-        } else {
-          throw new IllegalArgumentException();
-        }
-        return next;
+  private int countInside(List<Set<CardinalDirection>> row) {
+    CrossingState state = CrossingState.OUTSIDE;
+    int count = 0;
+    for (Set<CardinalDirection> directions : row) {
+      if ((state = state.next(directions)) == CrossingState.INSIDE) {
+        count++;
       }
-    },
-    OUTSIDE {
-      @Override
-      public CrossingState next(Set<CardinalDirection> directions) {
-        CrossingState next;
-        if (directions.equals(NORTH_EAST_DIRECTIONS)) {
-          next = WALL_INSIDE_NORTH;
-        } else if (directions.equals(NORTH_SOUTH_DIRECTIONS)) {
-          next = WALL_INSIDE_EAST;
-        } else if (directions.equals(EAST_SOUTH_DIRECTIONS)) {
-          next = WALL_INSIDE_SOUTH;
-        } else if (directions.equals(NO_DIRECTIONS)) {
-          next = this;
-        } else {
-          throw new IllegalArgumentException();
-        }
-        return next;
-      }
-    },
-    WALL_INSIDE_SOUTH {
-      @Override
-      public CrossingState next(Set<CardinalDirection> directions) {
-        CrossingState next;
-        if (directions.equals(NORTH_WEST_DIRECTIONS)) {
-          next = WALL_INSIDE_EAST;
-        } else if (directions.equals(EAST_WEST_DIRECTIONS)) {
-          next = this;
-        } else if (directions.equals(SOUTH_WEST_DIRECTIONS)) {
-          next = WALL_INSIDE_WEST;
-        } else {
-          throw new IllegalArgumentException();
-        }
-        return next;
-      }
-    },
-    WALL_INSIDE_NORTH {
-      @Override
-      public CrossingState next(Set<CardinalDirection> directions) {
-        CrossingState next;
-        if (directions.equals(NORTH_WEST_DIRECTIONS)) {
-          next = WALL_INSIDE_WEST;
-        } else if (directions.equals(EAST_WEST_DIRECTIONS)) {
-          next = this;
-        } else if (directions.equals(SOUTH_WEST_DIRECTIONS)) {
-          next = WALL_INSIDE_EAST;
-        } else {
-          throw new IllegalArgumentException();
-        }
-        return next;
-      }
-    },
-    WALL_INSIDE_EAST {
-      @Override
-      public CrossingState next(Set<CardinalDirection> directions) {
-        CrossingState next;
-        if (directions.equals(NORTH_EAST_DIRECTIONS)) {
-          next = WALL_INSIDE_SOUTH;
-        } else if (directions.equals(NORTH_SOUTH_DIRECTIONS)) {
-          next = WALL_INSIDE_WEST;
-        } else if (directions.equals(EAST_SOUTH_DIRECTIONS)) {
-          next = WALL_INSIDE_NORTH;
-        } else if (directions.equals(NO_DIRECTIONS)) {
-          next = INSIDE;
-        } else {
-          throw new IllegalArgumentException();
-        }
-        return next;
-      }
-    },
-    WALL_INSIDE_WEST {
-      @Override
-      public CrossingState next(Set<CardinalDirection> directions) {
-        CrossingState next;
-        if (directions.equals(NORTH_EAST_DIRECTIONS)) {
-          next = WALL_INSIDE_NORTH;
-        } else if (directions.equals(NORTH_SOUTH_DIRECTIONS)) {
-          next = WALL_INSIDE_EAST;
-        } else if (directions.equals(EAST_SOUTH_DIRECTIONS)) {
-          next = WALL_INSIDE_SOUTH;
-        } else if (directions.equals(NO_DIRECTIONS)) {
-          next = OUTSIDE;
-        } else {
-          throw new IllegalArgumentException();
-        }
-        return next;
-      }
-    };
+    }
+    return count;
+  }
 
-    public abstract CrossingState next(Set<CardinalDirection> destination);
+  private enum CrossingState {
+    INSIDE,
+    OUTSIDE,
+    WALL_INSIDE_SOUTH,
+    WALL_INSIDE_NORTH,
+    WALL_INSIDE_EAST,
+    WALL_INSIDE_WEST;
+
+    private static final Map<CrossingState, Map<Set<CardinalDirection>, CrossingState>> TRANSITIONS =
+        Map.of(
+            INSIDE, Map.of(
+                NORTH_EAST_DIRECTIONS, WALL_INSIDE_SOUTH,
+                NORTH_SOUTH_DIRECTIONS, WALL_INSIDE_WEST,
+                EAST_SOUTH_DIRECTIONS, WALL_INSIDE_NORTH,
+                NO_DIRECTIONS, INSIDE
+            ),
+            OUTSIDE, Map.of(
+                NORTH_EAST_DIRECTIONS, WALL_INSIDE_NORTH,
+                NORTH_SOUTH_DIRECTIONS, WALL_INSIDE_EAST,
+                EAST_SOUTH_DIRECTIONS, WALL_INSIDE_SOUTH,
+                NO_DIRECTIONS, OUTSIDE
+            ),
+            WALL_INSIDE_NORTH, Map.of(
+                NORTH_WEST_DIRECTIONS, WALL_INSIDE_WEST,
+                EAST_WEST_DIRECTIONS, WALL_INSIDE_NORTH,
+                SOUTH_WEST_DIRECTIONS, WALL_INSIDE_EAST
+            ),
+            WALL_INSIDE_EAST, Map.of(
+                NORTH_EAST_DIRECTIONS, WALL_INSIDE_SOUTH,
+                NORTH_SOUTH_DIRECTIONS, WALL_INSIDE_WEST,
+                EAST_SOUTH_DIRECTIONS, WALL_INSIDE_NORTH,
+                NO_DIRECTIONS, INSIDE
+            ),
+            WALL_INSIDE_SOUTH, Map.of(
+                NORTH_WEST_DIRECTIONS, WALL_INSIDE_EAST,
+                EAST_WEST_DIRECTIONS, WALL_INSIDE_SOUTH,
+                SOUTH_WEST_DIRECTIONS, WALL_INSIDE_WEST
+            ),
+            WALL_INSIDE_WEST, Map.of(
+                NORTH_EAST_DIRECTIONS, WALL_INSIDE_NORTH,
+                NORTH_SOUTH_DIRECTIONS, WALL_INSIDE_EAST,
+                EAST_SOUTH_DIRECTIONS, WALL_INSIDE_SOUTH,
+                NO_DIRECTIONS, OUTSIDE
+            )
+        );
+
+    public CrossingState next(Set<CardinalDirection> destination) {
+      return Objects.requireNonNull(TRANSITIONS.get(this).get(destination));
+    }
 
   }
+
 }
