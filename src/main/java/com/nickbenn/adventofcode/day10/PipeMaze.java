@@ -20,7 +20,6 @@ import com.nickbenn.adventofcode.util.DataSource;
 import com.nickbenn.adventofcode.util.MatrixLocation;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
@@ -41,19 +40,19 @@ public class PipeMaze {
   private static final char SOUTH_WEST_SYMBOL = '7';
 
   private static final Set<CardinalDirection> NO_DIRECTIONS =
-      Collections.unmodifiableSet(EnumSet.noneOf(CardinalDirection.class));
+      EnumSet.noneOf(CardinalDirection.class);
   private static final Set<CardinalDirection> NORTH_EAST_DIRECTIONS =
-      Collections.unmodifiableSet(EnumSet.of(CardinalDirection.NORTH, CardinalDirection.EAST));
+      EnumSet.of(CardinalDirection.NORTH, CardinalDirection.EAST);
   private static final Set<CardinalDirection> NORTH_SOUTH_DIRECTIONS =
-      Collections.unmodifiableSet(EnumSet.of(CardinalDirection.NORTH, CardinalDirection.SOUTH));
+      EnumSet.of(CardinalDirection.NORTH, CardinalDirection.SOUTH);
   private static final Set<CardinalDirection> NORTH_WEST_DIRECTIONS =
-      Collections.unmodifiableSet(EnumSet.of(CardinalDirection.NORTH, CardinalDirection.WEST));
+      EnumSet.of(CardinalDirection.NORTH, CardinalDirection.WEST);
   private static final Set<CardinalDirection> EAST_SOUTH_DIRECTIONS =
-      Collections.unmodifiableSet(EnumSet.of(CardinalDirection.SOUTH, CardinalDirection.EAST));
+      EnumSet.of(CardinalDirection.SOUTH, CardinalDirection.EAST);
   private static final Set<CardinalDirection> EAST_WEST_DIRECTIONS =
-      Collections.unmodifiableSet(EnumSet.of(CardinalDirection.WEST, CardinalDirection.EAST));
+      EnumSet.of(CardinalDirection.WEST, CardinalDirection.EAST);
   private static final Set<CardinalDirection> SOUTH_WEST_DIRECTIONS =
-      Collections.unmodifiableSet(EnumSet.of(CardinalDirection.WEST, CardinalDirection.SOUTH));
+      EnumSet.of(CardinalDirection.WEST, CardinalDirection.SOUTH);
 
   private static final Map<Character, Set<CardinalDirection>> SYMBOL_DIRECTIONS = Map.of(
       START_SYMBOL, NO_DIRECTIONS,
@@ -178,6 +177,7 @@ public class PipeMaze {
   }
 
   private enum CrossingState {
+
     INSIDE,
     OUTSIDE,
     WALL_INSIDE_SOUTH,
