@@ -38,4 +38,10 @@ public enum CardinalDirection {
     return columnIncrement;
   }
 
+  public CardinalDirection opposite() {
+    CardinalDirection[] values = values();
+    int length = values.length;
+    return values[(ordinal() + length / 2) % length];
+  }
+
 }

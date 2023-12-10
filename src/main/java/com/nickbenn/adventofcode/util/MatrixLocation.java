@@ -28,6 +28,10 @@ public record MatrixLocation(int row, int column) implements Comparable<MatrixLo
     this(location.row, location.column);
   }
 
+  public MatrixLocation move(CardinalDirection direction) {
+    return new MatrixLocation(row + direction.rowIncrement(), column + direction.columnIncrement());
+  }
+
   @Override
   public int compareTo(@SuppressWarnings("NullableProblems") MatrixLocation other) {
     return NATURAL_ORDER.compare(this, other);
