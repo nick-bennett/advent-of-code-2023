@@ -37,4 +37,8 @@ public record MatrixLocation(int row, int column) implements Comparable<MatrixLo
     return NATURAL_ORDER.compare(this, other);
   }
 
+  public int manhattanDistance(MatrixLocation other) {
+    return Math.abs(row - other.row) + Math.abs(column - other.column);
+  }
+
 }
