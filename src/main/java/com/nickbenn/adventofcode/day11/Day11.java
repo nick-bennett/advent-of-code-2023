@@ -15,17 +15,8 @@
  */
 package com.nickbenn.adventofcode.day11;
 
-import com.nickbenn.adventofcode.util.CardinalDirection;
 import com.nickbenn.adventofcode.util.DataSource;
-import com.nickbenn.adventofcode.util.MatrixLocation;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Day11 {
