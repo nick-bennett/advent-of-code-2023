@@ -20,6 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.io.IOException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvFileSource;
 import org.junit.jupiter.params.provider.CsvSource;
 
 class MirageMaintenanceTest {
@@ -32,7 +33,7 @@ class MirageMaintenanceTest {
   }
 
   @ParameterizedTest
-  @CsvSource(value = {"forward, expected", "true, 114", "false, 2"}, useHeadersInDisplayName = true)
+  @CsvFileSource(resources = "tests.csv", useHeadersInDisplayName = true)
   void sumExtrapolations(boolean forward, long expected) {
     assertEquals(expected, maintenance.sumExtrapolations(forward));
   }

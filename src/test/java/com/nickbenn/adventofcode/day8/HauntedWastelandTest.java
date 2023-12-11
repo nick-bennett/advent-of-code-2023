@@ -20,16 +20,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.io.IOException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvFileSource;
 import org.junit.jupiter.params.provider.CsvSource;
 
 class HauntedWastelandTest {
 
   @ParameterizedTest
-  @CsvSource(value = {
-      "input file, expected steps",
-      "countSteps-1.txt, 2",
-      "countSteps-2.txt, 6"
-  }, useHeadersInDisplayName = true)
+  @CsvFileSource(resources = "countSteps-tests.csv", useHeadersInDisplayName = true)
   void countSteps(String file, long expected) throws IOException {
     HauntedWasteland wasteland = new HauntedWasteland(file);
     assertEquals(expected, wasteland.countSteps());
