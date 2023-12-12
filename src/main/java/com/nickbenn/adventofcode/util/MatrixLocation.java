@@ -29,7 +29,7 @@ public record MatrixLocation(int row, int column) implements Comparable<MatrixLo
   }
 
   public MatrixLocation move(CardinalDirection direction) {
-    return new MatrixLocation(row + direction.rowIncrement(), column + direction.columnIncrement());
+    return new MatrixLocation(row + direction.rowOffset(), column + direction.columnOffset());
   }
 
   @Override

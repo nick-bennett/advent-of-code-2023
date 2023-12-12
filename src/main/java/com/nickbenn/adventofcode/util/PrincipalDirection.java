@@ -23,17 +23,21 @@ import java.util.function.Predicate;
 import java.util.random.RandomGenerator;
 import java.util.stream.Stream;
 
-public enum CardinalDirection implements Direction {
+public enum PrincipalDirection implements Direction {
 
   NORTH(-1, 0),
+  NORTH_EAST(-1, 1),
   EAST(0, 1),
+  SOUTH_EAST(1, 1),
   SOUTH(1, 0),
-  WEST(0, -1);
+  SOUTH_WEST(1, -1),
+  WEST(0, -1),
+  NORTH_WEST(-1, -1);
 
   private final int rowOffset;
   private final int columnOffset;
 
-  CardinalDirection(int rowOffset, int columnOffset) {
+  PrincipalDirection(int rowOffset, int columnOffset) {
     this.rowOffset = rowOffset;
     this.columnOffset = columnOffset;
   }
@@ -49,26 +53,26 @@ public enum CardinalDirection implements Direction {
   }
 
   @Override
-  public CardinalDirection opposite() {
-    CardinalDirection[] values = values();
+  public PrincipalDirection opposite() {
+    PrincipalDirection[] values = values();
     int length = values.length;
     return values[(ordinal() + length / 2) % length];
   }
 
   @Override
   public Direction nextClockwise() {
-    CardinalDirection[] values = values();
+    PrincipalDirection[] values = values();
     return values[(ordinal() + 1) % values.length];
   }
 
   @Override
   public Direction nextCounterClockwise() {
-    CardinalDirection[] values = values();
+    PrincipalDirection[] values = values();
     return values[(ordinal() - 1 + values.length) % values.length];
   }
 
-  public static CardinalDirection choose(RandomGenerator rng, Predicate<CardinalDirection> filter) {
-    CardinalDirection[] values = values();
+  public static PrincipalDirection choose(RandomGenerator rng, Predicate<PrincipalDirection> filter) {
+    PrincipalDirection[] values = values();
     return values[rng.nextInt(values.length)];
   }
 

@@ -139,12 +139,12 @@ public class PipeMaze {
       char[][] dirty, MatrixLocation start, List<List<Set<CardinalDirection>>> scrubbed) {
     Set<CardinalDirection> directions = Arrays.stream(CardinalDirection.values())
         .filter((dir) -> {
-          int newRow = start.row() + dir.rowIncrement();
-          int newColumn = start.column() + dir.columnIncrement();
+          int newRow = start.row() + dir.rowOffset();
+          int newColumn = start.column() + dir.columnOffset();
           return newRow >= 0 && newRow < dirty.length
               && newColumn >= 0 && newColumn < dirty[newRow].length
               && SYMBOL_DIRECTIONS
-              .get(dirty[start.row() + dir.rowIncrement()][start.column() + dir.columnIncrement()])
+              .get(dirty[start.row() + dir.rowOffset()][start.column() + dir.columnOffset()])
               .contains(dir.opposite());
         })
         .collect(Collectors.toSet());
