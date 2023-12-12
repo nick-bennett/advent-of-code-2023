@@ -21,7 +21,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Map;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -37,8 +36,8 @@ public class HotSprings {
   private static final String UNFOLDED_CONDITIONS_DELIMITER = "?";
   private static final String UNFOLDED_GROUPS_DELIMITER = ",";
 
-  private final Map<MemoizationKey, Long> memo;
-  private final List<List<Character>> conditionRecords;
+  private final Map<MemoKey, Long> memo;
+  private final List<String> conditionRecords;
   private final List<List<Integer>> damageGroupRecords;
   private final List<List<Integer>> maxRemainingGroupRecords;
 
@@ -64,34 +63,29 @@ public class HotSprings {
 
   public long sumArrangements() {
     long sum = 0;
-    Iterator<List<Character>> conditionRecordIterator = conditionRecords.iterator();
+    Iterator<String> conditionRecordIterator = conditionRecords.iterator();
     Iterator<List<Integer>> damageGroupRecordIterator = damageGroupRecords.iterator();
     Iterator<List<Integer>> maxRemainingGroupsRecordIterator = maxRemainingGroupRecords.iterator();
     while (conditionRecordIterator.hasNext()
         && damageGroupRecordIterator.hasNext()
         && maxRemainingGroupsRecordIterator.hasNext()) {
-      List<Character> conditions = conditionRecordIterator.next();
+      String conditions = conditionRecordIterator.next();
       List<Integer> groups = damageGroupRecordIterator.next();
       List<Integer> maxRemainingGroups = maxRemainingGroupsRecordIterator.next();
-      long count = countArrangements(conditions, groups, maxRemainingGroups, 0, OPERATIONAL,
-          totalDamagePotential(conditions), totalOperationalPotential(conditions),
-          totalCombinedGroupSize(groups));
+      long count = getArrangementCount(conditions, groups, maxRemainingGroups, 0, OPERATIONAL);
       sum += count;
     }
     return sum;
   }
 
-  private void parse(String line, List<List<Character>> conditionRecords,
+  private void parse(String line, List<String> conditionRecords,
       List<List<Integer>> damageGroupRecords, List<List<Integer>> remainingMaxGroupRecords,
       int repetitions) {
     String[] splitRecord = LINE_SPLITTER.split(line);
-    List<Character> conditions = Stream.generate(() -> splitRecord[0])
+    String conditions = Stream.generate(() -> splitRecord[0])
         .limit(repetitions)
-        .collect(Collectors.joining(UNFOLDED_CONDITIONS_DELIMITER))
-        .chars()
-        .mapToObj((value) -> (char) value)
-        .toList();
-    remainingMaxGroupRecords.add(maxRemainingGroups(conditions));
+        .collect(Collectors.joining(UNFOLDED_CONDITIONS_DELIMITER));
+    remainingMaxGroupRecords.add(maxFeasibleGroups(conditions));
     conditionRecords.add(conditions);
     damageGroupRecords.add(
         GROUP_SPLITTER
@@ -105,43 +99,13 @@ public class HotSprings {
     );
   }
 
-  private long countArrangements(List<Character> conditions, List<Integer> groups,
-      List<Integer> maxRemainingGroups, int currentGroupSize, char previous,
-      int remainingDamagePotential, int remainingOperationalPotential,
-      int remainingCombinedGroupSize) {
+  private long getArrangementCount(String conditions, List<Integer> groups,
+      List<Integer> maxRemainingGroups, int currentGroupSize, char previous) {
     long count;
-    MemoizationKey key = new MemoizationKey(conditions, groups, currentGroupSize);
+    MemoKey key = new MemoKey(conditions, groups, currentGroupSize);
     Long lookupCount = memo.get(key);
     if (lookupCount == null) {
-      long remainingGroups = groups.size();
-      if (conditions.isEmpty()) {
-        count = (groups.isEmpty() ||
-            remainingGroups == 1 && currentGroupSize == groups.get(0)) ? 1 : 0;
-      } else if (maxRemainingGroups.get(0) < remainingGroups - ((currentGroupSize > 0) ? 1 : 0)
-          || remainingOperationalPotential < remainingGroups - 1
-          || remainingDamagePotential < remainingCombinedGroupSize
-          || conditions.size() < remainingCombinedGroupSize + remainingGroups - 1) {
-        count = 0;
-      } else {
-        List<Character> nextConditions = conditions.subList(1, conditions.size());
-        List<Integer> nextMaxRemainingGroups =
-            maxRemainingGroups.subList(1, maxRemainingGroups.size());
-        count = switch (conditions.get(0)) {
-          case OPERATIONAL -> countForOperational(nextConditions, groups, nextMaxRemainingGroups,
-              currentGroupSize, previous, remainingDamagePotential, remainingOperationalPotential,
-              remainingCombinedGroupSize, false);
-          case DAMAGED -> countForDamaged(nextConditions, groups, nextMaxRemainingGroups,
-              currentGroupSize, remainingDamagePotential, remainingOperationalPotential,
-              remainingCombinedGroupSize, false);
-          case UNKNOWN -> countForOperational(nextConditions, groups, nextMaxRemainingGroups,
-              currentGroupSize, previous, remainingDamagePotential, remainingOperationalPotential,
-              remainingCombinedGroupSize, true)
-              + countForDamaged(nextConditions, groups, nextMaxRemainingGroups, currentGroupSize,
-              remainingDamagePotential, remainingOperationalPotential, remainingCombinedGroupSize,
-              true);
-          default -> throw new IllegalArgumentException();
-        };
-      }
+      count = countArrangements(conditions, groups, maxRemainingGroups, currentGroupSize, previous);
       memo.put(key, count);
     } else {
       count = lookupCount;
@@ -149,83 +113,67 @@ public class HotSprings {
     return count;
   }
 
-  private List<Integer> maxRemainingGroups(List<Character> conditions) {
+  private long countArrangements(String conditions, List<Integer> groups,
+      List<Integer> maxFeasibleGroups, int currentGroupSize, char previous) {
+    long count = 0;
+    long remainingGroups = groups.size();
+    if (conditions.isEmpty()) {
+      count =
+          (groups.isEmpty() || remainingGroups == 1 && currentGroupSize == groups.get(0)) ? 1 : 0;
+    } else if (maxFeasibleGroups.get(0) >= remainingGroups - ((currentGroupSize > 0) ? 1 : 0)) {
+      String nextConditions = conditions.substring(1);
+      List<Integer> nextMaxFeasibleGroups = maxFeasibleGroups.subList(1, maxFeasibleGroups.size());
+      count = switch (conditions.charAt(0)) {
+        case OPERATIONAL -> countForOperational(
+            nextConditions, groups, nextMaxFeasibleGroups, currentGroupSize, previous);
+        case DAMAGED -> countForDamaged(
+            nextConditions, groups, nextMaxFeasibleGroups, currentGroupSize);
+        case UNKNOWN -> countForOperational(
+            nextConditions, groups, nextMaxFeasibleGroups, currentGroupSize, previous)
+            + countForDamaged(nextConditions, groups, nextMaxFeasibleGroups, currentGroupSize);
+        default -> throw new IllegalArgumentException();
+      };
+    }
+    return count;
+  }
+
+  private List<Integer> maxFeasibleGroups(String conditions) {
     List<Integer> result = new LinkedList<>();
     int count = 0;
     int consecutiveUnknown = 1;
-    for (
-        ListIterator<Character> conditionIterator = conditions.listIterator(conditions.size());
-        conditionIterator.hasPrevious(); ) {
-      char current = conditionIterator.previous();
-      switch (current) {
-        case OPERATIONAL -> {
-          consecutiveUnknown = 1;
-        }
-        case DAMAGED -> {
-          count += (consecutiveUnknown % 2);
-          consecutiveUnknown = 0;
-        }
-        case UNKNOWN -> {
-          count += (consecutiveUnknown % 2);
-          consecutiveUnknown++;
-        }
+    char[] chars = conditions.toCharArray();
+    for (int i = chars.length - 1; i >= 0; i--) {
+      char current = chars[i];
+      if (current != OPERATIONAL) {
+        count += (consecutiveUnknown % 2);
+        consecutiveUnknown = (current == UNKNOWN) ? (consecutiveUnknown + 1) : 0;
+      } else {
+        consecutiveUnknown = 1;
       }
       result.add(0, count);
     }
     return result;
   }
 
-  private int totalDamagePotential(List<Character> conditions) {
-    return (int) conditions
-        .stream()
-        .filter((condition) -> condition != OPERATIONAL)
-        .count();
-  }
-
-  private int totalOperationalPotential(List<Character> conditions) {
-    return (int) conditions
-        .stream()
-        .filter((condition) -> condition != DAMAGED)
-        .count();
-  }
-
-  private int totalCombinedGroupSize(List<Integer> groups) {
-    return groups
-        .stream()
-        .mapToInt(Integer::intValue)
-        .sum();
-  }
-
-  private long countForOperational(List<Character> conditions, List<Integer> groups,
-      List<Integer> maxRemainingGroups, int currentGroupSize, char previous,
-      int remainingDamagePotential, int remainingOperationalPotential,
-      int remainingCombinedGroupSize, boolean unknown) {
-    int adjustedDamagePotential = remainingDamagePotential - (unknown ? 1 : 0);
-    int adjustedOperationalPotential = remainingOperationalPotential - 1;
+  private long countForOperational(String conditions, List<Integer> groups,
+      List<Integer> maxRemainingGroups, int currentGroupSize, char previous) {
     return (previous != DAMAGED)
-        ? countArrangements(conditions, groups, maxRemainingGroups, 0, OPERATIONAL,
-            adjustedDamagePotential, adjustedOperationalPotential, remainingCombinedGroupSize)
+        ? getArrangementCount(conditions, groups, maxRemainingGroups, 0, OPERATIONAL)
         : (currentGroupSize != groups.get(0))
             ? 0
-            : countArrangements(conditions, groups.subList(1, groups.size()),
-                maxRemainingGroups, 0, OPERATIONAL, adjustedDamagePotential,
-                adjustedOperationalPotential, remainingCombinedGroupSize);
+            : getArrangementCount(conditions, groups.subList(1, groups.size()),
+                maxRemainingGroups, 0, OPERATIONAL);
   }
 
-  private long countForDamaged(List<Character> nextConditions, List<Integer> groups,
-      List<Integer> maxRemainingGroups, int currentGroupSize, int remainingDamagePotential,
-      int remainingOperationalPotential, int remainingCombinedGroupSize, boolean unknown) {
-    int adjustedDamagePotential = remainingDamagePotential - 1;
-    int adjustedOperationalPotential = remainingOperationalPotential - (unknown ? 1 : 0);
+  private long countForDamaged(String conditions, List<Integer> groups,
+      List<Integer> maxRemainingGroups, int currentGroupSize) {
     return (groups.isEmpty() || currentGroupSize >= groups.get(0))
         ? 0
-        : countArrangements(nextConditions, groups, maxRemainingGroups, currentGroupSize + 1,
-            DAMAGED, adjustedDamagePotential, adjustedOperationalPotential,
-            remainingCombinedGroupSize - 1);
+        : getArrangementCount(
+            conditions, groups, maxRemainingGroups, currentGroupSize + 1, DAMAGED);
   }
 
-  private record MemoizationKey(
-      List<Character> conditions, List<Integer> groups, int currentGroupSize) {
+  private record MemoKey(String conditions, List<Integer> groups, int currentGroupSize) {
   }
 
 }
