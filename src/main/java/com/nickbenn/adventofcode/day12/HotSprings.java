@@ -17,10 +17,12 @@ package com.nickbenn.adventofcode.day12;
 
 import com.nickbenn.adventofcode.util.DataSource;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Map;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -35,6 +37,7 @@ public class HotSprings {
   private static final String UNFOLDED_CONDITIONS_DELIMITER = "?";
   private static final String UNFOLDED_GROUPS_DELIMITER = ",";
 
+  private final Map<MemoizationKey, Long> memo;
   private final List<List<Character>> conditionRecords;
   private final List<List<Integer>> damageGroupRecords;
   private final List<List<Integer>> maxRemainingGroupRecords;
@@ -45,6 +48,7 @@ public class HotSprings {
 
   public HotSprings(String inputFile, int repetitions) throws IOException {
     try (Stream<String> lines = DataSource.simpleLines(inputFile, this)) {
+      memo = new HashMap<>();
       conditionRecords = new LinkedList<>();
       damageGroupRecords = new LinkedList<>();
       maxRemainingGroupRecords = new LinkedList<>();
@@ -69,11 +73,9 @@ public class HotSprings {
       List<Character> conditions = conditionRecordIterator.next();
       List<Integer> groups = damageGroupRecordIterator.next();
       List<Integer> maxRemainingGroups = maxRemainingGroupsRecordIterator.next();
-      System.out.printf("Possible arrangements for %1$s : %2$s = ", conditions, groups);
       long count = countArrangements(conditions, groups, maxRemainingGroups, 0, OPERATIONAL,
           totalDamagePotential(conditions), totalOperationalPotential(conditions),
           totalCombinedGroupSize(groups));
-      System.out.println(count);
       sum += count;
     }
     return sum;
@@ -108,34 +110,41 @@ public class HotSprings {
       int remainingDamagePotential, int remainingOperationalPotential,
       int remainingCombinedGroupSize) {
     long count;
-    long remainingGroups = groups.size();
-    if (conditions.isEmpty()) {
-      count = (groups.isEmpty() ||
-          remainingGroups == 1 && currentGroupSize == groups.get(0)) ? 1 : 0;
-    } else if (maxRemainingGroups.get(0) < remainingGroups - ((currentGroupSize > 0) ? 1 : 0)
-        || remainingOperationalPotential < remainingGroups - 1
-        || remainingDamagePotential < remainingCombinedGroupSize
-        || conditions.size() < remainingCombinedGroupSize + remainingGroups - 1) {
-      count = 0;
+    MemoizationKey key = new MemoizationKey(conditions, groups, currentGroupSize);
+    Long lookupCount = memo.get(key);
+    if (lookupCount == null) {
+      long remainingGroups = groups.size();
+      if (conditions.isEmpty()) {
+        count = (groups.isEmpty() ||
+            remainingGroups == 1 && currentGroupSize == groups.get(0)) ? 1 : 0;
+      } else if (maxRemainingGroups.get(0) < remainingGroups - ((currentGroupSize > 0) ? 1 : 0)
+          || remainingOperationalPotential < remainingGroups - 1
+          || remainingDamagePotential < remainingCombinedGroupSize
+          || conditions.size() < remainingCombinedGroupSize + remainingGroups - 1) {
+        count = 0;
+      } else {
+        List<Character> nextConditions = conditions.subList(1, conditions.size());
+        List<Integer> nextMaxRemainingGroups =
+            maxRemainingGroups.subList(1, maxRemainingGroups.size());
+        count = switch (conditions.get(0)) {
+          case OPERATIONAL -> countForOperational(nextConditions, groups, nextMaxRemainingGroups,
+              currentGroupSize, previous, remainingDamagePotential, remainingOperationalPotential,
+              remainingCombinedGroupSize, false);
+          case DAMAGED -> countForDamaged(nextConditions, groups, nextMaxRemainingGroups,
+              currentGroupSize, remainingDamagePotential, remainingOperationalPotential,
+              remainingCombinedGroupSize, false);
+          case UNKNOWN -> countForOperational(nextConditions, groups, nextMaxRemainingGroups,
+              currentGroupSize, previous, remainingDamagePotential, remainingOperationalPotential,
+              remainingCombinedGroupSize, true)
+              + countForDamaged(nextConditions, groups, nextMaxRemainingGroups, currentGroupSize,
+              remainingDamagePotential, remainingOperationalPotential, remainingCombinedGroupSize,
+              true);
+          default -> throw new IllegalArgumentException();
+        };
+      }
+      memo.put(key, count);
     } else {
-      List<Character> nextConditions = conditions.subList(1, conditions.size());
-      List<Integer> nextMaxRemainingGroups =
-          maxRemainingGroups.subList(1, maxRemainingGroups.size());
-      count = switch (conditions.get(0)) {
-        case OPERATIONAL -> countForOperational(nextConditions, groups, nextMaxRemainingGroups,
-            currentGroupSize, previous, remainingDamagePotential, remainingOperationalPotential,
-            remainingCombinedGroupSize, false);
-        case DAMAGED -> countForDamaged(nextConditions, groups, nextMaxRemainingGroups,
-            currentGroupSize, remainingDamagePotential, remainingOperationalPotential,
-            remainingCombinedGroupSize, false);
-        case UNKNOWN -> countForOperational(nextConditions, groups, nextMaxRemainingGroups,
-            currentGroupSize, previous, remainingDamagePotential, remainingOperationalPotential,
-            remainingCombinedGroupSize, true)
-            + countForDamaged(nextConditions, groups, nextMaxRemainingGroups, currentGroupSize,
-            remainingDamagePotential, remainingOperationalPotential, remainingCombinedGroupSize,
-            true);
-        default -> throw new IllegalArgumentException();
-      };
+      count = lookupCount;
     }
     return count;
   }
@@ -187,18 +196,18 @@ public class HotSprings {
         .sum();
   }
 
-  private long countForOperational(List<Character> nextConditions, List<Integer> groups,
+  private long countForOperational(List<Character> conditions, List<Integer> groups,
       List<Integer> maxRemainingGroups, int currentGroupSize, char previous,
       int remainingDamagePotential, int remainingOperationalPotential,
       int remainingCombinedGroupSize, boolean unknown) {
     int adjustedDamagePotential = remainingDamagePotential - (unknown ? 1 : 0);
     int adjustedOperationalPotential = remainingOperationalPotential - 1;
     return (previous != DAMAGED)
-        ? countArrangements(nextConditions, groups, maxRemainingGroups, 0, OPERATIONAL,
+        ? countArrangements(conditions, groups, maxRemainingGroups, 0, OPERATIONAL,
             adjustedDamagePotential, adjustedOperationalPotential, remainingCombinedGroupSize)
         : (currentGroupSize != groups.get(0))
             ? 0
-            : countArrangements(nextConditions, groups.subList(1, groups.size()),
+            : countArrangements(conditions, groups.subList(1, groups.size()),
                 maxRemainingGroups, 0, OPERATIONAL, adjustedDamagePotential,
                 adjustedOperationalPotential, remainingCombinedGroupSize);
   }
@@ -213,6 +222,10 @@ public class HotSprings {
         : countArrangements(nextConditions, groups, maxRemainingGroups, currentGroupSize + 1,
             DAMAGED, adjustedDamagePotential, adjustedOperationalPotential,
             remainingCombinedGroupSize - 1);
+  }
+
+  private record MemoizationKey(
+      List<Character> conditions, List<Integer> groups, int currentGroupSize) {
   }
 
 }
