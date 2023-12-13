@@ -13,20 +13,31 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package com.nickbenn.adventofcode.day12;
+package com.nickbenn.adventofcode.day14;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
+import com.nickbenn.adventofcode.util.DataSource;
 import java.io.IOException;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvFileSource;
+import java.util.List;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
-class HotSpringsTest {
+public class Day14 {
 
-  @ParameterizedTest
-  @CsvFileSource(resources = "tests.csv", useHeadersInDisplayName = true)
-  void sumArrangements(int repetitions, long expected) throws IOException {
-    assertEquals(expected, new HotSprings(repetitions).sumArrangements());
+  public Day14() throws IOException {
+    this(DataSource.DEFAULT_INPUT_FILE);
+  }
+
+  public Day14(String inputFile) throws IOException {
+    DataSource source = new DataSource.Builder(this)
+        .setInputFile(inputFile)
+        .build();
+    try (Stream<Stream<String>> blocks = source.paragraphLines()) {
+
+    }
+  }
+
+  public static void main(String[] args) throws IOException {
+    System.out.println(/* new Day14().??? */);
   }
 
 }

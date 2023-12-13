@@ -1,17 +1,17 @@
-package com.nickbenn.adventofcode.day13;
+package com.nickbenn.adventofcode.day14;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.IOException;
 import org.junit.jupiter.api.BeforeEach;
 
-class Day13Test {
+class Day14Test {
 
-  Day13 day13;
+  Day14 day14;
 
   @BeforeEach
   void setUp() throws IOException {
-    day13 = new Day13();
+    day14 = new Day14();
   }
 
 }

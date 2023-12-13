@@ -15,24 +15,26 @@
  */
 package com.nickbenn.adventofcode.day13;
 
-import com.nickbenn.adventofcode.util.DataSource;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.io.IOException;
-import java.util.stream.Stream;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvFileSource;
 
-public class Day13 {
+class PointOfIncidenceTest {
 
-  public Day13() throws IOException {
-    this(DataSource.DEFAULT_INPUT_FILE);
+  PointOfIncidence pointOfIncidence;
+
+  @BeforeEach
+  void setUp() throws IOException {
+    pointOfIncidence = new PointOfIncidence();
   }
 
-  public Day13(String inputFile) throws IOException {
-    try (Stream<String> lines = DataSource.simpleLines(inputFile, this)) {
-
-    }
-  }
-
-  public static void main(String[] args) throws IOException {
-    System.out.println(/* new Day13().??? */);
+  @ParameterizedTest
+  @CsvFileSource(resources = "tests.csv", useHeadersInDisplayName = true)
+  void getReflectionSum(int smudgesRequired, int expected) {
+    assertEquals(expected, pointOfIncidence.getReflectionSum(smudgesRequired));
   }
 
 }
