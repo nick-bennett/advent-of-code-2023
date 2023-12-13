@@ -39,7 +39,6 @@ public class HotSprings {
   private final Map<MemoKey, Long> memo;
   private final List<String> conditionRecords;
   private final List<List<Integer>> damageGroupRecords;
-  private final List<List<Integer>> maxFeasibleGroupRecords;
 
   public HotSprings(int repetitions) throws IOException {
     this(DataSource.DEFAULT_INPUT_FILE, repetitions);
@@ -50,9 +49,7 @@ public class HotSprings {
       memo = new HashMap<>();
       conditionRecords = new LinkedList<>();
       damageGroupRecords = new LinkedList<>();
-      maxFeasibleGroupRecords = new LinkedList<>();
-      lines.forEach((line) ->
-          parse(line, conditionRecords, damageGroupRecords, maxFeasibleGroupRecords, repetitions));
+      lines.forEach((line) -> parse(line, conditionRecords, damageGroupRecords, repetitions));
     }
   }
 
@@ -65,26 +62,23 @@ public class HotSprings {
     long sum = 0;
     Iterator<String> conditionRecordIterator = conditionRecords.iterator();
     Iterator<List<Integer>> damageGroupRecordIterator = damageGroupRecords.iterator();
-    Iterator<List<Integer>> maxFeasibleGroupsRecordIterator = maxFeasibleGroupRecords.iterator();
     while (conditionRecordIterator.hasNext()) {
       String conditions = conditionRecordIterator.next();
       List<Integer> groups = damageGroupRecordIterator.next();
-      List<Integer> maxFeasibleGroups = maxFeasibleGroupsRecordIterator.next();
-      long count = getArrangementCount(conditions, groups, maxFeasibleGroups, 0, OPERATIONAL);
+      long count = getArrangementCount(conditions, groups, 0, OPERATIONAL);
       sum += count;
     }
     return sum;
   }
 
   private void parse(String line, List<String> conditionRecords,
-      List<List<Integer>> damageGroupRecords, List<List<Integer>> remainingMaxGroupRecords,
-      int repetitions) {
+      List<List<Integer>> damageGroupRecords, int repetitions) {
     String[] splitRecord = LINE_SPLITTER.split(line);
-    String conditions = Stream.generate(() -> splitRecord[0])
-        .limit(repetitions)
-        .collect(Collectors.joining(UNFOLDED_CONDITIONS_DELIMITER));
-    remainingMaxGroupRecords.add(maxFeasibleGroups(conditions));
-    conditionRecords.add(conditions);
+    conditionRecords.add(
+        Stream.generate(() -> splitRecord[0])
+            .limit(repetitions)
+            .collect(Collectors.joining(UNFOLDED_CONDITIONS_DELIMITER))
+    );
     damageGroupRecords.add(
         GROUP_SPLITTER
             .splitAsStream(
@@ -97,13 +91,13 @@ public class HotSprings {
     );
   }
 
-  private long getArrangementCount(String conditions, List<Integer> groups,
-      List<Integer> maxRemainingGroups, int currentGroupSize, char previous) {
+  private long getArrangementCount(
+      String conditions, List<Integer> groups, int currentGroupSize, char previous) {
     long count;
     MemoKey key = new MemoKey(conditions, groups, currentGroupSize);
     Long lookupCount = memo.get(key);
     if (lookupCount == null) {
-      count = countArrangements(conditions, groups, maxRemainingGroups, currentGroupSize, previous);
+      count = countArrangements(conditions, groups, currentGroupSize, previous);
       memo.put(key, count);
     } else {
       count = lookupCount;
@@ -111,63 +105,39 @@ public class HotSprings {
     return count;
   }
 
-  private long countArrangements(String conditions, List<Integer> groups,
-      List<Integer> maxFeasibleGroups, int currentGroupSize, char previous) {
-    long count = 0;
+  private long countArrangements(
+      String conditions, List<Integer> groups, int currentGroupSize, char previous) {
+    long count;
     long remaining = groups.size();
     if (conditions.isEmpty()) {
       count = (groups.isEmpty() || remaining == 1 && currentGroupSize == groups.get(0)) ? 1 : 0;
-    } else if (maxFeasibleGroups.get(0) >= remaining - ((currentGroupSize > 0) ? 1 : 0)) {
+    } else {
       char current = conditions.charAt(0);
       conditions = conditions.substring(1);
-      maxFeasibleGroups = maxFeasibleGroups.subList(1, maxFeasibleGroups.size());
       count = switch (current) {
-        case OPERATIONAL ->
-            countForOperational(conditions, groups, maxFeasibleGroups, currentGroupSize, previous);
-        case DAMAGED -> countForDamaged(conditions, groups, maxFeasibleGroups, currentGroupSize);
-        case UNKNOWN ->
-            countForOperational(conditions, groups, maxFeasibleGroups, currentGroupSize, previous)
-            + countForDamaged(conditions, groups, maxFeasibleGroups, currentGroupSize);
+        case OPERATIONAL -> countForOperational(conditions, groups, currentGroupSize, previous);
+        case DAMAGED -> countForDamaged(conditions, groups, currentGroupSize);
+        case UNKNOWN -> countForOperational(conditions, groups, currentGroupSize, previous)
+            + countForDamaged(conditions, groups, currentGroupSize);
         default -> throw new IllegalArgumentException();
       };
     }
     return count;
   }
 
-  private List<Integer> maxFeasibleGroups(String conditions) {
-    List<Integer> result = new LinkedList<>();
-    int count = 0;
-    int consecutiveUnknown = 1;
-    char[] chars = conditions.toCharArray();
-    for (int i = chars.length - 1; i >= 0; i--) {
-      char current = chars[i];
-      if (current != OPERATIONAL) {
-        count += (consecutiveUnknown % 2);
-        consecutiveUnknown = (current == UNKNOWN) ? (consecutiveUnknown + 1) : 0;
-      } else {
-        consecutiveUnknown = 1;
-      }
-      result.add(0, count);
-    }
-    return result;
-  }
-
-  private long countForOperational(String conditions, List<Integer> groups,
-      List<Integer> maxFeasibleGroups, int currentGroupSize, char previous) {
+  private long countForOperational(
+      String conditions, List<Integer> groups, int currentGroupSize, char previous) {
     return (previous != DAMAGED)
-        ? getArrangementCount(conditions, groups, maxFeasibleGroups, 0, OPERATIONAL)
+        ? getArrangementCount(conditions, groups, 0, OPERATIONAL)
         : (currentGroupSize != groups.get(0))
             ? 0
-            : getArrangementCount(
-                conditions, groups.subList(1, groups.size()), maxFeasibleGroups, 0, OPERATIONAL);
+            : getArrangementCount(conditions, groups.subList(1, groups.size()), 0, OPERATIONAL);
   }
 
-  private long countForDamaged(String conditions, List<Integer> groups,
-      List<Integer> maxFeasibleGroups, int currentGroupSize) {
+  private long countForDamaged(String conditions, List<Integer> groups, int currentGroupSize) {
     return (groups.isEmpty() || currentGroupSize >= groups.get(0))
         ? 0
-        : getArrangementCount(
-            conditions, groups, maxFeasibleGroups, currentGroupSize + 1, DAMAGED);
+        : getArrangementCount(conditions, groups, currentGroupSize + 1, DAMAGED);
   }
 
   private record MemoKey(String conditions, List<Integer> groups, int currentGroupSize) {
