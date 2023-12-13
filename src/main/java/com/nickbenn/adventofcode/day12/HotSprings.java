@@ -65,7 +65,7 @@ public class HotSprings {
     while (conditionRecordIterator.hasNext()) {
       String conditions = conditionRecordIterator.next();
       List<Integer> groups = damageGroupRecordIterator.next();
-      long count = getArrangementCount(conditions, groups, 0, OPERATIONAL);
+      long count = getCount(conditions, groups, 0, OPERATIONAL);
       sum += count;
     }
     return sum;
@@ -74,43 +74,37 @@ public class HotSprings {
   private void parse(String line, List<String> conditionRecords,
       List<List<Integer>> damageGroupRecords, int repetitions) {
     String[] splitRecord = LINE_SPLITTER.split(line);
-    conditionRecords.add(
-        Stream.generate(() -> splitRecord[0])
-            .limit(repetitions)
-            .collect(Collectors.joining(UNFOLDED_CONDITIONS_DELIMITER))
-    );
-    damageGroupRecords.add(
-        GROUP_SPLITTER
-            .splitAsStream(
-                Stream.generate(() -> splitRecord[1])
-                    .limit(repetitions)
-                    .collect(Collectors.joining(UNFOLDED_GROUPS_DELIMITER))
-            )
-            .map(Integer::valueOf)
-            .toList()
-    );
+    String unfoldedConditions = Stream.generate(() -> splitRecord[0])
+        .limit(repetitions)
+        .collect(Collectors.joining(UNFOLDED_CONDITIONS_DELIMITER));
+    conditionRecords.add(unfoldedConditions);
+    List<Integer> unfoldedGroupSizes = GROUP_SPLITTER
+        .splitAsStream(
+            Stream.generate(() -> splitRecord[1])
+                .limit(repetitions)
+                .collect(Collectors.joining(UNFOLDED_GROUPS_DELIMITER))
+        )
+        .map(Integer::valueOf)
+        .toList();
+    damageGroupRecords.add(unfoldedGroupSizes);
   }
 
-  private long getArrangementCount(
+  private long getCount(
       String conditions, List<Integer> groups, int currentGroupSize, char previous) {
     long count;
     MemoKey key = new MemoKey(conditions, groups, currentGroupSize);
-    Long lookupCount = memo.get(key);
-    if (lookupCount == null) {
-      count = countArrangements(conditions, groups, currentGroupSize, previous);
+    count = memo.getOrDefault(key, Long.MIN_VALUE);
+    if (count < 0) {
+      count = count(conditions, groups, currentGroupSize, previous);
       memo.put(key, count);
-    } else {
-      count = lookupCount;
     }
     return count;
   }
 
-  private long countArrangements(
-      String conditions, List<Integer> groups, int currentGroupSize, char previous) {
+  private long count(String conditions, List<Integer> groups, int currentGroupSize, char previous) {
     long count;
-    long remaining = groups.size();
     if (conditions.isEmpty()) {
-      count = (groups.isEmpty() || remaining == 1 && currentGroupSize == groups.get(0)) ? 1 : 0;
+      count = (groups.isEmpty() || groups.size() == 1 && currentGroupSize == groups.get(0)) ? 1 : 0;
     } else {
       char current = conditions.charAt(0);
       conditions = conditions.substring(1);
@@ -128,16 +122,16 @@ public class HotSprings {
   private long countForOperational(
       String conditions, List<Integer> groups, int currentGroupSize, char previous) {
     return (previous != DAMAGED)
-        ? getArrangementCount(conditions, groups, 0, OPERATIONAL)
+        ? getCount(conditions, groups, 0, OPERATIONAL)
         : (currentGroupSize != groups.get(0))
             ? 0
-            : getArrangementCount(conditions, groups.subList(1, groups.size()), 0, OPERATIONAL);
+            : getCount(conditions, groups.subList(1, groups.size()), 0, OPERATIONAL);
   }
 
   private long countForDamaged(String conditions, List<Integer> groups, int currentGroupSize) {
     return (groups.isEmpty() || currentGroupSize >= groups.get(0))
         ? 0
-        : getArrangementCount(conditions, groups, currentGroupSize + 1, DAMAGED);
+        : getCount(conditions, groups, currentGroupSize + 1, DAMAGED);
   }
 
   private record MemoKey(String conditions, List<Integer> groups, int currentGroupSize) {
