@@ -38,7 +38,7 @@ import java.util.stream.Stream;
  *   each game, and return the sum of these products.</li>
  * </ul>
  *
- * @see <a href="https://adventofcode.com/2023/day/2">Day 2: Cube Conundrum</a>
+ * @see <a href="https://adventofcode.com/2023/day/2">"Day 2: Cube Conundrum"</a>.
  */
 public class CubeConundrum {
 
@@ -99,7 +99,6 @@ public class CubeConundrum {
    *
    * @param ceilings {@link Map Map&lt;String,Integer&gt;} giving the maximum number of cubes of
    *                 each color.
-   * @return Sum of IDs for all games which would be feasible with the specified cube color limits.
    * @throws IOException If the input file specified (implicitly or explicitly) in the constructor
    *                     invocation cannot be found or read.
    */
@@ -114,12 +113,10 @@ public class CubeConundrum {
   }
 
   /**
-   * Computes the sum of the power of all games, where the power of a game is defined as the product
-   * of the minimum numbers of red, green, and blue cubes required to produce the color draws read
-   * from the input file.
+   * Computes and returns the sum of the power of all games, where the power of a game is defined as
+   * the product of the minimum numbers of red, green, and blue cubes required to produce the color
+   * draws read from the input file.
    *
-   * @return Sum of the powers (product of the minimum number required of each cube color in a game)
-   * across all games.
    * @throws IOException If the input file specified (implicitly or explicitly) in the constructor
    *                     invocation cannot be found or read.
    */

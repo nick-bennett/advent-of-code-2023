@@ -21,6 +21,14 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Stream;
 
+/**
+ * Chunks groups of elements from an underlying {@link Iterator Iterator&lt;E&gt;}, implementing an
+ * {@code Iterator<Stream<E>>} over the streamed chunks.
+ *
+ * @param source {@link Iterator Iterator&lt;E&gt;} over individual elements.
+ * @param chunkSize Number of elements to stream together on each invocation of {@link #next()}.
+ * @param <E> Element type.
+ */
 @SuppressWarnings("SpellCheckingInspection")
 public record Chunker<E>(Iterator<E> source, int chunkSize)
     implements Iterator<Stream<E>> {

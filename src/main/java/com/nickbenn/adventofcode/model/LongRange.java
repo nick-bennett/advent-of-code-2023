@@ -15,5 +15,5 @@
  */
 package com.nickbenn.adventofcode.model;
 
-public record IntRange(int start, int length) {
+public record LongRange(long start, long length) {
 }

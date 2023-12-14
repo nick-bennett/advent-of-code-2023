@@ -13,7 +13,20 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package com.nickbenn.adventofcode.model;
+package com.nickbenn.adventofcode.day15;
 
-public record IntRange(int start, int length) {
+import static org.junit.jupiter.api.Assertions.*;
+
+import java.io.IOException;
+import org.junit.jupiter.api.BeforeEach;
+
+class Day15Test {
+
+  Day15 day15;
+
+  @BeforeEach
+  void setUp() throws IOException {
+    day15 = new Day15();
+  }
+
 }

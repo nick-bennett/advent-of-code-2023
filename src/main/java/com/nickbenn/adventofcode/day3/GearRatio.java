@@ -15,8 +15,9 @@
  */
 package com.nickbenn.adventofcode.day3;
 
-import com.nickbenn.adventofcode.view.DataSource;
 import com.nickbenn.adventofcode.model.MatrixLocation;
+import com.nickbenn.adventofcode.view.DataSource;
+import com.nickbenn.adventofcode.view.Presentation;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map.Entry;
@@ -30,6 +31,22 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * Implements solution to parts 1 and 2 of day 3&mdash;reading an input file and interpreting its
+ * contents as a schematic containing part numbers, gears, and other elements, then computing values
+ * derived from the positions of those elements.
+ * <p>Parts 1 and 2 of the problem differ in the computations required from the schematic:</p>
+ * <ul>
+ *   <li>For day 1, the {@link #sumPartNumbers()} must compute and return the sum of part numbers
+ *   in the schematic; these are identifiable by adjacency to a non-digit character other than
+ *   {@code '.'}.</li>
+ *   <li>For day 2, the {@link #sumGearRatios()} method must find the sum of the products of the
+ *   pairs of part numbers adjacent to each gear symbol in the schematic. (A gear is represented by
+ *   a {@code '*'} character adjacent to exactly 2 part numbers.)</li>
+ * </ul>
+ *
+ * @see <a href="https://adventofcode.com/2023/day/3">"Day 3: Gear Ratios"</a>.
+ */
 public class GearRatio {
 
   private static final Pattern EXTRACTOR = Pattern.compile("(\\*)|([^\\d.*])|(\\d+)");
@@ -38,10 +55,28 @@ public class GearRatio {
   private final NavigableSet<MatrixLocation> gears;
   private final NavigableSet<MatrixLocation> symbols;
 
+  /**
+   * Initializes this instance, using the value of {@link DataSource#DEFAULT_INPUT_FILE} as the name
+   * (relative to the package of this class on the classpath) of the file to be read. In other
+   * words, using this constructor is equivalent to using
+   * {@link #GearRatio(String) GearRatio(DataSource.DEFAULT_INPUT_FILE)}.
+   *
+   * @throws IOException If the file referenced by {@link DataSource#DEFAULT_INPUT_FILE}} cannot be
+   *                     found or read.
+   */
   public GearRatio() throws IOException {
     this(DataSource.DEFAULT_INPUT_FILE);
   }
 
+  /**
+   * Initializes this instance, using the value specified in the {@code inputFile} parameter as the
+   * name (relative to the package of this class on the classpath) of the file to be read, and
+   * processing the schematic contained in that file to catalogue all of its part numbers, gears,
+   * and other symbols.
+   *
+   * @param inputFile Classpath/package-relative location of file from which input is read.
+   * @throws IOException If the file referenced by {@code inputFile} cannot be found or read.
+   */
   public GearRatio(String inputFile) throws IOException {
     try (Stream<String> lines = DataSource.simpleLines(inputFile, this)) {
       numbers = new TreeMap<>();
@@ -51,12 +86,25 @@ public class GearRatio {
     }
   }
 
+  /**
+   * Creates an instance of {@link GearRatio} and invokes the relevant methods to compute the
+   * required values for parts 1 and 2, printing the results.
+   *
+   * @param args Command-line arguments (currently ignored).
+   * @throws IOException If the file referenced by {@link DataSource#DEFAULT_INPUT_FILE}} cannot be
+   *                     found or read.
+   */
   public static void main(String[] args) throws IOException {
     GearRatio ratio = new GearRatio();
-    System.out.println(ratio.sumPartNumbers());
-    System.out.println(ratio.sumGearRatios());
+    System.out.printf(Presentation.NUMERIC_SOLUTION_FORMAT, 1, ratio.sumPartNumbers());
+    System.out.printf(Presentation.NUMERIC_SOLUTION_FORMAT, 2, ratio.sumGearRatios());
   }
 
+  /**
+   * Computes and returns the sum of part numbers in the schematic&mdash;that is, the sum of the
+   * numeric values of digit strings that are adjacent to non-digit characters other than
+   * {@code '.'}.
+   */
   public int sumPartNumbers() {
     return numbers
         .entrySet()
@@ -67,6 +115,10 @@ public class GearRatio {
         .sum();
   }
 
+  /**
+   * Computes and returns the sum of gear ratios in the schematic&mdash;that is, the sum of the
+   * products of the numeric values of the digit string pairs adjacent to each gear ({@code '*'}).
+   */
   public int sumGearRatios() {
     return gears
         .stream()

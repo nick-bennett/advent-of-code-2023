@@ -15,27 +15,30 @@
  */
 package com.nickbenn.adventofcode.day14;
 
-import com.nickbenn.adventofcode.view.DataSource;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import com.nickbenn.adventofcode.model.CardinalDirection;
 import java.io.IOException;
-import java.util.stream.Stream;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-public class Day14 {
+class ParabolicReflectorDishTest {
 
-  public Day14() throws IOException {
-    this(DataSource.DEFAULT_INPUT_FILE);
+  ParabolicReflectorDish parabolicReflectorDish;
+
+  @BeforeEach
+  void setUp() throws IOException {
+    parabolicReflectorDish = new ParabolicReflectorDish();
   }
 
-  public Day14(String inputFile) throws IOException {
-    DataSource source = new DataSource.Builder(this)
-        .setInputFile(inputFile)
-        .build();
-    try (Stream<Stream<String>> blocks = source.paragraphLines()) {
-
-    }
+  @Test
+  void getSingleTiltLoad() throws IOException {
+    assertEquals(136, parabolicReflectorDish.getSingleTiltLoad());
   }
 
-  public static void main(String[] args) throws IOException {
-    System.out.println(/* new Day14().??? */);
+  @Test
+  void getExtendedLoad() {
+    assertEquals(64, parabolicReflectorDish.getExtendedLoad());
   }
 
 }

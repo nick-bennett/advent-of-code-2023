@@ -17,7 +17,7 @@ package com.nickbenn.adventofcode.day5;
 
 import com.nickbenn.adventofcode.util.Chunker;
 import com.nickbenn.adventofcode.view.DataSource;
-import com.nickbenn.adventofcode.model.IntRange;
+import com.nickbenn.adventofcode.model.LongRange;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
@@ -45,7 +45,7 @@ public class SeedFertilizer {
   private static final long MIN_END = Long.MAX_VALUE;
 
   private final List<Long> seeds = new LinkedList<>();
-  private final List<IntRange> seedRanges = new LinkedList<>();
+  private final List<LongRange> seedRanges = new LinkedList<>();
   private final NavigableMap<Long, Mapping> mergedMap;
 
   public SeedFertilizer() throws IOException {
@@ -117,11 +117,11 @@ public class SeedFertilizer {
         .collect(Collectors.toList());
   }
 
-  private List<IntRange> getRanges(List<Long> seeds) {
+  private List<LongRange> getRanges(List<Long> seeds) {
     return StreamSupport.stream(Spliterators.spliteratorUnknownSize(
         new Chunker<>(seeds.iterator(), 2), Spliterator.ORDERED), false)
         .map((Stream<Long> stream) -> stream.mapToLong(Long::longValue).toArray())
-        .map((pair) -> new IntRange(pair[0], pair[1]))
+        .map((pair) -> new LongRange(pair[0], pair[1]))
         .collect(Collectors.toList());
   }
 

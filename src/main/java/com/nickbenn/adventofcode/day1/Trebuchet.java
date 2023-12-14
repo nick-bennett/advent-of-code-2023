@@ -41,7 +41,7 @@ import java.util.stream.Stream;
  * line "oneight", the first digit is 1, represented by the word "one", and the last is 8,
  * represented by "eight".</p>
  *
- * @see <a href="https://adventofcode.com/2023/day/1">Day 1: Trebuchet?!</a>
+ * @see <a href="https://adventofcode.com/2023/day/1">"Day 1: Trebuchet?!"</a>.
  */
 public class Trebuchet {
 
