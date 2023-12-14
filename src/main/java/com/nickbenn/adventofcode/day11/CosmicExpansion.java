@@ -15,8 +15,8 @@
  */
 package com.nickbenn.adventofcode.day11;
 
-import com.nickbenn.adventofcode.util.DataSource;
-import com.nickbenn.adventofcode.util.MatrixLocation;
+import com.nickbenn.adventofcode.view.DataSource;
+import com.nickbenn.adventofcode.model.MatrixLocation;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;

@@ -15,9 +15,9 @@
  */
 package com.nickbenn.adventofcode.day10;
 
-import com.nickbenn.adventofcode.util.CardinalDirection;
-import com.nickbenn.adventofcode.util.DataSource;
-import com.nickbenn.adventofcode.util.MatrixLocation;
+import com.nickbenn.adventofcode.model.CardinalDirection;
+import com.nickbenn.adventofcode.view.DataSource;
+import com.nickbenn.adventofcode.model.MatrixLocation;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.EnumSet;

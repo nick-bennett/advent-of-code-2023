@@ -16,8 +16,8 @@
 package com.nickbenn.adventofcode.day5;
 
 import com.nickbenn.adventofcode.util.Chunker;
-import com.nickbenn.adventofcode.util.DataSource;
-import com.nickbenn.adventofcode.util.IntRange;
+import com.nickbenn.adventofcode.view.DataSource;
+import com.nickbenn.adventofcode.model.IntRange;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;

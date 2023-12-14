@@ -1,8 +1,4 @@
-package com.nickbenn.adventofcode.util;
-
-import java.util.function.Predicate;
-import java.util.random.RandomGenerator;
-import java.util.stream.Stream;
+package com.nickbenn.adventofcode.model;
 
 public interface Direction {
 

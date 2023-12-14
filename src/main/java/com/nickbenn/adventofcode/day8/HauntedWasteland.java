@@ -15,10 +15,9 @@
  */
 package com.nickbenn.adventofcode.day8;
 
-import com.nickbenn.adventofcode.util.DataSource;
+import com.nickbenn.adventofcode.view.DataSource;
 import java.io.IOException;
 import java.util.Map;
-import java.util.Objects;
 import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
 import java.util.regex.Matcher;

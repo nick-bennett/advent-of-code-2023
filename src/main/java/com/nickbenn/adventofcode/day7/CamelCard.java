@@ -15,7 +15,7 @@
  */
 package com.nickbenn.adventofcode.day7;
 
-import com.nickbenn.adventofcode.util.DataSource;
+import com.nickbenn.adventofcode.view.DataSource;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;

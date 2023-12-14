@@ -15,21 +15,29 @@
  */
 package com.nickbenn.adventofcode.day2;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.IOException;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class CubeConundrumTest {
 
+  CubeConundrum conundrum;
+
+  @BeforeEach
+  void setUp() {
+    conundrum = new CubeConundrum();
+  }
+
   @Test
   void sumFeasibleGames() throws IOException {
-    assertEquals(8, new CubeConundrum().sumFeasibleGames(CubeConundrum.CEILINGS));
+    assertEquals(8, conundrum.sumFeasibleGames(CubeConundrum.CEILINGS));
   }
 
   @Test
   void sumPower() throws IOException {
-    assertEquals(2286, new CubeConundrum().sumPower());
+    assertEquals(2286, conundrum.sumPower());
   }
 
 }
