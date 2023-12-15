@@ -37,10 +37,10 @@ import java.util.stream.Stream;
  * derived from the positions of those elements.
  * <p>Parts 1 and 2 of the problem differ in the computations required from the schematic:</p>
  * <ul>
- *   <li>For day 1, the {@link #sumPartNumbers()} must compute and return the sum of part numbers
+ *   <li>For part 1, the {@link #sumPartNumbers()} must compute and return the sum of part numbers
  *   in the schematic; these are identifiable by adjacency to a non-digit character other than
  *   {@code '.'}.</li>
- *   <li>For day 2, the {@link #sumGearRatios()} method must find the sum of the products of the
+ *   <li>For part 2, the {@link #sumGearRatios()} method must find the sum of the products of the
  *   pairs of part numbers adjacent to each gear symbol in the schematic. (A gear is represented by
  *   a {@code '*'} character adjacent to exactly 2 part numbers.)</li>
  * </ul>

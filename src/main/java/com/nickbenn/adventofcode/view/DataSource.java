@@ -15,7 +15,7 @@
  */
 package com.nickbenn.adventofcode.view;
 
-import com.nickbenn.adventofcode.util.Chunker;
+import com.nickbenn.adventofcode.util.StreamChunker;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -129,7 +129,7 @@ public class DataSource {
     Iterator<String> iterator = lines().iterator();
     return StreamSupport.stream(
         Spliterators.spliteratorUnknownSize(
-            new Chunker<>(iterator, chunkSize),
+            new StreamChunker<>(iterator, chunkSize),
             Spliterator.ORDERED | Spliterator.NONNULL | Spliterator.IMMUTABLE
         ),
         false

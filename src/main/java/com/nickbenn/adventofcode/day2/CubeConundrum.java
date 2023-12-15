@@ -30,10 +30,10 @@ import java.util.stream.Stream;
  * data (which consists of the number of blocks of each color selected in 1 or more draws in each
  * game):</p>
  * <ul>
- *   <li>For day 1, the {@link #sumFeasibleGames(Map)} must return the sum of game IDs for all games
- *   in the input file that could occur with specified (in {@link #CEILINGS}) number of red, green,
- *   and blue cubes.</li>
- *   <li>For day 2, the {@link #sumPower()} method must find the smallest number of cubes of each
+ *   <li>For part 1, the {@link #sumFeasibleGames(Map)} must return the sum of game IDs for all
+ *   games in the input file that could occur with specified (in {@link #CEILINGS}) number of red,
+ *   green, and blue cubes.</li>
+ *   <li>For part 2, the {@link #sumPower()} method must find the smallest number of cubes of each
  *   color which would make each of the games feasible, compute the product of these numbers for
  *   each game, and return the sum of these products.</li>
  * </ul>

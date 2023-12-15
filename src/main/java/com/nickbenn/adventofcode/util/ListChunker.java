@@ -19,19 +19,19 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.stream.Stream;
 
 /**
- * Chunks groups of elements from an underlying {@link Iterator Iterator&lt;E&gt;}, implementing an
- * {@code Iterator<Stream<E>>} over the streamed chunks.
+ * Chunks ordered sequences of elements from an underlying {@link Iterator Iterator&lt;E&gt;},
+ * implementing an {@code Iterator<List<E>>} over the streamed lists (chunks).
  *
- * @param source {@link Iterator Iterator&lt;E&gt;} over individual elements.
- * @param chunkSize Number of elements to stream together on each invocation of {@link #next()}.
- * @param <E> Element type.
+ * @param source    {@link Iterator Iterator&lt;E&gt;} over individual elements.
+ * @param chunkSize Number of elements to include in the {@link List List&lt;E&gt;} returned from
+ *                  each invocation of {@link #next()}.
+ * @param <E>       Element type.
  */
 @SuppressWarnings("SpellCheckingInspection")
-public record Chunker<E>(Iterator<E> source, int chunkSize)
-    implements Iterator<Stream<E>> {
+public record ListChunker<E>(Iterator<E> source, int chunkSize)
+    implements Iterator<List<E>> {
 
   @Override
   public boolean hasNext() {
@@ -39,7 +39,7 @@ public record Chunker<E>(Iterator<E> source, int chunkSize)
   }
 
   @Override
-  public Stream<E> next() {
+  public List<E> next() {
     if (!hasNext()) {
       throw new NoSuchElementException();
     }
@@ -47,7 +47,7 @@ public record Chunker<E>(Iterator<E> source, int chunkSize)
     for (int i = 0; i < chunkSize && source.hasNext(); i++) {
       pending.add(source.next());
     }
-    return pending.stream();
+    return pending;
   }
 
 }

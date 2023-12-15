@@ -18,21 +18,21 @@ package com.nickbenn.adventofcode.view;
 import java.util.ResourceBundle;
 
 /**
- * Utility class declaring constants read from (and for reading) {@link ResourceBundle} strings,
- * suitable for use in console-mode output.
+ * Utility class declaring constants read from (and for reading from) {@link ResourceBundle}
+ * strings, suitable for use in console-mode output.
  */
 public class Presentation {
 
   /** Base name of {@link java.util.ResourceBundle} containing user-facing strings. */
   public static final String BASE_BUNDLE_NAME = "strings";
+  /** {@link ResourceBundle} with the base name specified by {@link #BASE_BUNDLE_NAME}. */
+  public static final ResourceBundle STRINGS_BUNDLE = ResourceBundle.getBundle(BASE_BUNDLE_NAME);
+
   /** Property key of a format string usable for displaying day # and numeric solution value. */
   public static final String NUMERIC_SOLUTION_FORMAT_KEY = "numeric_solution_format";
 
-  /**
-   * Value read (in class initialization) from the {@link #NUMERIC_SOLUTION_FORMAT_KEY} property of
-   * the {@link #BASE_BUNDLE_NAME} {@link ResourceBundle}.
-   */
+  /** Value of the {@link #NUMERIC_SOLUTION_FORMAT_KEY} property of {@link #STRINGS_BUNDLE}. */
   public static final String NUMERIC_SOLUTION_FORMAT =
-      ResourceBundle.getBundle(BASE_BUNDLE_NAME).getString(NUMERIC_SOLUTION_FORMAT_KEY);
+      STRINGS_BUNDLE.getString(NUMERIC_SOLUTION_FORMAT_KEY);
 
 }

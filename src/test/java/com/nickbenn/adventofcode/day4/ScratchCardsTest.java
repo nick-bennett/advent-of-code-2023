@@ -21,13 +21,13 @@ import java.io.IOException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class ScratchCardTest {
+class ScratchCardsTest {
 
-  ScratchCard card;
+  ScratchCards card;
 
   @BeforeEach
   void setUp() throws IOException {
-    card = new ScratchCard();
+    card = new ScratchCards();
   }
 
   @Test

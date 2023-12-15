@@ -15,9 +15,9 @@
  */
 package com.nickbenn.adventofcode.day5;
 
-import com.nickbenn.adventofcode.util.Chunker;
-import com.nickbenn.adventofcode.view.DataSource;
 import com.nickbenn.adventofcode.model.LongRange;
+import com.nickbenn.adventofcode.util.StreamChunker;
+import com.nickbenn.adventofcode.view.DataSource;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
@@ -35,6 +35,10 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
+/**
+ *
+ * @see <a href="https://adventofcode.com/2023/day/5">"Day 5: If You Give A Seed A Fertilizer"</a>.
+ */
 public class SeedFertilizer {
 
   private static final Pattern BLOCK_EXTRACTOR =
@@ -119,7 +123,8 @@ public class SeedFertilizer {
 
   private List<LongRange> getRanges(List<Long> seeds) {
     return StreamSupport.stream(Spliterators.spliteratorUnknownSize(
-        new Chunker<>(seeds.iterator(), 2), Spliterator.ORDERED), false)
+        new StreamChunker<>(seeds.iterator(), 2),
+            Spliterator.ORDERED | Spliterator.NONNULL | Spliterator.IMMUTABLE), false)
         .map((Stream<Long> stream) -> stream.mapToLong(Long::longValue).toArray())
         .map((pair) -> new LongRange(pair[0], pair[1]))
         .collect(Collectors.toList());
