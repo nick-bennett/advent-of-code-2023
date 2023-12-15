@@ -15,18 +15,29 @@
  */
 package com.nickbenn.adventofcode.day15;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.IOException;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-class Day15Test {
+class LensLibraryTest {
 
-  Day15 day15;
+  LensLibrary lensLibrary;
 
   @BeforeEach
   void setUp() throws IOException {
-    day15 = new Day15();
+    lensLibrary = new LensLibrary();
+  }
+
+  @Test
+  void getHashSum() throws IOException {
+    assertEquals(1320, lensLibrary.getHashSum());
+  }
+
+  @Test
+  void getFocusingPower() throws IOException {
+    assertEquals(145, lensLibrary.getFocusingPower());
   }
 
 }

@@ -15,24 +15,25 @@
  */
 package com.nickbenn.adventofcode.day7;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.IOException;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvFileSource;
 
-class CamelCardTest {
+class CamelCardsTest {
 
-  @Test
-  void getWinnings_noWild() throws IOException {
-    CamelCard camelCard = new CamelCard(false);
-    assertEquals(6440, camelCard.getWinnings());
+  @ParameterizedTest
+  @CsvFileSource(resources = "tests.csv", useHeadersInDisplayName = true)
+  void getWinnings(boolean jackIsWild, int expected) throws IOException {
+    assertEquals(expected, new CamelCards(jackIsWild).getWinnings());
   }
 
   @Test
   void getWinnings_jacksWild() throws IOException {
-    CamelCard camelCard = new CamelCard(true);
-    assertEquals(5905, camelCard.getWinnings());
+    CamelCards camelCards = new CamelCards(true);
+    assertEquals(5905, camelCards.getWinnings());
   }
 
 }

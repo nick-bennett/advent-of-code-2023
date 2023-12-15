@@ -15,6 +15,8 @@
  */
 package com.nickbenn.adventofcode.day7;
 
+import static com.nickbenn.adventofcode.view.Presentation.NUMERIC_SOLUTION_FORMAT;
+
 import com.nickbenn.adventofcode.view.DataSource;
 import java.io.IOException;
 import java.util.Iterator;
@@ -28,17 +30,21 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class CamelCard {
+/**
+ *
+ * @see <a href="https://adventofcode.com/2023/day/7">"Day 7: Camel Cards"</a>.
+ */
+public class CamelCards {
 
   private static final Pattern HAND_BID_EXTRACTOR = Pattern.compile("(\\S+)\\s+(\\d+)");
 
   private final Map<Hand, Integer> hands;
 
-  public CamelCard(boolean jackIsWild) throws IOException {
+  public CamelCards(boolean jackIsWild) throws IOException {
     this(DataSource.DEFAULT_INPUT_FILE, jackIsWild);
   }
 
-  public CamelCard(String inputFile, boolean jackIsWild) throws IOException {
+  public CamelCards(String inputFile, boolean jackIsWild) throws IOException {
     try (Stream<String> lines = DataSource.simpleLines(inputFile, this)) {
       hands = lines
           .map(HAND_BID_EXTRACTOR::matcher)
@@ -49,17 +55,17 @@ public class CamelCard {
   }
 
   public static void main(String[] args) throws IOException {
-    System.out.println(new CamelCard(false).getWinnings());
-    System.out.println(new CamelCard(true).getWinnings());
+    System.out.printf(NUMERIC_SOLUTION_FORMAT, 1, new CamelCards(false).getWinnings());
+    System.out.printf(NUMERIC_SOLUTION_FORMAT, 2, new CamelCards(true).getWinnings());
   }
 
   public int getWinnings() {
-    int[] count = {1};
+    int[] count = {0};
     return hands
         .entrySet()
         .stream()
         .sorted(Entry.comparingByKey())
-        .mapToInt((entry) -> count[0]++ * entry.getValue())
+        .mapToInt((entry) -> ++count[0] * entry.getValue())
         .sum();
   }
 

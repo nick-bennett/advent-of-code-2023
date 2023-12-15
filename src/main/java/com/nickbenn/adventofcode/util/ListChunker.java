@@ -21,8 +21,8 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 /**
- * Chunks ordered sequences of elements from an underlying {@link Iterator Iterator&lt;E&gt;},
- * implementing an {@code Iterator<List<E>>} over the streamed lists (chunks).
+ * Chunks ordered sequences of elements from an underlying {@link Iterator Iterator&lt;E&gt;} into
+ * lists, implementing an {@code Iterator<List<E>>} over the chunked lists.
  *
  * @param source    {@link Iterator Iterator&lt;E&gt;} over individual elements.
  * @param chunkSize Number of elements to include in the {@link List List&lt;E&gt;} returned from

@@ -17,20 +17,24 @@ package com.nickbenn.adventofcode.day6;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.junit.jupiter.api.Test;
+import java.util.stream.Stream;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 class WaitForItTest {
 
-  @Test
-  void countWinningCombinations_separated() {
-    WaitForIt waitForIt = new WaitForIt(new long[][]{{7, 9}, {15, 40}, {30, 200}});
-    assertEquals(288, waitForIt.countWinningCombinations());
+  @ParameterizedTest(name = "[{index}] races={0}, expected={1}")
+  @MethodSource
+  void countWinningCombinations(long[][] races, int expected) {
+    assertEquals(expected, new WaitForIt(races).countWinningCombinations());
   }
 
-  @Test
-  void countWinningCombinations_joined() {
-    WaitForIt waitForIt = new WaitForIt(new long[][]{{71530, 940200}});
-    assertEquals(71503, waitForIt.countWinningCombinations());
+  static Stream<Arguments> countWinningCombinations() {
+    return Stream.of(
+        Arguments.of(new long[][]{{7, 9}, {15, 40}, {30, 200}}, 288),
+        Arguments.of(new long[][]{{71530, 940200}}, 71503)
+    );
   }
 
 }
