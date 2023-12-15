@@ -15,6 +15,8 @@
  */
 package com.nickbenn.adventofcode.day5;
 
+import static com.nickbenn.adventofcode.view.Presentation.NUMERIC_SOLUTION_FORMAT;
+
 import com.nickbenn.adventofcode.model.LongRange;
 import com.nickbenn.adventofcode.util.StreamChunker;
 import com.nickbenn.adventofcode.view.DataSource;
@@ -36,6 +38,20 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 /**
+ * Implements solutions for both parts of day 5, reading a line specifying seed numbers, then a
+ * sequence of mapping layers, each with one or more segments defining an input range and a
+ * corresponding output range. (An output range may be translated from the input range, but not
+ * scaled; that is, and input range and its corresponding output range have the same length.)
+ * <p>After reading the input data, parts 1 and 2 both require the same type of
+ * calculation&mdash;namely, find the lowest location value (the output from the final mapping
+ * layer) for any of the seeds specified in the first line of input. However, the two parts require
+ * different assumptions about the specification of seed numbers:</p>
+ * <ul>
+ *   <li>In part 1, every value on the first line of input is a seed number.</li>
+ *   <li>In part 2, every <em>pair</em> of values on the first line of input specifies a
+ *   starting seed number and a range length. For example, the pair of values <em>a b</em>
+ *   specifies the integral range of seed numbers <em>a</em>..(<em>b</em> - 1).</li>
+ * </ul>
  *
  * @see <a href="https://adventofcode.com/2023/day/5">"Day 5: If You Give A Seed A Fertilizer"</a>.
  */
@@ -52,10 +68,41 @@ public class SeedFertilizer {
   private final List<LongRange> seedRanges = new LinkedList<>();
   private final NavigableMap<Long, Mapping> mergedMap;
 
+  /**
+   * Initializes this instance, using the value of {@link DataSource#DEFAULT_INPUT_FILE} as the name
+   * (relative to the package of this class on the classpath) of the file to be read. In other
+   * words, using this constructor is equivalent to using
+   * {@link #SeedFertilizer(String) SeedFertilizer(DataSource.DEFAULT_INPUT_FILE)}.
+   *
+   * @throws IOException If the file referenced by {@link DataSource#DEFAULT_INPUT_FILE}} cannot be
+   *                     found or read.
+   */
   public SeedFertilizer() throws IOException {
     this(DataSource.DEFAULT_INPUT_FILE);
   }
 
+  /**
+   * Initializes this instance, using the value specified in the {@code inputFile} parameter as the
+   * name (relative to the package of this class on the classpath) of the file to be read, parsing
+   * the seed numbers at the start of the file, then parsing each successive block of lines as a
+   * series of corresponding input and output ranges, together forming a mapping layer.
+   * <p>Implementation notes:</p>
+   * <ul>
+   *   <li>Each mapping layer is normalized, filling in the gaps in the input layer, resulting in
+   *   a continuous set of input segments, covering the range <code>0..(Long.MAX_VALUE - 1)</code>.
+   *   </li>
+   *   <li>The individual layers are not maintained in the instance state; instead, after
+   *   normalization, each layer is merged into a reduced result obtained to that point. The merging
+   *   process replaces each segment in the merged layer produced to that point with one or more
+   *   segments formed from the intersections of the output range of the given segment with the
+   *   input ranges of the layer being merged.</li>
+   *   <li>The layer merging described above starts with a seed layer consisting of a single
+   *   segment, with identical input and output ranges of <code>0..(Long.MAX_VALUE - 1)</code>.</li>
+   * </ul>
+   *
+   * @param inputFile Classpath/package-relative location of file from which input is read.
+   * @throws IOException If the file referenced by {@code inputFile} cannot be found or read.
+   */
   public SeedFertilizer(String inputFile) throws IOException {
     try (Stream<String> blocks = new DataSource.Builder(this)
         .setInputFile(inputFile)
@@ -81,23 +128,48 @@ public class SeedFertilizer {
     }
   }
 
+  /**
+   * For each of parts 1 and 2, creates an instance of {@link SeedFertilizer}, invokes the relevant
+   * solution method, and prints the result.
+   *
+   * @param args Command-line arguments (currently ignored).
+   * @throws IOException If the file referenced by {@link DataSource#DEFAULT_INPUT_FILE}} cannot be
+   *                     found or read.
+   */
   public static void main(String[] args) throws IOException {
     SeedFertilizer seedFertilizer = new SeedFertilizer();
-    System.out.println(seedFertilizer.getLowestLocation());
-    System.out.println(seedFertilizer.getLowestInterpolatedLocation());
+    System.out.printf(NUMERIC_SOLUTION_FORMAT, 1, seedFertilizer.getLowestLocation());
+    System.out.printf(NUMERIC_SOLUTION_FORMAT, 2, seedFertilizer.getLowestInterpolatedLocation());
   }
 
+  /**
+   * Computes and returns the lowest final location number resulting for any of the seed numbers
+   * explicitly listed at the start of the input.
+   * <p>This method does not modify the state of the instance or have any other side effects.</p>
+   */
   public long getLowestLocation() {
     return seeds
         .stream()
         .mapToLong((seed) -> {
           Mapping mapping = mergedMap.floorEntry(seed).getValue();
-          return mapping.destinationStart() + seed - mapping.sourceStart();
+          return seed + mapping.destinationStart() - mapping.sourceStart();
         })
         .min()
         .orElse(MIN_END);
   }
 
+  /**
+   * Computes and returns the lowest final location number resulting for any seed number falling in
+   * the seed number ranges listed at the start of the input.
+   * <p>Implementation notes: This process does not iterate over all of the values falling in the
+   * seed number ranges; instead, it proceeds in a similar fashion to that described for the merging
+   * performed by {@link #SeedFertilizer(String)}: Each range of seed numbers is replaced by one or
+   * more segments, each with a corresponding output range (based on the merge mapping layers).
+   * Since the lowest location value <em>must</em> occur at the start of one of these segments, it
+   * is thus a simple matter to compute the final location value for the seed number at the start of
+   * each segment, and take the lowest of these values.</p>
+   * <p>This method does not modify the state of the instance or have any other side effects.</p>
+   */
   public long getLowestInterpolatedLocation() {
     return seedRanges
         .stream()
@@ -123,7 +195,7 @@ public class SeedFertilizer {
 
   private List<LongRange> getRanges(List<Long> seeds) {
     return StreamSupport.stream(Spliterators.spliteratorUnknownSize(
-        new StreamChunker<>(seeds.iterator(), 2),
+            new StreamChunker<>(seeds.iterator(), 2),
             Spliterator.ORDERED | Spliterator.NONNULL | Spliterator.IMMUTABLE), false)
         .map((Stream<Long> stream) -> stream.mapToLong(Long::longValue).toArray())
         .map((pair) -> new LongRange(pair[0], pair[1]))

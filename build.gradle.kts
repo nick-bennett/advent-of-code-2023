@@ -28,8 +28,18 @@ dependencies {
     testRuntimeOnly(libs.junit.engine)
 }
 
+if (project.hasProperty("javadocDestDir")) {
+    tasks.clean {
+        delete.add(projectDir.toPath().resolve(project.property("javadocDestDir") as String).toFile())
+    }
+}
+
 tasks.javadoc {
+    if (project.hasProperty("javadocDestDir")) {
+        setDestinationDir(projectDir.toPath().resolve(project.property("javadocDestDir") as String).toFile())
+    }
     with(options as StandardJavadocDocletOptions) {
+        isLinkSource = true
         links("https://docs.oracle.com/en/java/javase/${libs.versions.java.get()}/docs/api/")
     }
 }

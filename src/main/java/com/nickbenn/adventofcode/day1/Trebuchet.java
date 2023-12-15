@@ -15,8 +15,9 @@
  */
 package com.nickbenn.adventofcode.day1;
 
+import static com.nickbenn.adventofcode.view.Presentation.NUMERIC_SOLUTION_FORMAT;
+
 import com.nickbenn.adventofcode.view.DataSource;
-import com.nickbenn.adventofcode.view.Presentation;
 import java.io.IOException;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -96,8 +97,8 @@ public class Trebuchet {
    *                     invocation cannot be found or read.
    */
   public static void main(String[] args) throws IOException {
-    System.out.printf(Presentation.NUMERIC_SOLUTION_FORMAT, 1, new Trebuchet().sumDigits());
-    System.out.printf(Presentation.NUMERIC_SOLUTION_FORMAT, 2, new Trebuchet().sumDigitWords());
+    System.out.printf(NUMERIC_SOLUTION_FORMAT, 1, new Trebuchet().sumDigits());
+    System.out.printf(NUMERIC_SOLUTION_FORMAT, 2, new Trebuchet().sumDigitWords());
   }
 
   /**
@@ -106,6 +107,7 @@ public class Trebuchet {
    * extracts the first digit found in the line (reading left-to-right) and the last digit found (or
    * the first found, reading right-to-left), combines them to form a two-digit integer, and returns
    * the sum of these.
+   * <p>This method does not modify the state of the instance or have any other side effects.</p>
    *
    * @return The sum of two-digit numbers extracted from the input.
    * @throws IOException If the input file specified (implicitly or explicitly) in the constructor
@@ -127,6 +129,7 @@ public class Trebuchet {
    * extracts the first digit character or digit word found in the line (reading left-to-right) and
    * the last digit character or digit word found (or the first found, reading right-to-left),
    * combines them to form a two-digit integer, and returns the sum of these.
+   * <p>This method does not modify the state of the instance or have any other side effects.</p>
    *
    * @return The sum of two-digit numbers extracted from the input.
    * @throws IOException If the input file specified (implicitly or explicitly) in the constructor

@@ -15,9 +15,10 @@
  */
 package com.nickbenn.adventofcode.day3;
 
+import static com.nickbenn.adventofcode.view.Presentation.NUMERIC_SOLUTION_FORMAT;
+
 import com.nickbenn.adventofcode.model.MatrixLocation;
 import com.nickbenn.adventofcode.view.DataSource;
-import com.nickbenn.adventofcode.view.Presentation;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map.Entry;
@@ -96,14 +97,15 @@ public class GearRatio {
    */
   public static void main(String[] args) throws IOException {
     GearRatio ratio = new GearRatio();
-    System.out.printf(Presentation.NUMERIC_SOLUTION_FORMAT, 1, ratio.sumPartNumbers());
-    System.out.printf(Presentation.NUMERIC_SOLUTION_FORMAT, 2, ratio.sumGearRatios());
+    System.out.printf(NUMERIC_SOLUTION_FORMAT, 1, ratio.sumPartNumbers());
+    System.out.printf(NUMERIC_SOLUTION_FORMAT, 2, ratio.sumGearRatios());
   }
 
   /**
    * Computes and returns the sum of part numbers in the schematic&mdash;that is, the sum of the
    * numeric values of digit strings that are adjacent to non-digit characters other than
    * {@code '.'}.
+   * <p>This method does not modify the state of the instance or have any other side effects.</p>
    */
   public int sumPartNumbers() {
     return numbers
@@ -118,6 +120,7 @@ public class GearRatio {
   /**
    * Computes and returns the sum of gear ratios in the schematic&mdash;that is, the sum of the
    * products of the numeric values of the digit string pairs adjacent to each gear ({@code '*'}).
+   * <p>This method does not modify the state of the instance or have any other side effects.</p>
    */
   public int sumGearRatios() {
     return gears

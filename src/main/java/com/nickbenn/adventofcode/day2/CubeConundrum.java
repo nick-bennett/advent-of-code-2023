@@ -15,8 +15,9 @@
  */
 package com.nickbenn.adventofcode.day2;
 
+import static com.nickbenn.adventofcode.view.Presentation.NUMERIC_SOLUTION_FORMAT;
+
 import com.nickbenn.adventofcode.view.DataSource;
-import com.nickbenn.adventofcode.view.Presentation;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -88,14 +89,14 @@ public class CubeConundrum {
    *                     invocation cannot be found or read.
    */
   public static void main(String[] args) throws IOException {
-    System.out.printf(
-        Presentation.NUMERIC_SOLUTION_FORMAT, 1, new CubeConundrum().sumFeasibleGames(CEILINGS));
-    System.out.printf(Presentation.NUMERIC_SOLUTION_FORMAT, 2, new CubeConundrum().sumPower());
+    System.out.printf(NUMERIC_SOLUTION_FORMAT, 1, new CubeConundrum().sumFeasibleGames(CEILINGS));
+    System.out.printf(NUMERIC_SOLUTION_FORMAT, 2, new CubeConundrum().sumPower());
   }
 
   /**
    * Computes the sum of IDs of all games that would be feasible with the cube color limits
    * specified in {@code ceilings}.
+   * <p>This method does not modify the state of the instance or have any other side effects.</p>
    *
    * @param ceilings {@link Map Map&lt;String,Integer&gt;} giving the maximum number of cubes of
    *                 each color.
@@ -116,6 +117,7 @@ public class CubeConundrum {
    * Computes and returns the sum of the power of all games, where the power of a game is defined as
    * the product of the minimum numbers of red, green, and blue cubes required to produce the color
    * draws read from the input file.
+   * <p>This method does not modify the state of the instance or have any other side effects.</p>
    *
    * @throws IOException If the input file specified (implicitly or explicitly) in the constructor
    *                     invocation cannot be found or read.

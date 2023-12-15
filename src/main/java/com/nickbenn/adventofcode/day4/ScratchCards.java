@@ -17,9 +17,7 @@ package com.nickbenn.adventofcode.day4;
 
 import static com.nickbenn.adventofcode.view.Presentation.NUMERIC_SOLUTION_FORMAT;
 
-import com.nickbenn.adventofcode.day3.GearRatio;
 import com.nickbenn.adventofcode.view.DataSource;
-import com.nickbenn.adventofcode.view.Presentation;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
@@ -67,9 +65,9 @@ public class ScratchCards {
 
   /**
    * Initializes this instance, using the value specified in the {@code inputFile} parameter as the
-   * name (relative to the package of this class on the classpath) of the file to be read, and
-   * processing the schematic contained in that file to catalogue all of its part numbers, gears,
-   * and other symbols.
+   * name (relative to the package of this class on the classpath) of the file to be read, parsing
+   * the scratchcard contents in each line of that file, and collecting the results in a list for
+   * later computation.
    *
    * @param inputFile Classpath/package-relative location of file from which input is read.
    * @throws IOException If the file referenced by {@code inputFile} cannot be found or read.
@@ -99,6 +97,7 @@ public class ScratchCards {
    * Iterates over the scratchcards read from the input file, and for a non-zero number of
    * matches <em>n</em>, computes the value 2<sup>(<em>n</em> - 1)</sup>, and sums the values. (A
    * scratchcard with no matches has a value of 0.)
+   * <p>This method does not modify the state of the instance or have any other side effects.</p>
    *
    * @return Total value of all scratchcards.
    */
@@ -114,6 +113,7 @@ public class ScratchCards {
    * Iterates over the scratchcards read from the input file, starting with a count of 1 for each,
    * increasing the counts of successive cards based on the number of matches found in previous
    * cards, then summing the resulting total number of cards.
+   * <p>This method does not modify the state of the instance or have any other side effects.</p>
    *
    * @return Total number of scratchcards, including those won by matching.
    */
