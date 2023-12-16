@@ -28,7 +28,7 @@ public record MatrixLocation(int row, int column) implements Comparable<MatrixLo
     this(location.row, location.column);
   }
 
-  public MatrixLocation move(CardinalDirection direction) {
+  public MatrixLocation move(Direction direction) {
     return new MatrixLocation(row + direction.rowOffset(), column + direction.columnOffset());
   }
 

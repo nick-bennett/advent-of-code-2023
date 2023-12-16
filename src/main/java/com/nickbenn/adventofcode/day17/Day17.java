@@ -13,33 +13,26 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package com.nickbenn.adventofcode.day16;
-
-import static com.nickbenn.adventofcode.view.Presentation.NUMERIC_SOLUTION_FORMAT;
+package com.nickbenn.adventofcode.day17;
 
 import com.nickbenn.adventofcode.view.DataSource;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
-public class Day16 {
+public class Day17 {
 
-  private final String inputFile;
-
-  public Day16() throws IOException{
+  public Day17() throws IOException {
     this(DataSource.DEFAULT_INPUT_FILE);
   }
 
-  public Day16(String inputFile) throws IOException {
-    this.inputFile = inputFile;
+  public Day17(String inputFile) throws IOException {
+    try (Stream<String> lines = DataSource.simpleLines(inputFile, this)) {
+
+    }
   }
 
   public static void main(String[] args) throws IOException {
-//    System.out.printf(NUMERIC_SOLUTION_FORMAT, 1, new Day16().???);
+//    System.out.printf(NUMERIC_SOLUTION_FORMAT, 1, new Day17().???());
   }
 
 }

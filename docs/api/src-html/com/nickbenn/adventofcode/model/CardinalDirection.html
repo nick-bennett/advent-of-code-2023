@@ -69,13 +69,13 @@
 <span class="source-line-no">056</span><span id="line-56">  }</span>
 <span class="source-line-no">057</span><span id="line-57"></span>
 <span class="source-line-no">058</span><span id="line-58">  @Override</span>
-<span class="source-line-no">059</span><span id="line-59">  public Direction nextClockwise() {</span>
+<span class="source-line-no">059</span><span id="line-59">  public CardinalDirection nextClockwise() {</span>
 <span class="source-line-no">060</span><span id="line-60">    CardinalDirection[] values = values();</span>
 <span class="source-line-no">061</span><span id="line-61">    return values[(ordinal() + 1) % values.length];</span>
 <span class="source-line-no">062</span><span id="line-62">  }</span>
 <span class="source-line-no">063</span><span id="line-63"></span>
 <span class="source-line-no">064</span><span id="line-64">  @Override</span>
-<span class="source-line-no">065</span><span id="line-65">  public Direction nextCounterClockwise() {</span>
+<span class="source-line-no">065</span><span id="line-65">  public CardinalDirection nextCounterClockwise() {</span>
 <span class="source-line-no">066</span><span id="line-66">    CardinalDirection[] values = values();</span>
 <span class="source-line-no">067</span><span id="line-67">    return values[(ordinal() - 1 + values.length) % values.length];</span>
 <span class="source-line-no">068</span><span id="line-68">  }</span>

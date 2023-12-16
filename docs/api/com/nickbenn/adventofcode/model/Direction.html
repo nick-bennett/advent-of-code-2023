@@ -76,7 +76,14 @@ loadScripts(document, 'script');</script>
 <dd><code><a href="CardinalDirection.html" title="enum class in com.nickbenn.adventofcode.model">CardinalDirection</a></code>, <code><a href="PrincipalDirection.html" title="enum class in com.nickbenn.adventofcode.model">PrincipalDirection</a></code></dd>
 </dl>
 <hr>
-<div class="type-signature"><span class="modifiers">public interface </span><span class="element-name"><a href="../../../../src-html/com/nickbenn/adventofcode/model/Direction.html#line-3">Direction</a></span></div>
+<div class="type-signature"><span class="modifiers">public interface </span><span class="element-name"><a href="../../../../src-html/com/nickbenn/adventofcode/model/Direction.html#line-27">Direction</a></span></div>
+<div class="block">Declares basic operations relevant to directions of travel. The main use cases for
+ implementations of this class involve travel between grid/lattice locations&mdash;that is, from
+ one <a href="MatrixLocation.html" title="class in com.nickbenn.adventofcode.model"><code>MatrixLocation</code></a> to another. However, while these operations (like those of
+ <code>MatrixLocation</code> are integer-oriented, there is nothing that prevents their use without an
+ underling two-dimensional array. For example, this class and <code>MatrixLocation</code> can be used
+ in a <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link"><code>Set</code></a> or <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link"><code>Map</code></a> to help manage the logic of movement on a
+ large&mdash;but sparse&mdash;lattice.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -85,7 +92,7 @@ loadScripts(document, 'script');</script>
 <section class="method-summary" id="method-summary">
 <h2>Method Summary</h2>
 <div id="method-summary-table">
-<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="method-summary-table-tab0" role="tab" aria-selected="true" aria-controls="method-summary-table.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table', 3)" class="active-table-tab">All Methods</button><button id="method-summary-table-tab2" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab2', 3)" class="table-tab">Instance Methods</button><button id="method-summary-table-tab3" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab3', 3)" class="table-tab">Abstract Methods</button></div>
+<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="method-summary-table-tab0" role="tab" aria-selected="true" aria-controls="method-summary-table.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table', 3)" class="active-table-tab">All Methods</button><button id="method-summary-table-tab2" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab2', 3)" class="table-tab">Instance Methods</button><button id="method-summary-table-tab3" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab3', 3)" class="table-tab">Abstract Methods</button><button id="method-summary-table-tab5" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab5', 3)" class="table-tab">Default Methods</button></div>
 <div id="method-summary-table.tabpanel" role="tabpanel">
 <div class="summary-table three-column-summary" aria-labelledby="method-summary-table-tab0">
 <div class="table-header col-first">Modifier and Type</div>
@@ -93,19 +100,51 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>int</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#columnOffset()" class="member-name-link">columnOffset</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="Direction.html" title="interface in com.nickbenn.adventofcode.model">Direction</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#nextClockwise()" class="member-name-link">nextClockwise</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="block">Returns the change in the column index (in a two-dimensional matrix or lattice) that will
+ result from a single step in this direction.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code>default boolean</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code><a href="#isHorizontal()" class="member-name-link">isHorizontal</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5">
+<div class="block">Returns a flag indicating whether this direction is horizontal&mdash;that is, without any
+ vertical component.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code>default boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code><a href="#isOblique()" class="member-name-link">isOblique</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5">
+<div class="block">Returns a flag indicating whether this direction is slanted or diagonal&mdash;that is, it is
+ neither horizontal nor vertical.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code>default boolean</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code><a href="#isVertical()" class="member-name-link">isVertical</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5">
+<div class="block">Returns a flag indicating whether this direction is vertical&mdash;that is, without any
+ horizontal component.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="Direction.html" title="interface in com.nickbenn.adventofcode.model">Direction</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#nextCounterClockwise()" class="member-name-link">nextCounterClockwise</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#nextClockwise()" class="member-name-link">nextClockwise</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="block">Returns a <a href="Direction.html" title="interface in com.nickbenn.adventofcode.model"><code>Direction</code></a> instance representing the next direction (as defined in the
+ implementing class) from this one, in the clockwise direction.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="Direction.html" title="interface in com.nickbenn.adventofcode.model">Direction</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#opposite()" class="member-name-link">opposite</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>int</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#rowOffset()" class="member-name-link">rowOffset</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#nextCounterClockwise()" class="member-name-link">nextCounterClockwise</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="block">Returns a <a href="Direction.html" title="interface in com.nickbenn.adventofcode.model"><code>Direction</code></a> instance representing the next direction (as defined in the
+ implementing class) from this one, in the counterclockwise direction.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="Direction.html" title="interface in com.nickbenn.adventofcode.model">Direction</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#opposite()" class="member-name-link">opposite</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="block">Returns a <a href="Direction.html" title="interface in com.nickbenn.adventofcode.model"><code>Direction</code></a> instance in the opposite direction of this one.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>int</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#rowOffset()" class="member-name-link">rowOffset</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="block">Returns the change in the row index (in a two-dimensional matrix or lattice) that will result
+ from a single step in this direction.</div>
+</div>
 </div>
 </div>
 </div>
@@ -123,31 +162,72 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="rowOffset()">
 <h3>rowOffset</h3>
-<div class="member-signature"><span class="return-type">int</span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/nickbenn/adventofcode/model/Direction.html#line-5">rowOffset</a></span>()</div>
+<div class="member-signature"><span class="return-type">int</span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/nickbenn/adventofcode/model/Direction.html#line-35">rowOffset</a></span>()</div>
+<div class="block">Returns the change in the row index (in a two-dimensional matrix or lattice) that will result
+ from a single step in this direction. Note that row indices increase when moving down and
+ decrease with upward movement, as they conventionally do in two-dimensional array
+ visualizations and computer graphics.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="columnOffset()">
 <h3>columnOffset</h3>
-<div class="member-signature"><span class="return-type">int</span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/nickbenn/adventofcode/model/Direction.html#line-7">columnOffset</a></span>()</div>
+<div class="member-signature"><span class="return-type">int</span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/nickbenn/adventofcode/model/Direction.html#line-42">columnOffset</a></span>()</div>
+<div class="block">Returns the change in the column index (in a two-dimensional matrix or lattice) that will
+ result from a single step in this direction. (Column indices increase when moving
+ right and decrease with when moving left.)</div>
 </section>
 </li>
 <li>
 <section class="detail" id="opposite()">
 <h3>opposite</h3>
-<div class="member-signature"><span class="return-type"><a href="Direction.html" title="interface in com.nickbenn.adventofcode.model">Direction</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/nickbenn/adventofcode/model/Direction.html#line-9">opposite</a></span>()</div>
+<div class="member-signature"><span class="return-type"><a href="Direction.html" title="interface in com.nickbenn.adventofcode.model">Direction</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/nickbenn/adventofcode/model/Direction.html#line-47">opposite</a></span>()</div>
+<div class="block">Returns a <a href="Direction.html" title="interface in com.nickbenn.adventofcode.model"><code>Direction</code></a> instance in the opposite direction of this one.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="nextClockwise()">
 <h3>nextClockwise</h3>
-<div class="member-signature"><span class="return-type"><a href="Direction.html" title="interface in com.nickbenn.adventofcode.model">Direction</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/nickbenn/adventofcode/model/Direction.html#line-11">nextClockwise</a></span>()</div>
+<div class="member-signature"><span class="return-type"><a href="Direction.html" title="interface in com.nickbenn.adventofcode.model">Direction</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/nickbenn/adventofcode/model/Direction.html#line-54">nextClockwise</a></span>()</div>
+<div class="block">Returns a <a href="Direction.html" title="interface in com.nickbenn.adventofcode.model"><code>Direction</code></a> instance representing the next direction (as defined in the
+ implementing class) from this one, in the clockwise direction. For example, in an
+ implementation for cardinal directions, the next direction clockwise from east is south.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="nextCounterClockwise()">
 <h3>nextCounterClockwise</h3>
-<div class="member-signature"><span class="return-type"><a href="Direction.html" title="interface in com.nickbenn.adventofcode.model">Direction</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/nickbenn/adventofcode/model/Direction.html#line-13">nextCounterClockwise</a></span>()</div>
+<div class="member-signature"><span class="return-type"><a href="Direction.html" title="interface in com.nickbenn.adventofcode.model">Direction</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/nickbenn/adventofcode/model/Direction.html#line-61">nextCounterClockwise</a></span>()</div>
+<div class="block">Returns a <a href="Direction.html" title="interface in com.nickbenn.adventofcode.model"><code>Direction</code></a> instance representing the next direction (as defined in the
+ implementing class) from this one, in the counterclockwise direction. For example, in an
+ implementation for cardinal directions, the next direction counterclockwise from east is north.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="isVertical()">
+<h3>isVertical</h3>
+<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/nickbenn/adventofcode/model/Direction.html#line-68">isVertical</a></span>()</div>
+<div class="block">Returns a flag indicating whether this direction is vertical&mdash;that is, without any
+ horizontal component. It will always be the case that
+ <code>isVertical() == (columnOffset() == 0)</code>.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="isHorizontal()">
+<h3>isHorizontal</h3>
+<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/nickbenn/adventofcode/model/Direction.html#line-77">isHorizontal</a></span>()</div>
+<div class="block">Returns a flag indicating whether this direction is horizontal&mdash;that is, without any
+ vertical component. It will always be the case that
+ <code>isHorizontal() == (rowOffset() == 0)</code>.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="isOblique()">
+<h3>isOblique</h3>
+<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/nickbenn/adventofcode/model/Direction.html#line-86">isOblique</a></span>()</div>
+<div class="block">Returns a flag indicating whether this direction is slanted or diagonal&mdash;that is, it is
+ neither horizontal nor vertical. It will always be the case that
+ <code>isOblique() == (rowOffset() != 0 &amp;&amp; columnOffset() != 0)</code>.</div>
 </section>
 </li>
 </ul>

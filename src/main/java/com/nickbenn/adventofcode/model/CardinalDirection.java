@@ -56,13 +56,13 @@ public enum CardinalDirection implements Direction {
   }
 
   @Override
-  public Direction nextClockwise() {
+  public CardinalDirection nextClockwise() {
     CardinalDirection[] values = values();
     return values[(ordinal() + 1) % values.length];
   }
 
   @Override
-  public Direction nextCounterClockwise() {
+  public CardinalDirection nextCounterClockwise() {
     CardinalDirection[] values = values();
     return values[(ordinal() - 1 + values.length) % values.length];
   }
