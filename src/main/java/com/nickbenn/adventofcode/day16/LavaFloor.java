@@ -84,18 +84,17 @@ public class LavaFloor {
         .orElseThrow();
   }
 
-  private int countEnergizedTiles(MatrixLocation location, Direction direction) {
+  private int countEnergizedTiles(MatrixLocation initialLocation, Direction initialDirection) {
     Map<MatrixLocation, Set<Direction>> energized = new HashMap<>();
-    Queue<Photon> photons = new LinkedList<>(List.of(new Photon(location, direction)));
+    Queue<Photon> photons = new LinkedList<>(List.of(new Photon(initialLocation, initialDirection)));
     while (!photons.isEmpty()) {
       Photon photon = photons.remove();
-      location = photon.location();
-      direction = photon.direction();
-      while (location != null
-          && isInBounds(location)
+      MatrixLocation location = photon.location();
+      Direction direction = photon.direction();
+      if (isInBounds(location)
           && !energized.computeIfAbsent(location, (loc) -> new HashSet<>()).contains(direction)) {
-        direction = nextDirection(location, direction, energized, photons);
-        location = (direction != null) ? location.move(direction) : null;
+        energized.get(location).add(direction);
+        photons.addAll(next(location, direction));
       }
     }
     return energized.size();
@@ -107,22 +106,19 @@ public class LavaFloor {
     return row >= 0 && row < grid.length && column >= 0 && column < grid[0].length;
   }
 
-  private Direction nextDirection(MatrixLocation location, Direction direction,
-      Map<MatrixLocation, Set<Direction>> energized, Queue<Photon> photons) {
-    energized.get(location).add(direction);
+  private List<Photon> next(MatrixLocation location, Direction direction) {
+    List<Photon> photons = new LinkedList<>();
     switch (grid[location.row()][location.column()]) {
       case VERTICAL_SPLITTER -> {
         if (direction.isHorizontal()) {
           photons.add(new Photon(location.move(CardinalDirection.NORTH), CardinalDirection.NORTH));
           photons.add(new Photon(location.move(CardinalDirection.SOUTH), CardinalDirection.SOUTH));
-          direction = null;
         }
       }
       case HORIZONTAL_SPLITTER -> {
         if (direction.isVertical()) {
           photons.add(new Photon(location.move(CardinalDirection.WEST), CardinalDirection.WEST));
           photons.add(new Photon(location.move(CardinalDirection.EAST), CardinalDirection.EAST));
-          direction = null;
         }
       }
       case NORTH_EAST_MIRROR -> {
@@ -136,7 +132,10 @@ public class LavaFloor {
             : direction.nextClockwise());
       }
     }
-    return direction;
+    if (photons.isEmpty()) {
+      photons.add(new Photon(location.move(direction), direction));
+    }
+    return photons;
   }
 
   private record Photon(MatrixLocation location, Direction direction) {

@@ -76,15 +76,28 @@ loadScripts(document, 'script');</script>
 </dl>
 <h2 class="title" id="I:C">C</h2>
 <dl class="index">
-<dt><a href="com/nickbenn/adventofcode/day7/CamelCards.html" class="type-name-link" title="class in com.nickbenn.adventofcode.day7">CamelCards</a> - Class in <a href="com/nickbenn/adventofcode/day7/package-summary.html">com.nickbenn.adventofcode.day7</a></dt>
-<dd>&nbsp;</dd>
-<dt><a href="com/nickbenn/adventofcode/day7/CamelCards.html#%3Cinit%3E(boolean)" class="member-name-link">CamelCards(boolean)</a> - Constructor for class com.nickbenn.adventofcode.day7.<a href="com/nickbenn/adventofcode/day7/CamelCards.html" title="class in com.nickbenn.adventofcode.day7">CamelCards</a></dt>
-<dd>&nbsp;</dd>
-<dt><a href="com/nickbenn/adventofcode/day7/CamelCards.html#%3Cinit%3E(java.lang.String,boolean)" class="member-name-link">CamelCards(String, boolean)</a> - Constructor for class com.nickbenn.adventofcode.day7.<a href="com/nickbenn/adventofcode/day7/CamelCards.html" title="class in com.nickbenn.adventofcode.day7">CamelCards</a></dt>
-<dd>&nbsp;</dd>
+<dt><a href="com/nickbenn/adventofcode/day07/CamelCards.html" class="type-name-link" title="class in com.nickbenn.adventofcode.day07">CamelCards</a> - Class in <a href="com/nickbenn/adventofcode/day07/package-summary.html">com.nickbenn.adventofcode.day07</a></dt>
+<dd>
+<div class="block">Implements solutions for both parts of day 7, reading an input file where each line specifies a
+ card hands and bid (wager), for subsequent ranking and summing by the <a href="com/nickbenn/adventofcode/day07/CamelCards.html#getWinnings()"><code>CamelCards.getWinnings()</code></a>
+ method.</div>
+</dd>
+<dt><a href="com/nickbenn/adventofcode/day07/CamelCards.html#%3Cinit%3E(boolean)" class="member-name-link">CamelCards(boolean)</a> - Constructor for class com.nickbenn.adventofcode.day07.<a href="com/nickbenn/adventofcode/day07/CamelCards.html" title="class in com.nickbenn.adventofcode.day07">CamelCards</a></dt>
+<dd>
+<div class="block">Initializes this instance, using the value of <a href="com/nickbenn/adventofcode/view/DataSource.html#DEFAULT_INPUT_FILE"><code>DataSource.DEFAULT_INPUT_FILE</code></a> as the name
+ (relative to the package of this class on the classpath) of the file to be read, with
+ <code>jackIsWild</code> specifying whether the Jack card (identified as <code>'J'</code> in the input) is
+ wild.</div>
+</dd>
+<dt><a href="com/nickbenn/adventofcode/day07/CamelCards.html#%3Cinit%3E(java.lang.String,boolean)" class="member-name-link">CamelCards(String, boolean)</a> - Constructor for class com.nickbenn.adventofcode.day07.<a href="com/nickbenn/adventofcode/day07/CamelCards.html" title="class in com.nickbenn.adventofcode.day07">CamelCards</a></dt>
+<dd>
+<div class="block">Initializes this instance, using <code>inputFile</code> as the name (relative to the package of this
+ class on the classpath) of the file to be read, with <code>jackIsWild</code> specifying whether the
+ Jack card (identified as <code>'J'</code> in the input) is wild.</div>
+</dd>
 <dt><a href="com/nickbenn/adventofcode/model/CardinalDirection.html" class="type-name-link" title="enum class in com.nickbenn.adventofcode.model">CardinalDirection</a> - Enum Class in <a href="com/nickbenn/adventofcode/model/package-summary.html">com.nickbenn.adventofcode.model</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="com/nickbenn/adventofcode/day2/CubeConundrum.html#CEILINGS" class="member-name-link">CEILINGS</a> - Static variable in class com.nickbenn.adventofcode.day2.<a href="com/nickbenn/adventofcode/day2/CubeConundrum.html" title="class in com.nickbenn.adventofcode.day2">CubeConundrum</a></dt>
+<dt><a href="com/nickbenn/adventofcode/day02/CubeConundrum.html#CEILINGS" class="member-name-link">CEILINGS</a> - Static variable in class com.nickbenn.adventofcode.day02.<a href="com/nickbenn/adventofcode/day02/CubeConundrum.html" title="class in com.nickbenn.adventofcode.day02">CubeConundrum</a></dt>
 <dd>
 <div class="block">Maximum numbers of red, green, and blue cubes allowed for feasible games in part 1.</div>
 </dd>
@@ -115,8 +128,55 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="com/nickbenn/adventofcode/model/PrincipalDirection.html#columnOffset()" class="member-name-link">columnOffset()</a> - Method in enum class com.nickbenn.adventofcode.model.<a href="com/nickbenn/adventofcode/model/PrincipalDirection.html" title="enum class in com.nickbenn.adventofcode.model">PrincipalDirection</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="com/nickbenn/adventofcode/day1/package-summary.html">com.nickbenn.adventofcode.day1</a> - package com.nickbenn.adventofcode.day1</dt>
-<dd>&nbsp;</dd>
+<dt><a href="com/nickbenn/adventofcode/day01/package-summary.html">com.nickbenn.adventofcode.day01</a> - package com.nickbenn.adventofcode.day01</dt>
+<dd>
+<div class="block">Extract the first and last digits (specified as digit characters or words) from each line of
+ input and sum the resulting two-digit integers.</div>
+</dd>
+<dt><a href="com/nickbenn/adventofcode/day02/package-summary.html">com.nickbenn.adventofcode.day02</a> - package com.nickbenn.adventofcode.day02</dt>
+<dd>
+<div class="block">Filter a sequence of random drawings (read from an input file) of red, green, and blue balls by
+ the feasibility of each, given a specified maximum number of each&mdash;as well as the smallest
+ numbers of red, green, and blue balls which would make <em>all</em> of the drawings possible.</div>
+</dd>
+<dt><a href="com/nickbenn/adventofcode/day03/package-summary.html">com.nickbenn.adventofcode.day03</a> - package com.nickbenn.adventofcode.day03</dt>
+<dd>
+<div class="block">Identify and perform calculations on part numbers embedded in a schematic grid of characters
+ (read from an input file), where part numbers are recognized by their adjacency to gears
+ (represented by <code>'*'</code> characters) and other components.</div>
+</dd>
+<dt><a href="com/nickbenn/adventofcode/day04/package-summary.html">com.nickbenn.adventofcode.day04</a> - package com.nickbenn.adventofcode.day04</dt>
+<dd>
+<div class="block">Tabulate (and perform operations on) the matches between scratchcard picks and winning numbers,
+ for a sequence of scratchcards read from an input file.</div>
+</dd>
+<dt><a href="com/nickbenn/adventofcode/day05/package-summary.html">com.nickbenn.adventofcode.day05</a> - package com.nickbenn.adventofcode.day05</dt>
+<dd>
+<div class="block">Translate seed numbers (read from an input file) to planting locations through a series of
+ mapping operations (specified by input and output ranges read from the input).</div>
+</dd>
+<dt><a href="com/nickbenn/adventofcode/day06/package-summary.html">com.nickbenn.adventofcode.day06</a> - package com.nickbenn.adventofcode.day06</dt>
+<dd>
+<div class="block">Find the range of winning charging times for each of a sequence of toy boat races (read from an
+ input file).</div>
+</dd>
+<dt><a href="com/nickbenn/adventofcode/day07/package-summary.html">com.nickbenn.adventofcode.day07</a> - package com.nickbenn.adventofcode.day07</dt>
+<dd>
+<div class="block">Rank a sequence of hands and wagers (read from an input file) for a simplified version of
+ poker, and tabulate the winnings.</div>
+</dd>
+<dt><a href="com/nickbenn/adventofcode/day08/package-summary.html">com.nickbenn.adventofcode.day08</a> - package com.nickbenn.adventofcode.day08</dt>
+<dd>
+<div class="block">Count the number of steps required to traverse a single path between an initial node and a
+ terminal node in a selected graph; then, compute the number of steps for multiple parallel
+ traversals, all starting at the same time, and all ending on a terminal node at the same time
+ (potentially after passing through one or more potential terminal nodes along the path).</div>
+</dd>
+<dt><a href="com/nickbenn/adventofcode/day09/package-summary.html">com.nickbenn.adventofcode.day09</a> - package com.nickbenn.adventofcode.day09</dt>
+<dd>
+<div class="block">Extrapolate the next higher and next lower values for each of multiple sequences of input values,
+ where each sequence is generated by some univariate polynomial expression.</div>
+</dd>
 <dt><a href="com/nickbenn/adventofcode/day10/package-summary.html">com.nickbenn.adventofcode.day10</a> - package com.nickbenn.adventofcode.day10</dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/nickbenn/adventofcode/day11/package-summary.html">com.nickbenn.adventofcode.day11</a> - package com.nickbenn.adventofcode.day11</dt>
@@ -132,22 +192,6 @@ loadScripts(document, 'script');</script>
 <dt><a href="com/nickbenn/adventofcode/day16/package-summary.html">com.nickbenn.adventofcode.day16</a> - package com.nickbenn.adventofcode.day16</dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/nickbenn/adventofcode/day17/package-summary.html">com.nickbenn.adventofcode.day17</a> - package com.nickbenn.adventofcode.day17</dt>
-<dd>&nbsp;</dd>
-<dt><a href="com/nickbenn/adventofcode/day2/package-summary.html">com.nickbenn.adventofcode.day2</a> - package com.nickbenn.adventofcode.day2</dt>
-<dd>&nbsp;</dd>
-<dt><a href="com/nickbenn/adventofcode/day3/package-summary.html">com.nickbenn.adventofcode.day3</a> - package com.nickbenn.adventofcode.day3</dt>
-<dd>&nbsp;</dd>
-<dt><a href="com/nickbenn/adventofcode/day4/package-summary.html">com.nickbenn.adventofcode.day4</a> - package com.nickbenn.adventofcode.day4</dt>
-<dd>&nbsp;</dd>
-<dt><a href="com/nickbenn/adventofcode/day5/package-summary.html">com.nickbenn.adventofcode.day5</a> - package com.nickbenn.adventofcode.day5</dt>
-<dd>&nbsp;</dd>
-<dt><a href="com/nickbenn/adventofcode/day6/package-summary.html">com.nickbenn.adventofcode.day6</a> - package com.nickbenn.adventofcode.day6</dt>
-<dd>&nbsp;</dd>
-<dt><a href="com/nickbenn/adventofcode/day7/package-summary.html">com.nickbenn.adventofcode.day7</a> - package com.nickbenn.adventofcode.day7</dt>
-<dd>&nbsp;</dd>
-<dt><a href="com/nickbenn/adventofcode/day8/package-summary.html">com.nickbenn.adventofcode.day8</a> - package com.nickbenn.adventofcode.day8</dt>
-<dd>&nbsp;</dd>
-<dt><a href="com/nickbenn/adventofcode/day9/package-summary.html">com.nickbenn.adventofcode.day9</a> - package com.nickbenn.adventofcode.day9</dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/nickbenn/adventofcode/model/package-summary.html">com.nickbenn.adventofcode.model</a> - package com.nickbenn.adventofcode.model</dt>
 <dd>&nbsp;</dd>
@@ -169,27 +213,35 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="com/nickbenn/adventofcode/day16/LavaFloor.html#countMaxEnergizedTiles()" class="member-name-link">countMaxEnergizedTiles()</a> - Method in class com.nickbenn.adventofcode.day16.<a href="com/nickbenn/adventofcode/day16/LavaFloor.html" title="class in com.nickbenn.adventofcode.day16">LavaFloor</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="com/nickbenn/adventofcode/day8/HauntedWasteland.html#countParallelSteps()" class="member-name-link">countParallelSteps()</a> - Method in class com.nickbenn.adventofcode.day8.<a href="com/nickbenn/adventofcode/day8/HauntedWasteland.html" title="class in com.nickbenn.adventofcode.day8">HauntedWasteland</a></dt>
-<dd>&nbsp;</dd>
-<dt><a href="com/nickbenn/adventofcode/day8/HauntedWasteland.html#countSteps()" class="member-name-link">countSteps()</a> - Method in class com.nickbenn.adventofcode.day8.<a href="com/nickbenn/adventofcode/day8/HauntedWasteland.html" title="class in com.nickbenn.adventofcode.day8">HauntedWasteland</a></dt>
-<dd>&nbsp;</dd>
-<dt><a href="com/nickbenn/adventofcode/day6/WaitForIt.html#countWinningCombinations()" class="member-name-link">countWinningCombinations()</a> - Method in class com.nickbenn.adventofcode.day6.<a href="com/nickbenn/adventofcode/day6/WaitForIt.html" title="class in com.nickbenn.adventofcode.day6">WaitForIt</a></dt>
+<dt><a href="com/nickbenn/adventofcode/day08/HauntedWasteland.html#countParallelSteps()" class="member-name-link">countParallelSteps()</a> - Method in class com.nickbenn.adventofcode.day08.<a href="com/nickbenn/adventofcode/day08/HauntedWasteland.html" title="class in com.nickbenn.adventofcode.day08">HauntedWasteland</a></dt>
+<dd>
+<div class="block">Counts and returns the number of steps required to travel from <em>all</em> initial nodes
+ (with labels ending in as "A") to destination nodes (with labels ending in "Z"), such that if
+ one or more paths arrive at a destination node before the rest, travel continues on from that
+ destination node, until <em>all</em> paths arrive at destination nodes in the same step.</div>
+</dd>
+<dt><a href="com/nickbenn/adventofcode/day08/HauntedWasteland.html#countSteps()" class="member-name-link">countSteps()</a> - Method in class com.nickbenn.adventofcode.day08.<a href="com/nickbenn/adventofcode/day08/HauntedWasteland.html" title="class in com.nickbenn.adventofcode.day08">HauntedWasteland</a></dt>
+<dd>
+<div class="block">Counts and returns the number of steps required to travel from a single initial node (labeled
+ as "AAA") to a single destination node ("ZZZ").</div>
+</dd>
+<dt><a href="com/nickbenn/adventofcode/day06/WaitForIt.html#countWinningCombinations()" class="member-name-link">countWinningCombinations()</a> - Method in class com.nickbenn.adventofcode.day06.<a href="com/nickbenn/adventofcode/day06/WaitForIt.html" title="class in com.nickbenn.adventofcode.day06">WaitForIt</a></dt>
 <dd>
 <div class="block">Counts the number of integral values of <em>x</em> in each race, for which the inequality
  <em>x</em>(<em>T - x</em>) &gt; <em>D</em> holds (where <em>T</em> is the time limit for the
  race, and <em>D</em> is the stated distance record), then computes and returns the product of
  these counts.</div>
 </dd>
-<dt><a href="com/nickbenn/adventofcode/day2/CubeConundrum.html" class="type-name-link" title="class in com.nickbenn.adventofcode.day2">CubeConundrum</a> - Class in <a href="com/nickbenn/adventofcode/day2/package-summary.html">com.nickbenn.adventofcode.day2</a></dt>
+<dt><a href="com/nickbenn/adventofcode/day02/CubeConundrum.html" class="type-name-link" title="class in com.nickbenn.adventofcode.day02">CubeConundrum</a> - Class in <a href="com/nickbenn/adventofcode/day02/package-summary.html">com.nickbenn.adventofcode.day02</a></dt>
 <dd>
 <div class="block">Implements solutions to the Day 2 problem, involving random drawing of colored cubes from a bag.</div>
 </dd>
-<dt><a href="com/nickbenn/adventofcode/day2/CubeConundrum.html#%3Cinit%3E()" class="member-name-link">CubeConundrum()</a> - Constructor for class com.nickbenn.adventofcode.day2.<a href="com/nickbenn/adventofcode/day2/CubeConundrum.html" title="class in com.nickbenn.adventofcode.day2">CubeConundrum</a></dt>
+<dt><a href="com/nickbenn/adventofcode/day02/CubeConundrum.html#%3Cinit%3E()" class="member-name-link">CubeConundrum()</a> - Constructor for class com.nickbenn.adventofcode.day02.<a href="com/nickbenn/adventofcode/day02/CubeConundrum.html" title="class in com.nickbenn.adventofcode.day02">CubeConundrum</a></dt>
 <dd>
 <div class="block">Initializes this instance, using the value of <a href="com/nickbenn/adventofcode/view/DataSource.html#DEFAULT_INPUT_FILE"><code>DataSource.DEFAULT_INPUT_FILE</code></a> as the name
  (relative to the package of this class on the classpath) of the file to be read.</div>
 </dd>
-<dt><a href="com/nickbenn/adventofcode/day2/CubeConundrum.html#%3Cinit%3E(java.lang.String)" class="member-name-link">CubeConundrum(String)</a> - Constructor for class com.nickbenn.adventofcode.day2.<a href="com/nickbenn/adventofcode/day2/CubeConundrum.html" title="class in com.nickbenn.adventofcode.day2">CubeConundrum</a></dt>
+<dt><a href="com/nickbenn/adventofcode/day02/CubeConundrum.html#%3Cinit%3E(java.lang.String)" class="member-name-link">CubeConundrum(String)</a> - Constructor for class com.nickbenn.adventofcode.day02.<a href="com/nickbenn/adventofcode/day02/CubeConundrum.html" title="class in com.nickbenn.adventofcode.day02">CubeConundrum</a></dt>
 <dd>
 <div class="block">Initializes this instance, using the value specified in the <code>inputFile</code> parameter as the
  name (relative to the package of this class on the classpath) of the file to be read.</div>
@@ -253,18 +305,18 @@ loadScripts(document, 'script');</script>
 </dl>
 <h2 class="title" id="I:G">G</h2>
 <dl class="index">
-<dt><a href="com/nickbenn/adventofcode/day3/GearRatio.html" class="type-name-link" title="class in com.nickbenn.adventofcode.day3">GearRatio</a> - Class in <a href="com/nickbenn/adventofcode/day3/package-summary.html">com.nickbenn.adventofcode.day3</a></dt>
+<dt><a href="com/nickbenn/adventofcode/day03/GearRatio.html" class="type-name-link" title="class in com.nickbenn.adventofcode.day03">GearRatio</a> - Class in <a href="com/nickbenn/adventofcode/day03/package-summary.html">com.nickbenn.adventofcode.day03</a></dt>
 <dd>
 <div class="block">Implements solution to parts 1 and 2 of day 3&mdash;reading an input file and interpreting its
  contents as a schematic containing part numbers, gears, and other elements, then computing values
  derived from the positions of those elements.</div>
 </dd>
-<dt><a href="com/nickbenn/adventofcode/day3/GearRatio.html#%3Cinit%3E()" class="member-name-link">GearRatio()</a> - Constructor for class com.nickbenn.adventofcode.day3.<a href="com/nickbenn/adventofcode/day3/GearRatio.html" title="class in com.nickbenn.adventofcode.day3">GearRatio</a></dt>
+<dt><a href="com/nickbenn/adventofcode/day03/GearRatio.html#%3Cinit%3E()" class="member-name-link">GearRatio()</a> - Constructor for class com.nickbenn.adventofcode.day03.<a href="com/nickbenn/adventofcode/day03/GearRatio.html" title="class in com.nickbenn.adventofcode.day03">GearRatio</a></dt>
 <dd>
 <div class="block">Initializes this instance, using the value of <a href="com/nickbenn/adventofcode/view/DataSource.html#DEFAULT_INPUT_FILE"><code>DataSource.DEFAULT_INPUT_FILE</code></a> as the name
  (relative to the package of this class on the classpath) of the file to be read.</div>
 </dd>
-<dt><a href="com/nickbenn/adventofcode/day3/GearRatio.html#%3Cinit%3E(java.lang.String)" class="member-name-link">GearRatio(String)</a> - Constructor for class com.nickbenn.adventofcode.day3.<a href="com/nickbenn/adventofcode/day3/GearRatio.html" title="class in com.nickbenn.adventofcode.day3">GearRatio</a></dt>
+<dt><a href="com/nickbenn/adventofcode/day03/GearRatio.html#%3Cinit%3E(java.lang.String)" class="member-name-link">GearRatio(String)</a> - Constructor for class com.nickbenn.adventofcode.day03.<a href="com/nickbenn/adventofcode/day03/GearRatio.html" title="class in com.nickbenn.adventofcode.day03">GearRatio</a></dt>
 <dd>
 <div class="block">Initializes this instance, using the value specified in the <code>inputFile</code> parameter as the
  name (relative to the package of this class on the classpath) of the file to be read, and
@@ -277,12 +329,12 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="com/nickbenn/adventofcode/day15/LensLibrary.html#getHashSum()" class="member-name-link">getHashSum()</a> - Method in class com.nickbenn.adventofcode.day15.<a href="com/nickbenn/adventofcode/day15/LensLibrary.html" title="class in com.nickbenn.adventofcode.day15">LensLibrary</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="com/nickbenn/adventofcode/day5/SeedFertilizer.html#getLowestInterpolatedLocation()" class="member-name-link">getLowestInterpolatedLocation()</a> - Method in class com.nickbenn.adventofcode.day5.<a href="com/nickbenn/adventofcode/day5/SeedFertilizer.html" title="class in com.nickbenn.adventofcode.day5">SeedFertilizer</a></dt>
+<dt><a href="com/nickbenn/adventofcode/day05/SeedFertilizer.html#getLowestInterpolatedLocation()" class="member-name-link">getLowestInterpolatedLocation()</a> - Method in class com.nickbenn.adventofcode.day05.<a href="com/nickbenn/adventofcode/day05/SeedFertilizer.html" title="class in com.nickbenn.adventofcode.day05">SeedFertilizer</a></dt>
 <dd>
 <div class="block">Computes and returns the lowest final location number resulting for any seed number falling in
  the seed number ranges listed at the start of the input.</div>
 </dd>
-<dt><a href="com/nickbenn/adventofcode/day5/SeedFertilizer.html#getLowestLocation()" class="member-name-link">getLowestLocation()</a> - Method in class com.nickbenn.adventofcode.day5.<a href="com/nickbenn/adventofcode/day5/SeedFertilizer.html" title="class in com.nickbenn.adventofcode.day5">SeedFertilizer</a></dt>
+<dt><a href="com/nickbenn/adventofcode/day05/SeedFertilizer.html#getLowestLocation()" class="member-name-link">getLowestLocation()</a> - Method in class com.nickbenn.adventofcode.day05.<a href="com/nickbenn/adventofcode/day05/SeedFertilizer.html" title="class in com.nickbenn.adventofcode.day05">SeedFertilizer</a></dt>
 <dd>
 <div class="block">Computes and returns the lowest final location number resulting for any of the seed numbers
  explicitly listed at the start of the input.</div>
@@ -293,19 +345,23 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="com/nickbenn/adventofcode/day14/ParabolicReflectorDish.html#getSingleTiltLoad()" class="member-name-link">getSingleTiltLoad()</a> - Method in class com.nickbenn.adventofcode.day14.<a href="com/nickbenn/adventofcode/day14/ParabolicReflectorDish.html" title="class in com.nickbenn.adventofcode.day14">ParabolicReflectorDish</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="com/nickbenn/adventofcode/day4/ScratchCards.html#getTotalCards()" class="member-name-link">getTotalCards()</a> - Method in class com.nickbenn.adventofcode.day4.<a href="com/nickbenn/adventofcode/day4/ScratchCards.html" title="class in com.nickbenn.adventofcode.day4">ScratchCards</a></dt>
+<dt><a href="com/nickbenn/adventofcode/day04/ScratchCards.html#getTotalCards()" class="member-name-link">getTotalCards()</a> - Method in class com.nickbenn.adventofcode.day04.<a href="com/nickbenn/adventofcode/day04/ScratchCards.html" title="class in com.nickbenn.adventofcode.day04">ScratchCards</a></dt>
 <dd>
 <div class="block">Iterates over the scratchcards read from the input file, starting with a count of 1 for each,
  increasing the counts of successive cards based on the number of matches found in previous
  cards, then summing the resulting total number of cards.</div>
 </dd>
-<dt><a href="com/nickbenn/adventofcode/day4/ScratchCards.html#getTotalValue()" class="member-name-link">getTotalValue()</a> - Method in class com.nickbenn.adventofcode.day4.<a href="com/nickbenn/adventofcode/day4/ScratchCards.html" title="class in com.nickbenn.adventofcode.day4">ScratchCards</a></dt>
+<dt><a href="com/nickbenn/adventofcode/day04/ScratchCards.html#getTotalValue()" class="member-name-link">getTotalValue()</a> - Method in class com.nickbenn.adventofcode.day04.<a href="com/nickbenn/adventofcode/day04/ScratchCards.html" title="class in com.nickbenn.adventofcode.day04">ScratchCards</a></dt>
 <dd>
 <div class="block">Iterates over the scratchcards read from the input file, and for a non-zero number of
  matches <em>n</em>, computes the value 2<sup>(<em>n</em> - 1)</sup>, and sums the values.</div>
 </dd>
-<dt><a href="com/nickbenn/adventofcode/day7/CamelCards.html#getWinnings()" class="member-name-link">getWinnings()</a> - Method in class com.nickbenn.adventofcode.day7.<a href="com/nickbenn/adventofcode/day7/CamelCards.html" title="class in com.nickbenn.adventofcode.day7">CamelCards</a></dt>
-<dd>&nbsp;</dd>
+<dt><a href="com/nickbenn/adventofcode/day07/CamelCards.html#getWinnings()" class="member-name-link">getWinnings()</a> - Method in class com.nickbenn.adventofcode.day07.<a href="com/nickbenn/adventofcode/day07/CamelCards.html" title="class in com.nickbenn.adventofcode.day07">CamelCards</a></dt>
+<dd>
+<div class="block">Sorts hands by value, assigns each a reversed rank (1 for the lowest-valued hand, and
+ ascending), multiplies the rank by the bid for that hand, computes the sum of these products
+ over all hands, and returns the result.</div>
+</dd>
 </dl>
 <h2 class="title" id="I:H">H</h2>
 <dl class="index">
@@ -337,12 +393,26 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="com/nickbenn/adventofcode/util/StreamChunker.html#hasNext()" class="member-name-link">hasNext()</a> - Method in record class com.nickbenn.adventofcode.util.<a href="com/nickbenn/adventofcode/util/StreamChunker.html" title="class in com.nickbenn.adventofcode.util">StreamChunker</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="com/nickbenn/adventofcode/day8/HauntedWasteland.html" class="type-name-link" title="class in com.nickbenn.adventofcode.day8">HauntedWasteland</a> - Class in <a href="com/nickbenn/adventofcode/day8/package-summary.html">com.nickbenn.adventofcode.day8</a></dt>
-<dd>&nbsp;</dd>
-<dt><a href="com/nickbenn/adventofcode/day8/HauntedWasteland.html#%3Cinit%3E()" class="member-name-link">HauntedWasteland()</a> - Constructor for class com.nickbenn.adventofcode.day8.<a href="com/nickbenn/adventofcode/day8/HauntedWasteland.html" title="class in com.nickbenn.adventofcode.day8">HauntedWasteland</a></dt>
-<dd>&nbsp;</dd>
-<dt><a href="com/nickbenn/adventofcode/day8/HauntedWasteland.html#%3Cinit%3E(java.lang.String)" class="member-name-link">HauntedWasteland(String)</a> - Constructor for class com.nickbenn.adventofcode.day8.<a href="com/nickbenn/adventofcode/day8/HauntedWasteland.html" title="class in com.nickbenn.adventofcode.day8">HauntedWasteland</a></dt>
-<dd>&nbsp;</dd>
+<dt><a href="com/nickbenn/adventofcode/day08/HauntedWasteland.html" class="type-name-link" title="class in com.nickbenn.adventofcode.day08">HauntedWasteland</a> - Class in <a href="com/nickbenn/adventofcode/day08/package-summary.html">com.nickbenn.adventofcode.day08</a></dt>
+<dd>
+<div class="block">Implements solutions for both parts of day 8, reading an input file with the first line
+ specifying a sequence of left and right turns, and subsequent lines specifying a directed graph,
+ with each line containing a node label and the labels of the nodes adjacent in the left and right
+ directions.</div>
+</dd>
+<dt><a href="com/nickbenn/adventofcode/day08/HauntedWasteland.html#%3Cinit%3E()" class="member-name-link">HauntedWasteland()</a> - Constructor for class com.nickbenn.adventofcode.day08.<a href="com/nickbenn/adventofcode/day08/HauntedWasteland.html" title="class in com.nickbenn.adventofcode.day08">HauntedWasteland</a></dt>
+<dd>
+<div class="block">Initializes this instance, using the value of <a href="com/nickbenn/adventofcode/view/DataSource.html#DEFAULT_INPUT_FILE"><code>DataSource.DEFAULT_INPUT_FILE</code></a> as the name
+ (relative to the package of this class on the classpath) of the file to be read.</div>
+</dd>
+<dt><a href="com/nickbenn/adventofcode/day08/HauntedWasteland.html#%3Cinit%3E(java.lang.String)" class="member-name-link">HauntedWasteland(String)</a> - Constructor for class com.nickbenn.adventofcode.day08.<a href="com/nickbenn/adventofcode/day08/HauntedWasteland.html" title="class in com.nickbenn.adventofcode.day08">HauntedWasteland</a></dt>
+<dd>
+<div class="block">Initializes this instance, using the value specified in the <code>inputFile</code> parameter as the
+ name (relative to the package of this class on the classpath) of the file to be read, parsing
+ the left and right turn sequence at the start of the file, then parsing each successive line as
+ a node label, followed by a pair of labels for the adjacent nodes in the left and right
+ directions.</div>
+</dd>
 <dt><a href="com/nickbenn/adventofcode/model/IntRectangle.html#height()" class="member-name-link">height()</a> - Method in record class com.nickbenn.adventofcode.model.<a href="com/nickbenn/adventofcode/model/IntRectangle.html" title="class in com.nickbenn.adventofcode.model">IntRectangle</a></dt>
 <dd>
 <div class="block">Returns the value of the <code>height</code> record component.</div>
@@ -436,13 +506,52 @@ loadScripts(document, 'script');</script>
 </dl>
 <h2 class="title" id="I:M">M</h2>
 <dl class="index">
-<dt><a href="com/nickbenn/adventofcode/day1/Trebuchet.html#main(java.lang.String%5B%5D)" class="member-name-link">main(String[])</a> - Static method in class com.nickbenn.adventofcode.day1.<a href="com/nickbenn/adventofcode/day1/Trebuchet.html" title="class in com.nickbenn.adventofcode.day1">Trebuchet</a></dt>
+<dt><a href="com/nickbenn/adventofcode/day01/Trebuchet.html#main(java.lang.String%5B%5D)" class="member-name-link">main(String[])</a> - Static method in class com.nickbenn.adventofcode.day01.<a href="com/nickbenn/adventofcode/day01/Trebuchet.html" title="class in com.nickbenn.adventofcode.day01">Trebuchet</a></dt>
 <dd>
-<div class="block">Creates an instance of <a href="com/nickbenn/adventofcode/day1/Trebuchet.html" title="class in com.nickbenn.adventofcode.day1"><code>Trebuchet</code></a> for each of the two parts of the problem, implicitly
+<div class="block">Creates an instance of <a href="com/nickbenn/adventofcode/day01/Trebuchet.html" title="class in com.nickbenn.adventofcode.day01"><code>Trebuchet</code></a> for each of the two parts of the problem, implicitly
  specifying that input should be read from the file specified in
  <a href="com/nickbenn/adventofcode/view/DataSource.html#DEFAULT_INPUT_FILE"><code>DataSource.DEFAULT_INPUT_FILE</code></a>, and invoking the relevant method to compute the required
  value, which is then printed to the console.</div>
 </dd>
+<dt><a href="com/nickbenn/adventofcode/day02/CubeConundrum.html#main(java.lang.String%5B%5D)" class="member-name-link">main(String[])</a> - Static method in class com.nickbenn.adventofcode.day02.<a href="com/nickbenn/adventofcode/day02/CubeConundrum.html" title="class in com.nickbenn.adventofcode.day02">CubeConundrum</a></dt>
+<dd>
+<div class="block">Creates an instance of <a href="com/nickbenn/adventofcode/day02/CubeConundrum.html" title="class in com.nickbenn.adventofcode.day02"><code>CubeConundrum</code></a> for each of the two parts of the problem,
+ implicitly specifying that input should be read from the file given by
+ <a href="com/nickbenn/adventofcode/view/DataSource.html#DEFAULT_INPUT_FILE"><code>DataSource.DEFAULT_INPUT_FILE</code></a>, and invoking the relevant method to compute the required
+ value, which is then printed to the console.</div>
+</dd>
+<dt><a href="com/nickbenn/adventofcode/day03/GearRatio.html#main(java.lang.String%5B%5D)" class="member-name-link">main(String[])</a> - Static method in class com.nickbenn.adventofcode.day03.<a href="com/nickbenn/adventofcode/day03/GearRatio.html" title="class in com.nickbenn.adventofcode.day03">GearRatio</a></dt>
+<dd>
+<div class="block">Creates an instance of <a href="com/nickbenn/adventofcode/day03/GearRatio.html" title="class in com.nickbenn.adventofcode.day03"><code>GearRatio</code></a> and invokes the relevant methods to compute the
+ required values for parts 1 and 2, printing the results.</div>
+</dd>
+<dt><a href="com/nickbenn/adventofcode/day04/ScratchCards.html#main(java.lang.String%5B%5D)" class="member-name-link">main(String[])</a> - Static method in class com.nickbenn.adventofcode.day04.<a href="com/nickbenn/adventofcode/day04/ScratchCards.html" title="class in com.nickbenn.adventofcode.day04">ScratchCards</a></dt>
+<dd>
+<div class="block">For each of parts 1 and 2, creates an instance of <a href="com/nickbenn/adventofcode/day04/ScratchCards.html" title="class in com.nickbenn.adventofcode.day04"><code>ScratchCards</code></a>, invokes the relevant
+ solution method, and prints the result.</div>
+</dd>
+<dt><a href="com/nickbenn/adventofcode/day05/SeedFertilizer.html#main(java.lang.String%5B%5D)" class="member-name-link">main(String[])</a> - Static method in class com.nickbenn.adventofcode.day05.<a href="com/nickbenn/adventofcode/day05/SeedFertilizer.html" title="class in com.nickbenn.adventofcode.day05">SeedFertilizer</a></dt>
+<dd>
+<div class="block">For each of parts 1 and 2, creates an instance of <a href="com/nickbenn/adventofcode/day05/SeedFertilizer.html" title="class in com.nickbenn.adventofcode.day05"><code>SeedFertilizer</code></a>, invokes the relevant
+ solution method, and prints the result.</div>
+</dd>
+<dt><a href="com/nickbenn/adventofcode/day06/WaitForIt.html#main(java.lang.String%5B%5D)" class="member-name-link">main(String[])</a> - Static method in class com.nickbenn.adventofcode.day06.<a href="com/nickbenn/adventofcode/day06/WaitForIt.html" title="class in com.nickbenn.adventofcode.day06">WaitForIt</a></dt>
+<dd>
+<div class="block">For each of parts 1 and 2, creates an instance of <a href="com/nickbenn/adventofcode/day06/WaitForIt.html" title="class in com.nickbenn.adventofcode.day06"><code>WaitForIt</code></a> with the relevant data,
+ invokes the <a href="com/nickbenn/adventofcode/day06/WaitForIt.html#countWinningCombinations()"><code>countWinningCombinations()</code></a>, and prints the result.</div>
+</dd>
+<dt><a href="com/nickbenn/adventofcode/day07/CamelCards.html#main(java.lang.String%5B%5D)" class="member-name-link">main(String[])</a> - Static method in class com.nickbenn.adventofcode.day07.<a href="com/nickbenn/adventofcode/day07/CamelCards.html" title="class in com.nickbenn.adventofcode.day07">CamelCards</a></dt>
+<dd>
+<div class="block">For each of parts 1 and 2, creates an instance of <a href="com/nickbenn/adventofcode/day07/CamelCards.html" title="class in com.nickbenn.adventofcode.day07"><code>CamelCards</code></a>, invokes the
+ <a href="com/nickbenn/adventofcode/day07/CamelCards.html#getWinnings()"><code>CamelCards.getWinnings()</code></a> solution method, and prints the result.</div>
+</dd>
+<dt><a href="com/nickbenn/adventofcode/day08/HauntedWasteland.html#main(java.lang.String%5B%5D)" class="member-name-link">main(String[])</a> - Static method in class com.nickbenn.adventofcode.day08.<a href="com/nickbenn/adventofcode/day08/HauntedWasteland.html" title="class in com.nickbenn.adventofcode.day08">HauntedWasteland</a></dt>
+<dd>
+<div class="block">For each of parts 1 and 2, creates an instance of <a href="com/nickbenn/adventofcode/day08/HauntedWasteland.html" title="class in com.nickbenn.adventofcode.day08"><code>HauntedWasteland</code></a>, invokes the
+ relevant solution method, and prints the result.</div>
+</dd>
+<dt><a href="com/nickbenn/adventofcode/day09/MirageMaintenance.html#main(java.lang.String%5B%5D)" class="member-name-link">main(String[])</a> - Static method in class com.nickbenn.adventofcode.day09.<a href="com/nickbenn/adventofcode/day09/MirageMaintenance.html" title="class in com.nickbenn.adventofcode.day09">MirageMaintenance</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="com/nickbenn/adventofcode/day10/PipeMaze.html#main(java.lang.String%5B%5D)" class="member-name-link">main(String[])</a> - Static method in class com.nickbenn.adventofcode.day10.<a href="com/nickbenn/adventofcode/day10/PipeMaze.html" title="class in com.nickbenn.adventofcode.day10">PipeMaze</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/nickbenn/adventofcode/day11/CosmicExpansion.html#main(java.lang.String%5B%5D)" class="member-name-link">main(String[])</a> - Static method in class com.nickbenn.adventofcode.day11.<a href="com/nickbenn/adventofcode/day11/CosmicExpansion.html" title="class in com.nickbenn.adventofcode.day11">CosmicExpansion</a></dt>
@@ -459,39 +568,6 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="com/nickbenn/adventofcode/day17/Day17.html#main(java.lang.String%5B%5D)" class="member-name-link">main(String[])</a> - Static method in class com.nickbenn.adventofcode.day17.<a href="com/nickbenn/adventofcode/day17/Day17.html" title="class in com.nickbenn.adventofcode.day17">Day17</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="com/nickbenn/adventofcode/day2/CubeConundrum.html#main(java.lang.String%5B%5D)" class="member-name-link">main(String[])</a> - Static method in class com.nickbenn.adventofcode.day2.<a href="com/nickbenn/adventofcode/day2/CubeConundrum.html" title="class in com.nickbenn.adventofcode.day2">CubeConundrum</a></dt>
-<dd>
-<div class="block">Creates an instance of <a href="com/nickbenn/adventofcode/day2/CubeConundrum.html" title="class in com.nickbenn.adventofcode.day2"><code>CubeConundrum</code></a> for each of the two parts of the problem,
- implicitly specifying that input should be read from the file given by
- <a href="com/nickbenn/adventofcode/view/DataSource.html#DEFAULT_INPUT_FILE"><code>DataSource.DEFAULT_INPUT_FILE</code></a>, and invoking the relevant method to compute the required
- value, which is then printed to the console.</div>
-</dd>
-<dt><a href="com/nickbenn/adventofcode/day3/GearRatio.html#main(java.lang.String%5B%5D)" class="member-name-link">main(String[])</a> - Static method in class com.nickbenn.adventofcode.day3.<a href="com/nickbenn/adventofcode/day3/GearRatio.html" title="class in com.nickbenn.adventofcode.day3">GearRatio</a></dt>
-<dd>
-<div class="block">Creates an instance of <a href="com/nickbenn/adventofcode/day3/GearRatio.html" title="class in com.nickbenn.adventofcode.day3"><code>GearRatio</code></a> and invokes the relevant methods to compute the
- required values for parts 1 and 2, printing the results.</div>
-</dd>
-<dt><a href="com/nickbenn/adventofcode/day4/ScratchCards.html#main(java.lang.String%5B%5D)" class="member-name-link">main(String[])</a> - Static method in class com.nickbenn.adventofcode.day4.<a href="com/nickbenn/adventofcode/day4/ScratchCards.html" title="class in com.nickbenn.adventofcode.day4">ScratchCards</a></dt>
-<dd>
-<div class="block">For each of parts 1 and 2, creates an instance of <a href="com/nickbenn/adventofcode/day4/ScratchCards.html" title="class in com.nickbenn.adventofcode.day4"><code>ScratchCards</code></a>, invokes the relevant
- solution method, and prints the result.</div>
-</dd>
-<dt><a href="com/nickbenn/adventofcode/day5/SeedFertilizer.html#main(java.lang.String%5B%5D)" class="member-name-link">main(String[])</a> - Static method in class com.nickbenn.adventofcode.day5.<a href="com/nickbenn/adventofcode/day5/SeedFertilizer.html" title="class in com.nickbenn.adventofcode.day5">SeedFertilizer</a></dt>
-<dd>
-<div class="block">For each of parts 1 and 2, creates an instance of <a href="com/nickbenn/adventofcode/day5/SeedFertilizer.html" title="class in com.nickbenn.adventofcode.day5"><code>SeedFertilizer</code></a>, invokes the relevant
- solution method, and prints the result.</div>
-</dd>
-<dt><a href="com/nickbenn/adventofcode/day6/WaitForIt.html#main(java.lang.String%5B%5D)" class="member-name-link">main(String[])</a> - Static method in class com.nickbenn.adventofcode.day6.<a href="com/nickbenn/adventofcode/day6/WaitForIt.html" title="class in com.nickbenn.adventofcode.day6">WaitForIt</a></dt>
-<dd>
-<div class="block">For each of parts 1 and 2, creates an instance of <a href="com/nickbenn/adventofcode/day6/WaitForIt.html" title="class in com.nickbenn.adventofcode.day6"><code>WaitForIt</code></a> with the relevant data,
- invokes the <a href="com/nickbenn/adventofcode/day6/WaitForIt.html#countWinningCombinations()"><code>countWinningCombinations()</code></a>, and prints the result.</div>
-</dd>
-<dt><a href="com/nickbenn/adventofcode/day7/CamelCards.html#main(java.lang.String%5B%5D)" class="member-name-link">main(String[])</a> - Static method in class com.nickbenn.adventofcode.day7.<a href="com/nickbenn/adventofcode/day7/CamelCards.html" title="class in com.nickbenn.adventofcode.day7">CamelCards</a></dt>
-<dd>&nbsp;</dd>
-<dt><a href="com/nickbenn/adventofcode/day8/HauntedWasteland.html#main(java.lang.String%5B%5D)" class="member-name-link">main(String[])</a> - Static method in class com.nickbenn.adventofcode.day8.<a href="com/nickbenn/adventofcode/day8/HauntedWasteland.html" title="class in com.nickbenn.adventofcode.day8">HauntedWasteland</a></dt>
-<dd>&nbsp;</dd>
-<dt><a href="com/nickbenn/adventofcode/day9/MirageMaintenance.html#main(java.lang.String%5B%5D)" class="member-name-link">main(String[])</a> - Static method in class com.nickbenn.adventofcode.day9.<a href="com/nickbenn/adventofcode/day9/MirageMaintenance.html" title="class in com.nickbenn.adventofcode.day9">MirageMaintenance</a></dt>
-<dd>&nbsp;</dd>
 <dt><a href="com/nickbenn/adventofcode/model/MatrixLocation.html#manhattanDistance(com.nickbenn.adventofcode.model.MatrixLocation)" class="member-name-link">manhattanDistance(MatrixLocation)</a> - Method in record class com.nickbenn.adventofcode.model.<a href="com/nickbenn/adventofcode/model/MatrixLocation.html" title="class in com.nickbenn.adventofcode.model">MatrixLocation</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/nickbenn/adventofcode/model/MatrixLocation.html" class="type-name-link" title="class in com.nickbenn.adventofcode.model">MatrixLocation</a> - Record Class in <a href="com/nickbenn/adventofcode/model/package-summary.html">com.nickbenn.adventofcode.model</a></dt>
@@ -504,11 +580,11 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="com/nickbenn/adventofcode/day10/PipeMaze.html#maxDistanceInLoop()" class="member-name-link">maxDistanceInLoop()</a> - Method in class com.nickbenn.adventofcode.day10.<a href="com/nickbenn/adventofcode/day10/PipeMaze.html" title="class in com.nickbenn.adventofcode.day10">PipeMaze</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="com/nickbenn/adventofcode/day9/MirageMaintenance.html" class="type-name-link" title="class in com.nickbenn.adventofcode.day9">MirageMaintenance</a> - Class in <a href="com/nickbenn/adventofcode/day9/package-summary.html">com.nickbenn.adventofcode.day9</a></dt>
+<dt><a href="com/nickbenn/adventofcode/day09/MirageMaintenance.html" class="type-name-link" title="class in com.nickbenn.adventofcode.day09">MirageMaintenance</a> - Class in <a href="com/nickbenn/adventofcode/day09/package-summary.html">com.nickbenn.adventofcode.day09</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="com/nickbenn/adventofcode/day9/MirageMaintenance.html#%3Cinit%3E()" class="member-name-link">MirageMaintenance()</a> - Constructor for class com.nickbenn.adventofcode.day9.<a href="com/nickbenn/adventofcode/day9/MirageMaintenance.html" title="class in com.nickbenn.adventofcode.day9">MirageMaintenance</a></dt>
+<dt><a href="com/nickbenn/adventofcode/day09/MirageMaintenance.html#%3Cinit%3E()" class="member-name-link">MirageMaintenance()</a> - Constructor for class com.nickbenn.adventofcode.day09.<a href="com/nickbenn/adventofcode/day09/MirageMaintenance.html" title="class in com.nickbenn.adventofcode.day09">MirageMaintenance</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="com/nickbenn/adventofcode/day9/MirageMaintenance.html#%3Cinit%3E(java.lang.String)" class="member-name-link">MirageMaintenance(String)</a> - Constructor for class com.nickbenn.adventofcode.day9.<a href="com/nickbenn/adventofcode/day9/MirageMaintenance.html" title="class in com.nickbenn.adventofcode.day9">MirageMaintenance</a></dt>
+<dt><a href="com/nickbenn/adventofcode/day09/MirageMaintenance.html#%3Cinit%3E(java.lang.String)" class="member-name-link">MirageMaintenance(String)</a> - Constructor for class com.nickbenn.adventofcode.day09.<a href="com/nickbenn/adventofcode/day09/MirageMaintenance.html" title="class in com.nickbenn.adventofcode.day09">MirageMaintenance</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/nickbenn/adventofcode/model/MatrixLocation.html#move(com.nickbenn.adventofcode.model.Direction)" class="member-name-link">move(Direction)</a> - Method in record class com.nickbenn.adventofcode.model.<a href="com/nickbenn/adventofcode/model/MatrixLocation.html" title="class in com.nickbenn.adventofcode.model">MatrixLocation</a></dt>
 <dd>&nbsp;</dd>
@@ -621,36 +697,36 @@ loadScripts(document, 'script');</script>
 </dl>
 <h2 class="title" id="I:S">S</h2>
 <dl class="index">
-<dt><a href="com/nickbenn/adventofcode/day4/ScratchCards.html" class="type-name-link" title="class in com.nickbenn.adventofcode.day4">ScratchCards</a> - Class in <a href="com/nickbenn/adventofcode/day4/package-summary.html">com.nickbenn.adventofcode.day4</a></dt>
+<dt><a href="com/nickbenn/adventofcode/day04/ScratchCards.html" class="type-name-link" title="class in com.nickbenn.adventofcode.day04">ScratchCards</a> - Class in <a href="com/nickbenn/adventofcode/day04/package-summary.html">com.nickbenn.adventofcode.day04</a></dt>
 <dd>
 <div class="block">Implements solution to parts 1 and 2 of day 4&mdash;reading an input file and parsing each line
  as a scratchcard containing a pair of sets: a lottery draw, followed by picked numbers; these
  paired sets are then collected into a list.</div>
 </dd>
-<dt><a href="com/nickbenn/adventofcode/day4/ScratchCards.html#%3Cinit%3E()" class="member-name-link">ScratchCards()</a> - Constructor for class com.nickbenn.adventofcode.day4.<a href="com/nickbenn/adventofcode/day4/ScratchCards.html" title="class in com.nickbenn.adventofcode.day4">ScratchCards</a></dt>
+<dt><a href="com/nickbenn/adventofcode/day04/ScratchCards.html#%3Cinit%3E()" class="member-name-link">ScratchCards()</a> - Constructor for class com.nickbenn.adventofcode.day04.<a href="com/nickbenn/adventofcode/day04/ScratchCards.html" title="class in com.nickbenn.adventofcode.day04">ScratchCards</a></dt>
 <dd>
 <div class="block">Initializes this instance, using the value of <a href="com/nickbenn/adventofcode/view/DataSource.html#DEFAULT_INPUT_FILE"><code>DataSource.DEFAULT_INPUT_FILE</code></a> as the name
  (relative to the package of this class on the classpath) of the file to be read.</div>
 </dd>
-<dt><a href="com/nickbenn/adventofcode/day4/ScratchCards.html#%3Cinit%3E(java.lang.String)" class="member-name-link">ScratchCards(String)</a> - Constructor for class com.nickbenn.adventofcode.day4.<a href="com/nickbenn/adventofcode/day4/ScratchCards.html" title="class in com.nickbenn.adventofcode.day4">ScratchCards</a></dt>
+<dt><a href="com/nickbenn/adventofcode/day04/ScratchCards.html#%3Cinit%3E(java.lang.String)" class="member-name-link">ScratchCards(String)</a> - Constructor for class com.nickbenn.adventofcode.day04.<a href="com/nickbenn/adventofcode/day04/ScratchCards.html" title="class in com.nickbenn.adventofcode.day04">ScratchCards</a></dt>
 <dd>
 <div class="block">Initializes this instance, using the value specified in the <code>inputFile</code> parameter as the
  name (relative to the package of this class on the classpath) of the file to be read, parsing
  the scratchcard contents in each line of that file, and collecting the results in a list for
  later computation.</div>
 </dd>
-<dt><a href="com/nickbenn/adventofcode/day5/SeedFertilizer.html" class="type-name-link" title="class in com.nickbenn.adventofcode.day5">SeedFertilizer</a> - Class in <a href="com/nickbenn/adventofcode/day5/package-summary.html">com.nickbenn.adventofcode.day5</a></dt>
+<dt><a href="com/nickbenn/adventofcode/day05/SeedFertilizer.html" class="type-name-link" title="class in com.nickbenn.adventofcode.day05">SeedFertilizer</a> - Class in <a href="com/nickbenn/adventofcode/day05/package-summary.html">com.nickbenn.adventofcode.day05</a></dt>
 <dd>
 <div class="block">Implements solutions for both parts of day 5, reading a line specifying seed numbers, then a
  sequence of mapping layers, each with one or more segments defining an input range and a
  corresponding output range.</div>
 </dd>
-<dt><a href="com/nickbenn/adventofcode/day5/SeedFertilizer.html#%3Cinit%3E()" class="member-name-link">SeedFertilizer()</a> - Constructor for class com.nickbenn.adventofcode.day5.<a href="com/nickbenn/adventofcode/day5/SeedFertilizer.html" title="class in com.nickbenn.adventofcode.day5">SeedFertilizer</a></dt>
+<dt><a href="com/nickbenn/adventofcode/day05/SeedFertilizer.html#%3Cinit%3E()" class="member-name-link">SeedFertilizer()</a> - Constructor for class com.nickbenn.adventofcode.day05.<a href="com/nickbenn/adventofcode/day05/SeedFertilizer.html" title="class in com.nickbenn.adventofcode.day05">SeedFertilizer</a></dt>
 <dd>
 <div class="block">Initializes this instance, using the value of <a href="com/nickbenn/adventofcode/view/DataSource.html#DEFAULT_INPUT_FILE"><code>DataSource.DEFAULT_INPUT_FILE</code></a> as the name
  (relative to the package of this class on the classpath) of the file to be read.</div>
 </dd>
-<dt><a href="com/nickbenn/adventofcode/day5/SeedFertilizer.html#%3Cinit%3E(java.lang.String)" class="member-name-link">SeedFertilizer(String)</a> - Constructor for class com.nickbenn.adventofcode.day5.<a href="com/nickbenn/adventofcode/day5/SeedFertilizer.html" title="class in com.nickbenn.adventofcode.day5">SeedFertilizer</a></dt>
+<dt><a href="com/nickbenn/adventofcode/day05/SeedFertilizer.html#%3Cinit%3E(java.lang.String)" class="member-name-link">SeedFertilizer(String)</a> - Constructor for class com.nickbenn.adventofcode.day05.<a href="com/nickbenn/adventofcode/day05/SeedFertilizer.html" title="class in com.nickbenn.adventofcode.day05">SeedFertilizer</a></dt>
 <dd>
 <div class="block">Initializes this instance, using the value specified in the <code>inputFile</code> parameter as the
  name (relative to the package of this class on the classpath) of the file to be read, parsing
@@ -724,41 +800,41 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="com/nickbenn/adventofcode/day12/HotSprings.html#sumArrangements()" class="member-name-link">sumArrangements()</a> - Method in class com.nickbenn.adventofcode.day12.<a href="com/nickbenn/adventofcode/day12/HotSprings.html" title="class in com.nickbenn.adventofcode.day12">HotSprings</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="com/nickbenn/adventofcode/day1/Trebuchet.html#sumDigits()" class="member-name-link">sumDigits()</a> - Method in class com.nickbenn.adventofcode.day1.<a href="com/nickbenn/adventofcode/day1/Trebuchet.html" title="class in com.nickbenn.adventofcode.day1">Trebuchet</a></dt>
+<dt><a href="com/nickbenn/adventofcode/day01/Trebuchet.html#sumDigits()" class="member-name-link">sumDigits()</a> - Method in class com.nickbenn.adventofcode.day01.<a href="com/nickbenn/adventofcode/day01/Trebuchet.html" title="class in com.nickbenn.adventofcode.day01">Trebuchet</a></dt>
 <dd>
 <div class="block">Reads each line of the input file (as specified in the constructor invocation, or
- <a href="com/nickbenn/adventofcode/view/DataSource.html#DEFAULT_INPUT_FILE"><code>DataSource.DEFAULT_INPUT_FILE</code></a> if the <a href="com/nickbenn/adventofcode/day1/Trebuchet.html#%3Cinit%3E()"><code>Trebuchet()</code></a> constructor is used),
+ <a href="com/nickbenn/adventofcode/view/DataSource.html#DEFAULT_INPUT_FILE"><code>DataSource.DEFAULT_INPUT_FILE</code></a> if the <a href="com/nickbenn/adventofcode/day01/Trebuchet.html#%3Cinit%3E()"><code>Trebuchet()</code></a> constructor is used),
  extracts the first digit found in the line (reading left-to-right) and the last digit found (or
  the first found, reading right-to-left), combines them to form a two-digit integer, and returns
  the sum of these.</div>
 </dd>
-<dt><a href="com/nickbenn/adventofcode/day1/Trebuchet.html#sumDigitWords()" class="member-name-link">sumDigitWords()</a> - Method in class com.nickbenn.adventofcode.day1.<a href="com/nickbenn/adventofcode/day1/Trebuchet.html" title="class in com.nickbenn.adventofcode.day1">Trebuchet</a></dt>
+<dt><a href="com/nickbenn/adventofcode/day01/Trebuchet.html#sumDigitWords()" class="member-name-link">sumDigitWords()</a> - Method in class com.nickbenn.adventofcode.day01.<a href="com/nickbenn/adventofcode/day01/Trebuchet.html" title="class in com.nickbenn.adventofcode.day01">Trebuchet</a></dt>
 <dd>
 <div class="block">Reads each line of the input file (as specified in the constructor invocation, or
- <a href="com/nickbenn/adventofcode/view/DataSource.html#DEFAULT_INPUT_FILE"><code>DataSource.DEFAULT_INPUT_FILE</code></a> if the <a href="com/nickbenn/adventofcode/day1/Trebuchet.html#%3Cinit%3E()"><code>Trebuchet()</code></a> constructor is used),
+ <a href="com/nickbenn/adventofcode/view/DataSource.html#DEFAULT_INPUT_FILE"><code>DataSource.DEFAULT_INPUT_FILE</code></a> if the <a href="com/nickbenn/adventofcode/day01/Trebuchet.html#%3Cinit%3E()"><code>Trebuchet()</code></a> constructor is used),
  extracts the first digit character or digit word found in the line (reading left-to-right) and
  the last digit character or digit word found (or the first found, reading right-to-left),
  combines them to form a two-digit integer, and returns the sum of these.</div>
 </dd>
-<dt><a href="com/nickbenn/adventofcode/day9/MirageMaintenance.html#sumExtrapolations(boolean)" class="member-name-link">sumExtrapolations(boolean)</a> - Method in class com.nickbenn.adventofcode.day9.<a href="com/nickbenn/adventofcode/day9/MirageMaintenance.html" title="class in com.nickbenn.adventofcode.day9">MirageMaintenance</a></dt>
+<dt><a href="com/nickbenn/adventofcode/day09/MirageMaintenance.html#sumExtrapolations(boolean)" class="member-name-link">sumExtrapolations(boolean)</a> - Method in class com.nickbenn.adventofcode.day09.<a href="com/nickbenn/adventofcode/day09/MirageMaintenance.html" title="class in com.nickbenn.adventofcode.day09">MirageMaintenance</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="com/nickbenn/adventofcode/day2/CubeConundrum.html#sumFeasibleGames(java.util.Map)" class="member-name-link">sumFeasibleGames(Map&lt;String, Integer&gt;)</a> - Method in class com.nickbenn.adventofcode.day2.<a href="com/nickbenn/adventofcode/day2/CubeConundrum.html" title="class in com.nickbenn.adventofcode.day2">CubeConundrum</a></dt>
+<dt><a href="com/nickbenn/adventofcode/day02/CubeConundrum.html#sumFeasibleGames(java.util.Map)" class="member-name-link">sumFeasibleGames(Map&lt;String, Integer&gt;)</a> - Method in class com.nickbenn.adventofcode.day02.<a href="com/nickbenn/adventofcode/day02/CubeConundrum.html" title="class in com.nickbenn.adventofcode.day02">CubeConundrum</a></dt>
 <dd>
 <div class="block">Computes the sum of IDs of all games that would be feasible with the cube color limits
  specified in <code>ceilings</code>.</div>
 </dd>
-<dt><a href="com/nickbenn/adventofcode/day3/GearRatio.html#sumGearRatios()" class="member-name-link">sumGearRatios()</a> - Method in class com.nickbenn.adventofcode.day3.<a href="com/nickbenn/adventofcode/day3/GearRatio.html" title="class in com.nickbenn.adventofcode.day3">GearRatio</a></dt>
+<dt><a href="com/nickbenn/adventofcode/day03/GearRatio.html#sumGearRatios()" class="member-name-link">sumGearRatios()</a> - Method in class com.nickbenn.adventofcode.day03.<a href="com/nickbenn/adventofcode/day03/GearRatio.html" title="class in com.nickbenn.adventofcode.day03">GearRatio</a></dt>
 <dd>
 <div class="block">Computes and returns the sum of gear ratios in the schematic&mdash;that is, the sum of the
  products of the numeric values of the digit string pairs adjacent to each gear (<code>'*'</code>).</div>
 </dd>
-<dt><a href="com/nickbenn/adventofcode/day3/GearRatio.html#sumPartNumbers()" class="member-name-link">sumPartNumbers()</a> - Method in class com.nickbenn.adventofcode.day3.<a href="com/nickbenn/adventofcode/day3/GearRatio.html" title="class in com.nickbenn.adventofcode.day3">GearRatio</a></dt>
+<dt><a href="com/nickbenn/adventofcode/day03/GearRatio.html#sumPartNumbers()" class="member-name-link">sumPartNumbers()</a> - Method in class com.nickbenn.adventofcode.day03.<a href="com/nickbenn/adventofcode/day03/GearRatio.html" title="class in com.nickbenn.adventofcode.day03">GearRatio</a></dt>
 <dd>
 <div class="block">Computes and returns the sum of part numbers in the schematic&mdash;that is, the sum of the
  numeric values of digit strings that are adjacent to non-digit characters other than
  <code>'.'</code>.</div>
 </dd>
-<dt><a href="com/nickbenn/adventofcode/day2/CubeConundrum.html#sumPower()" class="member-name-link">sumPower()</a> - Method in class com.nickbenn.adventofcode.day2.<a href="com/nickbenn/adventofcode/day2/CubeConundrum.html" title="class in com.nickbenn.adventofcode.day2">CubeConundrum</a></dt>
+<dt><a href="com/nickbenn/adventofcode/day02/CubeConundrum.html#sumPower()" class="member-name-link">sumPower()</a> - Method in class com.nickbenn.adventofcode.day02.<a href="com/nickbenn/adventofcode/day02/CubeConundrum.html" title="class in com.nickbenn.adventofcode.day02">CubeConundrum</a></dt>
 <dd>
 <div class="block">Computes and returns the sum of the power of all games, where the power of a game is defined as
  the product of the minimum numbers of red, green, and blue cubes required to produce the color
@@ -795,18 +871,18 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Returns a string representation of this record class.</div>
 </dd>
-<dt><a href="com/nickbenn/adventofcode/day1/Trebuchet.html" class="type-name-link" title="class in com.nickbenn.adventofcode.day1">Trebuchet</a> - Class in <a href="com/nickbenn/adventofcode/day1/package-summary.html">com.nickbenn.adventofcode.day1</a></dt>
+<dt><a href="com/nickbenn/adventofcode/day01/Trebuchet.html" class="type-name-link" title="class in com.nickbenn.adventofcode.day01">Trebuchet</a> - Class in <a href="com/nickbenn/adventofcode/day01/package-summary.html">com.nickbenn.adventofcode.day01</a></dt>
 <dd>
 <div class="block">Implements solutions for parts 1 and 2 of day 1&mdash;that is, reading and analyzes a sequence
  of lines of text, extracting a 2-digit integer comprising the first and last digits that appear
  in the line from each, and then summing those numbers.</div>
 </dd>
-<dt><a href="com/nickbenn/adventofcode/day1/Trebuchet.html#%3Cinit%3E()" class="member-name-link">Trebuchet()</a> - Constructor for class com.nickbenn.adventofcode.day1.<a href="com/nickbenn/adventofcode/day1/Trebuchet.html" title="class in com.nickbenn.adventofcode.day1">Trebuchet</a></dt>
+<dt><a href="com/nickbenn/adventofcode/day01/Trebuchet.html#%3Cinit%3E()" class="member-name-link">Trebuchet()</a> - Constructor for class com.nickbenn.adventofcode.day01.<a href="com/nickbenn/adventofcode/day01/Trebuchet.html" title="class in com.nickbenn.adventofcode.day01">Trebuchet</a></dt>
 <dd>
 <div class="block">Initializes this instance, using the value of <a href="com/nickbenn/adventofcode/view/DataSource.html#DEFAULT_INPUT_FILE"><code>DataSource.DEFAULT_INPUT_FILE</code></a> as the name
  (relative to the package of this class on the classpath) of the file to be read.</div>
 </dd>
-<dt><a href="com/nickbenn/adventofcode/day1/Trebuchet.html#%3Cinit%3E(java.lang.String)" class="member-name-link">Trebuchet(String)</a> - Constructor for class com.nickbenn.adventofcode.day1.<a href="com/nickbenn/adventofcode/day1/Trebuchet.html" title="class in com.nickbenn.adventofcode.day1">Trebuchet</a></dt>
+<dt><a href="com/nickbenn/adventofcode/day01/Trebuchet.html#%3Cinit%3E(java.lang.String)" class="member-name-link">Trebuchet(String)</a> - Constructor for class com.nickbenn.adventofcode.day01.<a href="com/nickbenn/adventofcode/day01/Trebuchet.html" title="class in com.nickbenn.adventofcode.day01">Trebuchet</a></dt>
 <dd>
 <div class="block">Initializes this instance, using the value specified in the <code>inputFile</code> parameter as the
  name (relative to the package of this class on the classpath) of the file to be read.</div>
@@ -835,12 +911,12 @@ the order they are declared.</div>
 </dl>
 <h2 class="title" id="I:W">W</h2>
 <dl class="index">
-<dt><a href="com/nickbenn/adventofcode/day6/WaitForIt.html" class="type-name-link" title="class in com.nickbenn.adventofcode.day6">WaitForIt</a> - Class in <a href="com/nickbenn/adventofcode/day6/package-summary.html">com.nickbenn.adventofcode.day6</a></dt>
+<dt><a href="com/nickbenn/adventofcode/day06/WaitForIt.html" class="type-name-link" title="class in com.nickbenn.adventofcode.day06">WaitForIt</a> - Class in <a href="com/nickbenn/adventofcode/day06/package-summary.html">com.nickbenn.adventofcode.day06</a></dt>
 <dd>
 <div class="block">Implements a solution to the day 6 problem, which requires finding the number of integers in the
  domain of a quadratic expression for which the expression has a positive value.</div>
 </dd>
-<dt><a href="com/nickbenn/adventofcode/day6/WaitForIt.html#%3Cinit%3E(long%5B%5D%5B%5D)" class="member-name-link">WaitForIt(long[][])</a> - Constructor for class com.nickbenn.adventofcode.day6.<a href="com/nickbenn/adventofcode/day6/WaitForIt.html" title="class in com.nickbenn.adventofcode.day6">WaitForIt</a></dt>
+<dt><a href="com/nickbenn/adventofcode/day06/WaitForIt.html#%3Cinit%3E(long%5B%5D%5B%5D)" class="member-name-link">WaitForIt(long[][])</a> - Constructor for class com.nickbenn.adventofcode.day06.<a href="com/nickbenn/adventofcode/day06/WaitForIt.html" title="class in com.nickbenn.adventofcode.day06">WaitForIt</a></dt>
 <dd>
 <div class="block">Initializes this instance with specified pairs of time &amp; distance values.</div>
 </dd>

@@ -97,65 +97,64 @@
 <span class="source-line-no">084</span><span id="line-84">        .orElseThrow();</span>
 <span class="source-line-no">085</span><span id="line-85">  }</span>
 <span class="source-line-no">086</span><span id="line-86"></span>
-<span class="source-line-no">087</span><span id="line-87">  private int countEnergizedTiles(MatrixLocation location, Direction direction) {</span>
+<span class="source-line-no">087</span><span id="line-87">  private int countEnergizedTiles(MatrixLocation initialLocation, Direction initialDirection) {</span>
 <span class="source-line-no">088</span><span id="line-88">    Map&lt;MatrixLocation, Set&lt;Direction&gt;&gt; energized = new HashMap&lt;&gt;();</span>
-<span class="source-line-no">089</span><span id="line-89">    Queue&lt;Photon&gt; photons = new LinkedList&lt;&gt;(List.of(new Photon(location, direction)));</span>
+<span class="source-line-no">089</span><span id="line-89">    Queue&lt;Photon&gt; photons = new LinkedList&lt;&gt;(List.of(new Photon(initialLocation, initialDirection)));</span>
 <span class="source-line-no">090</span><span id="line-90">    while (!photons.isEmpty()) {</span>
 <span class="source-line-no">091</span><span id="line-91">      Photon photon = photons.remove();</span>
-<span class="source-line-no">092</span><span id="line-92">      location = photon.location();</span>
-<span class="source-line-no">093</span><span id="line-93">      direction = photon.direction();</span>
-<span class="source-line-no">094</span><span id="line-94">      while (location != null</span>
-<span class="source-line-no">095</span><span id="line-95">          &amp;&amp; isInBounds(location)</span>
-<span class="source-line-no">096</span><span id="line-96">          &amp;&amp; !energized.computeIfAbsent(location, (loc) -&gt; new HashSet&lt;&gt;()).contains(direction)) {</span>
-<span class="source-line-no">097</span><span id="line-97">        direction = nextDirection(location, direction, energized, photons);</span>
-<span class="source-line-no">098</span><span id="line-98">        location = (direction != null) ? location.move(direction) : null;</span>
-<span class="source-line-no">099</span><span id="line-99">      }</span>
-<span class="source-line-no">100</span><span id="line-100">    }</span>
-<span class="source-line-no">101</span><span id="line-101">    return energized.size();</span>
-<span class="source-line-no">102</span><span id="line-102">  }</span>
-<span class="source-line-no">103</span><span id="line-103"></span>
-<span class="source-line-no">104</span><span id="line-104">  private boolean isInBounds(MatrixLocation location) {</span>
-<span class="source-line-no">105</span><span id="line-105">    int row = location.row();</span>
-<span class="source-line-no">106</span><span id="line-106">    int column = location.column();</span>
-<span class="source-line-no">107</span><span id="line-107">    return row &gt;= 0 &amp;&amp; row &lt; grid.length &amp;&amp; column &gt;= 0 &amp;&amp; column &lt; grid[0].length;</span>
-<span class="source-line-no">108</span><span id="line-108">  }</span>
-<span class="source-line-no">109</span><span id="line-109"></span>
-<span class="source-line-no">110</span><span id="line-110">  private Direction nextDirection(MatrixLocation location, Direction direction,</span>
-<span class="source-line-no">111</span><span id="line-111">      Map&lt;MatrixLocation, Set&lt;Direction&gt;&gt; energized, Queue&lt;Photon&gt; photons) {</span>
-<span class="source-line-no">112</span><span id="line-112">    energized.get(location).add(direction);</span>
-<span class="source-line-no">113</span><span id="line-113">    switch (grid[location.row()][location.column()]) {</span>
-<span class="source-line-no">114</span><span id="line-114">      case VERTICAL_SPLITTER -&gt; {</span>
-<span class="source-line-no">115</span><span id="line-115">        if (direction.isHorizontal()) {</span>
-<span class="source-line-no">116</span><span id="line-116">          photons.add(new Photon(location.move(CardinalDirection.NORTH), CardinalDirection.NORTH));</span>
-<span class="source-line-no">117</span><span id="line-117">          photons.add(new Photon(location.move(CardinalDirection.SOUTH), CardinalDirection.SOUTH));</span>
-<span class="source-line-no">118</span><span id="line-118">          direction = null;</span>
-<span class="source-line-no">119</span><span id="line-119">        }</span>
-<span class="source-line-no">120</span><span id="line-120">      }</span>
-<span class="source-line-no">121</span><span id="line-121">      case HORIZONTAL_SPLITTER -&gt; {</span>
-<span class="source-line-no">122</span><span id="line-122">        if (direction.isVertical()) {</span>
-<span class="source-line-no">123</span><span id="line-123">          photons.add(new Photon(location.move(CardinalDirection.WEST), CardinalDirection.WEST));</span>
-<span class="source-line-no">124</span><span id="line-124">          photons.add(new Photon(location.move(CardinalDirection.EAST), CardinalDirection.EAST));</span>
-<span class="source-line-no">125</span><span id="line-125">          direction = null;</span>
-<span class="source-line-no">126</span><span id="line-126">        }</span>
-<span class="source-line-no">127</span><span id="line-127">      }</span>
-<span class="source-line-no">128</span><span id="line-128">      case NORTH_EAST_MIRROR -&gt; {</span>
-<span class="source-line-no">129</span><span id="line-129">        direction = (direction.isVertical()</span>
-<span class="source-line-no">130</span><span id="line-130">            ? direction.nextClockwise()</span>
-<span class="source-line-no">131</span><span id="line-131">            : direction.nextCounterClockwise());</span>
-<span class="source-line-no">132</span><span id="line-132">      }</span>
-<span class="source-line-no">133</span><span id="line-133">      case NORTH_WEST_MIRROR -&gt; {</span>
-<span class="source-line-no">134</span><span id="line-134">        direction = (direction.isVertical()</span>
-<span class="source-line-no">135</span><span id="line-135">            ? direction.nextCounterClockwise()</span>
-<span class="source-line-no">136</span><span id="line-136">            : direction.nextClockwise());</span>
-<span class="source-line-no">137</span><span id="line-137">      }</span>
-<span class="source-line-no">138</span><span id="line-138">    }</span>
-<span class="source-line-no">139</span><span id="line-139">    return direction;</span>
-<span class="source-line-no">140</span><span id="line-140">  }</span>
-<span class="source-line-no">141</span><span id="line-141"></span>
-<span class="source-line-no">142</span><span id="line-142">  private record Photon(MatrixLocation location, Direction direction) {</span>
-<span class="source-line-no">143</span><span id="line-143">  }</span>
-<span class="source-line-no">144</span><span id="line-144"></span>
-<span class="source-line-no">145</span><span id="line-145">}</span>
+<span class="source-line-no">092</span><span id="line-92">      MatrixLocation location = photon.location();</span>
+<span class="source-line-no">093</span><span id="line-93">      Direction direction = photon.direction();</span>
+<span class="source-line-no">094</span><span id="line-94">      if (isInBounds(location)</span>
+<span class="source-line-no">095</span><span id="line-95">          &amp;&amp; !energized.computeIfAbsent(location, (loc) -&gt; new HashSet&lt;&gt;()).contains(direction)) {</span>
+<span class="source-line-no">096</span><span id="line-96">        energized.get(location).add(direction);</span>
+<span class="source-line-no">097</span><span id="line-97">        photons.addAll(next(location, direction));</span>
+<span class="source-line-no">098</span><span id="line-98">      }</span>
+<span class="source-line-no">099</span><span id="line-99">    }</span>
+<span class="source-line-no">100</span><span id="line-100">    return energized.size();</span>
+<span class="source-line-no">101</span><span id="line-101">  }</span>
+<span class="source-line-no">102</span><span id="line-102"></span>
+<span class="source-line-no">103</span><span id="line-103">  private boolean isInBounds(MatrixLocation location) {</span>
+<span class="source-line-no">104</span><span id="line-104">    int row = location.row();</span>
+<span class="source-line-no">105</span><span id="line-105">    int column = location.column();</span>
+<span class="source-line-no">106</span><span id="line-106">    return row &gt;= 0 &amp;&amp; row &lt; grid.length &amp;&amp; column &gt;= 0 &amp;&amp; column &lt; grid[0].length;</span>
+<span class="source-line-no">107</span><span id="line-107">  }</span>
+<span class="source-line-no">108</span><span id="line-108"></span>
+<span class="source-line-no">109</span><span id="line-109">  private List&lt;Photon&gt; next(MatrixLocation location, Direction direction) {</span>
+<span class="source-line-no">110</span><span id="line-110">    List&lt;Photon&gt; photons = new LinkedList&lt;&gt;();</span>
+<span class="source-line-no">111</span><span id="line-111">    switch (grid[location.row()][location.column()]) {</span>
+<span class="source-line-no">112</span><span id="line-112">      case VERTICAL_SPLITTER -&gt; {</span>
+<span class="source-line-no">113</span><span id="line-113">        if (direction.isHorizontal()) {</span>
+<span class="source-line-no">114</span><span id="line-114">          photons.add(new Photon(location.move(CardinalDirection.NORTH), CardinalDirection.NORTH));</span>
+<span class="source-line-no">115</span><span id="line-115">          photons.add(new Photon(location.move(CardinalDirection.SOUTH), CardinalDirection.SOUTH));</span>
+<span class="source-line-no">116</span><span id="line-116">        }</span>
+<span class="source-line-no">117</span><span id="line-117">      }</span>
+<span class="source-line-no">118</span><span id="line-118">      case HORIZONTAL_SPLITTER -&gt; {</span>
+<span class="source-line-no">119</span><span id="line-119">        if (direction.isVertical()) {</span>
+<span class="source-line-no">120</span><span id="line-120">          photons.add(new Photon(location.move(CardinalDirection.WEST), CardinalDirection.WEST));</span>
+<span class="source-line-no">121</span><span id="line-121">          photons.add(new Photon(location.move(CardinalDirection.EAST), CardinalDirection.EAST));</span>
+<span class="source-line-no">122</span><span id="line-122">        }</span>
+<span class="source-line-no">123</span><span id="line-123">      }</span>
+<span class="source-line-no">124</span><span id="line-124">      case NORTH_EAST_MIRROR -&gt; {</span>
+<span class="source-line-no">125</span><span id="line-125">        direction = (direction.isVertical()</span>
+<span class="source-line-no">126</span><span id="line-126">            ? direction.nextClockwise()</span>
+<span class="source-line-no">127</span><span id="line-127">            : direction.nextCounterClockwise());</span>
+<span class="source-line-no">128</span><span id="line-128">      }</span>
+<span class="source-line-no">129</span><span id="line-129">      case NORTH_WEST_MIRROR -&gt; {</span>
+<span class="source-line-no">130</span><span id="line-130">        direction = (direction.isVertical()</span>
+<span class="source-line-no">131</span><span id="line-131">            ? direction.nextCounterClockwise()</span>
+<span class="source-line-no">132</span><span id="line-132">            : direction.nextClockwise());</span>
+<span class="source-line-no">133</span><span id="line-133">      }</span>
+<span class="source-line-no">134</span><span id="line-134">    }</span>
+<span class="source-line-no">135</span><span id="line-135">    if (photons.isEmpty()) {</span>
+<span class="source-line-no">136</span><span id="line-136">      photons.add(new Photon(location.move(direction), direction));</span>
+<span class="source-line-no">137</span><span id="line-137">    }</span>
+<span class="source-line-no">138</span><span id="line-138">    return photons;</span>
+<span class="source-line-no">139</span><span id="line-139">  }</span>
+<span class="source-line-no">140</span><span id="line-140"></span>
+<span class="source-line-no">141</span><span id="line-141">  private record Photon(MatrixLocation location, Direction direction) {</span>
+<span class="source-line-no">142</span><span id="line-142">  }</span>
+<span class="source-line-no">143</span><span id="line-143"></span>
+<span class="source-line-no">144</span><span id="line-144">}</span>
 
 
 
