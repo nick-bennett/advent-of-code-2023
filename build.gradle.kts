@@ -30,15 +30,17 @@ dependencies {
 
 if (project.hasProperty("javadocDestDir")) {
     tasks.clean {
-        delete.add(projectDir.toPath().resolve(project.property("javadocDestDir") as String).toFile())
+        delete.add(projectDir.resolve(project.property("javadocDestDir").toString()))
     }
 }
 
 tasks.javadoc {
     if (project.hasProperty("javadocDestDir")) {
-        setDestinationDir(projectDir.toPath().resolve(project.property("javadocDestDir") as String).toFile())
+        setDestinationDir(projectDir.resolve(project.property("javadocDestDir").toString()))
     }
+    title = project.property("javadocTitle")?.toString() ?: "${project.name} ${project.version}"
     with(options as StandardJavadocDocletOptions) {
+        overview = "src/main/javadoc/overview.html"
         isLinkSource = true
         links("https://docs.oracle.com/en/java/javase/${libs.versions.java.get()}/docs/api/")
     }
