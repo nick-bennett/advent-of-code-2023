@@ -19,20 +19,31 @@ import com.nickbenn.adventofcode.view.DataSource;
 import java.io.IOException;
 import java.util.stream.Stream;
 
-public class Day17 {
+public class ClumsyCrucible {
 
-  public Day17() throws IOException {
+  private final int[][] costs;
+
+  public ClumsyCrucible() throws IOException {
     this(DataSource.DEFAULT_INPUT_FILE);
   }
 
-  public Day17(String inputFile) throws IOException {
+  public ClumsyCrucible(String inputFile) throws IOException {
     try (Stream<String> lines = DataSource.simpleLines(inputFile, this)) {
-
+      costs = lines
+          .map((line) -> line
+              .chars()
+              .map((c) -> c - '0')
+              .toArray())
+          .toArray(int[][]::new);
     }
   }
 
   public static void main(String[] args) throws IOException {
 //    System.out.printf(NUMERIC_SOLUTION_FORMAT, 1, new Day17().???());
+  }
+
+  public int minHeatLoss() {
+    
   }
 
 }

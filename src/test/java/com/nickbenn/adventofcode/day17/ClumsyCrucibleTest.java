@@ -15,8 +15,16 @@
  */
 package com.nickbenn.adventofcode.day17;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.io.IOException;
+import org.junit.jupiter.api.BeforeEach;
 
-class Day17Test {
+class ClumsyCrucibleTest {
+
+  ClumsyCrucible crucible;
+
+  @BeforeEach
+  void setUp() throws IOException {
+    crucible = new ClumsyCrucible();
+  }
 
 }

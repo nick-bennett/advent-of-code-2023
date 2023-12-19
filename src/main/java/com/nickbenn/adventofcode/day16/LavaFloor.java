@@ -22,6 +22,7 @@ import com.nickbenn.adventofcode.model.Direction;
 import com.nickbenn.adventofcode.model.MatrixLocation;
 import com.nickbenn.adventofcode.view.DataSource;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -38,8 +39,31 @@ public class LavaFloor {
   private static final char HORIZONTAL_SPLITTER = '-';
   private static final char NORTH_EAST_MIRROR = '/';
   private static final char NORTH_WEST_MIRROR = '\\';
-  private static final MatrixLocation INITIAL_LOCATION = new MatrixLocation(0, 0);
-  private static final Direction INITIAL_DIRECTION = CardinalDirection.EAST;
+  private static final Photon INITIAL_PHOTON =
+      new Photon(new MatrixLocation(0, 0), CardinalDirection.EAST);
+  private static final Map<? extends Direction, Map<Character, Collection<? extends Direction>>>
+      INTERACTION_RULES = Map.of(
+      CardinalDirection.NORTH, Map.of(
+          HORIZONTAL_SPLITTER, List.of(CardinalDirection.EAST, CardinalDirection.WEST),
+          NORTH_EAST_MIRROR, List.of(CardinalDirection.EAST),
+          NORTH_WEST_MIRROR, List.of(CardinalDirection.WEST)
+      ),
+      CardinalDirection.EAST, Map.of(
+          VERTICAL_SPLITTER, List.of(CardinalDirection.NORTH, CardinalDirection.SOUTH),
+          NORTH_EAST_MIRROR, List.of(CardinalDirection.NORTH),
+          NORTH_WEST_MIRROR, List.of(CardinalDirection.SOUTH)
+      ),
+      CardinalDirection.SOUTH, Map.of(
+          HORIZONTAL_SPLITTER, List.of(CardinalDirection.EAST, CardinalDirection.WEST),
+          NORTH_EAST_MIRROR, List.of(CardinalDirection.WEST),
+          NORTH_WEST_MIRROR, List.of(CardinalDirection.EAST)
+      ),
+      CardinalDirection.WEST, Map.of(
+          VERTICAL_SPLITTER, List.of(CardinalDirection.NORTH, CardinalDirection.SOUTH),
+          NORTH_EAST_MIRROR, List.of(CardinalDirection.SOUTH),
+          NORTH_WEST_MIRROR, List.of(CardinalDirection.NORTH)
+      )
+  );
 
   private final char[][] grid;
 
@@ -61,34 +85,33 @@ public class LavaFloor {
   }
 
   public int countEnergizedTiles() {
-    return countEnergizedTiles(INITIAL_LOCATION, INITIAL_DIRECTION);
+    return countEnergizedTiles(INITIAL_PHOTON);
   }
 
   public int countMaxEnergizedTiles() {
     return Stream.concat(
-        IntStream.range(0, grid.length)
-        .boxed()
-        .flatMap((rowIndex) -> Stream.of(
-            new Photon(new MatrixLocation(rowIndex, 0), CardinalDirection.EAST),
-            new Photon(new MatrixLocation(rowIndex, grid[0].length - 1), CardinalDirection.WEST)
-        )),
-        IntStream.range(0, grid[0].length)
-            .boxed()
-            .flatMap((colIndex) -> Stream.of(
-                new Photon(new MatrixLocation(0, colIndex), CardinalDirection.SOUTH),
-                new Photon(new MatrixLocation(grid.length - 1, colIndex), CardinalDirection.NORTH)
-            ))
+            IntStream.range(0, grid.length)
+                .boxed()
+                .flatMap((rowIndex) -> Stream.of(
+                    new Photon(new MatrixLocation(rowIndex, 0), CardinalDirection.EAST),
+                    new Photon(new MatrixLocation(rowIndex, grid[0].length - 1), CardinalDirection.WEST)
+                )),
+            IntStream.range(0, grid[0].length)
+                .boxed()
+                .flatMap((colIndex) -> Stream.of(
+                    new Photon(new MatrixLocation(0, colIndex), CardinalDirection.SOUTH),
+                    new Photon(new MatrixLocation(grid.length - 1, colIndex), CardinalDirection.NORTH)
+                ))
         )
-        .mapToInt((photon) -> countEnergizedTiles(photon.location(), photon.direction()))
+        .mapToInt(this::countEnergizedTiles)
         .max()
         .orElseThrow();
   }
 
-  private int countEnergizedTiles(MatrixLocation initialLocation, Direction initialDirection) {
+  private int countEnergizedTiles(Photon initialPhoton) {
     Map<MatrixLocation, Set<Direction>> energized = new HashMap<>();
-    Queue<Photon> photons = new LinkedList<>(List.of(new Photon(initialLocation, initialDirection)));
-    while (!photons.isEmpty()) {
-      Photon photon = photons.remove();
+    Queue<Photon> photons = new LinkedList<>(List.of(initialPhoton));
+    for (Photon photon = photons.poll(); photon != null; photon = photons.poll()) {
       MatrixLocation location = photon.location();
       Direction direction = photon.direction();
       if (isInBounds(location)
@@ -107,38 +130,16 @@ public class LavaFloor {
   }
 
   private List<Photon> next(MatrixLocation location, Direction direction) {
-    List<Photon> photons = new LinkedList<>();
-    switch (grid[location.row()][location.column()]) {
-      case VERTICAL_SPLITTER -> {
-        if (direction.isHorizontal()) {
-          photons.add(new Photon(location.move(CardinalDirection.NORTH), CardinalDirection.NORTH));
-          photons.add(new Photon(location.move(CardinalDirection.SOUTH), CardinalDirection.SOUTH));
-        }
-      }
-      case HORIZONTAL_SPLITTER -> {
-        if (direction.isVertical()) {
-          photons.add(new Photon(location.move(CardinalDirection.WEST), CardinalDirection.WEST));
-          photons.add(new Photon(location.move(CardinalDirection.EAST), CardinalDirection.EAST));
-        }
-      }
-      case NORTH_EAST_MIRROR -> {
-        direction = (direction.isVertical()
-            ? direction.nextClockwise()
-            : direction.nextCounterClockwise());
-      }
-      case NORTH_WEST_MIRROR -> {
-        direction = (direction.isVertical()
-            ? direction.nextCounterClockwise()
-            : direction.nextClockwise());
-      }
-    }
-    if (photons.isEmpty()) {
-      photons.add(new Photon(location.move(direction), direction));
-    }
-    return photons;
+    return INTERACTION_RULES
+        .get(direction)
+        .getOrDefault(grid[location.row()][location.column()], List.of(direction))
+        .stream()
+        .map((dir) -> new Photon(location.move(dir), dir))
+        .toList();
   }
 
   private record Photon(MatrixLocation location, Direction direction) {
+
   }
 
 }
